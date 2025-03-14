@@ -37,7 +37,7 @@ fun GetWeather(viewModel: MainActivityVM) {
 
 fun getRepoInstance(ctx: Context): WeatherRepository {
     return WeatherRepositoryImpl.getInstance(
-        WeatherRemoteDataSourceImpl.getInstance(WeatherApiClient.weatherService),
+        WeatherRemoteDataSourceImpl(WeatherApiClient.weatherService),
         /*WeatherLocalDataSourceImpl.getInstance(AppDataBase.getInstance(ctx).weatherDao())*/
     )
 }
