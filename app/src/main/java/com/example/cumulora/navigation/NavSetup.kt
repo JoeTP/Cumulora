@@ -4,25 +4,40 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cumulora.features.alarm.AlarmScreenUI
+import com.example.cumulora.features.onboard.OnBoardingScreenUI
+import com.example.cumulora.features.savedweather.SavedWeatherScreenUI
+import com.example.cumulora.features.settings.SettingsScreenUI
+import com.example.cumulora.features.weather.WeatherScreenUI
 
 @Composable
 fun NavSetup() {
-    var startingScreen: ScreenRoutes = ScreenRoutes.SplashScreen
+    var dummyPref = true
+    var startingScreen: ScreenRoutes = if(dummyPref) ScreenRoutes.OnboardingScreen else ScreenRoutes.WeatherScreen
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = startingScreen) {
 
-        composable<ScreenRoutes.SplashScreen> {
-            SplashUI()
+
+        composable<ScreenRoutes.OnboardingScreen> {
+            OnBoardingScreenUI {
+                navController.navigate(ScreenRoutes.WeatherScreen)
+            }
         }
 
-        composable<ScreenRoutes.OnboardingScreen> { }
+        composable<ScreenRoutes.WeatherScreen> {
+            WeatherScreenUI(onNavigateToAlarm = {}, onNavigateToSavedWeather = {})
+        }
 
-        composable<ScreenRoutes.HomeScreen> { }
+        composable<ScreenRoutes.AlarmScreen> {
+            AlarmScreenUI()
+        }
 
-        composable<ScreenRoutes.AlarmScreen> { }
+        composable<ScreenRoutes.SavedWeatherScreen> {
+            SavedWeatherScreenUI()
+        }
 
-        composable<ScreenRoutes.SavedWeatherScreen> { }
-
-        composable<ScreenRoutes.SettingsScreen> { }
+        composable<ScreenRoutes.SettingsScreen> {
+            SettingsScreenUI()
+        }
     }
 }

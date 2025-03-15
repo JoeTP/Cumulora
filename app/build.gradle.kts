@@ -75,18 +75,14 @@ dependencies {
 
     //view model
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
-    //Glide
+    //Glide & lottie
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
 
     //Navigation
     val nav_version = "2.8.8"
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-
-
-
-
-
-
 }

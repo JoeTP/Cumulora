@@ -1,4 +1,4 @@
-package com.example.cumulora.ScreensUi
+package com.example.cumulora.features.savedweather
 
 import androidx.compose.runtime.Composable
 

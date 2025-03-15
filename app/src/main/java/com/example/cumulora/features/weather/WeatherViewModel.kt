@@ -1,18 +1,21 @@
-package com.example.cumulora
+package com.example.cumulora.features.weather
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.cumulora.data.models.Weather
 import com.example.cumulora.data.models.WeatherResponse
 import com.example.cumulora.data.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MainActivityVM(private val repo: WeatherRepository) : ViewModel() {
+class WeatherViewModel (private val repo: WeatherRepository) : ViewModel() {
 
     private val TAG = "MainActivityVM"
 
@@ -29,18 +32,18 @@ class MainActivityVM(private val repo: WeatherRepository) : ViewModel() {
                 Log.e(TAG, "getWeather: EMPTY LIST")
             }
         } catch (e: Exception) {
-                Log.e(TAG, "getWeather: ERROR", e)
+            Log.e(TAG, "getWeather: ERROR", e)
         }
     }
+
 }
 
-class MainActivityVMFactory(private val repo: WeatherRepository) : ViewModelProvider.Factory {
+class WeatherViewModelFactory(private val repo: WeatherRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainActivityVM::class.java)) {
-            return MainActivityVM(repo) as T
+        if (modelClass.isAssignableFrom(WeatherViewModel::class.java)) {
+            return WeatherViewModel(repo) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-
 
