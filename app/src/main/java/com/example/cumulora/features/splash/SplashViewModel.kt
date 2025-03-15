@@ -13,7 +13,7 @@ class SplashViewModel : ViewModel() {
 
     fun hideSplash() {
         viewModelScope.launch {
-            delay(2000)
+            delay(1900)
             isSplashVisible = false
         }
     }

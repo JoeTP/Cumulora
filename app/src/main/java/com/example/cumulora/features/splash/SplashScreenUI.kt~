@@ -34,7 +34,7 @@ fun SplashScreenUI(onSplashEnd: () -> Unit) {
     )
 
     LaunchedEffect(Unit) {
-        delay(700)
+        delay(720)
         onSplashEnd()
     }
 

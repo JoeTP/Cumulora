@@ -20,6 +20,7 @@ fun NavSetup() {
 
         composable<ScreenRoutes.OnboardingScreen> {
             OnBoardingScreenUI {
+                //Show a Popup with the required services like location and alarm and notification
                 navController.navigate(ScreenRoutes.WeatherScreen)
             }
         }
