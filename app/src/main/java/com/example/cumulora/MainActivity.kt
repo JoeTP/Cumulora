@@ -1,6 +1,6 @@
 package com.example.cumulora
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -8,40 +8,36 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.cumulora.data.remote.WeatherApiClient
-import com.example.cumulora.data.remote.WeatherRemoteDataSourceImpl
-import com.example.cumulora.data.repository.WeatherRepository
-import com.example.cumulora.data.repository.WeatherRepositoryImpl
+import com.example.cumulora.navigation.NavSetup
+import com.example.cumulora.preview.AppBar
 import com.example.cumulora.ui.theme.CumuloraTheme
+import com.example.cumulora.utils.repoInstance
 
 class MainActivity : ComponentActivity() {
+
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        GetWeather(MainActivityVM(getRepoInstance(this)))
         setContent {
             CumuloraTheme {
-                Column (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                }
-
+                MainLayout()
             }
         }
     }
 }
 
-fun GetWeather(viewModel: MainActivityVM) {
-    val productList = viewModel.getWeather(40.40, 40.40)
-    Log.i("TAG", "getWeather: ${productList}")
-}
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Composable
+fun MainLayout() {
+    Scaffold (
 
-fun getRepoInstance(ctx: Context): WeatherRepository {
-    return WeatherRepositoryImpl.getInstance(
-        WeatherRemoteDataSourceImpl(WeatherApiClient.weatherService),
-        /*WeatherLocalDataSourceImpl.getInstance(AppDataBase.getInstance(ctx).weatherDao())*/
-    )
+    ){
+        pad -> NavSetup()
+    }
 }
-
 
 

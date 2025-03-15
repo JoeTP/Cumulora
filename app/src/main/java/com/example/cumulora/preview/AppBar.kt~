@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun AppBar() {
+private fun AppBar() {
     val tabs = listOf("Current", "5 Days")
     var selectedTabIndex by remember { mutableStateOf(0) }
     var pagerState = rememberPagerState { tabs.size }
