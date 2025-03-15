@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cumulora.data.local.AppDataBase
-import com.example.cumulora.data.local.WeatherLocalDataSourceImpl
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import com.example.cumulora.data.remote.WeatherApiClient
 import com.example.cumulora.data.remote.WeatherRemoteDataSourceImpl
 import com.example.cumulora.data.repository.WeatherRepository
@@ -21,9 +20,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GetWeather(MainActivityVM(getRepoInstance(this)))
-        enableEdgeToEdge()
         setContent {
             CumuloraTheme {
+                Column (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                }
 
             }
         }
