@@ -11,4 +11,11 @@ const val API_KEY_Q = "appid"
 const val LAT = "lat"
 const val LON = "lon"
 
-//!Shared Preference
+//!DataStoreKeys
+//? "SK" for String Key
+const val DATA_STORE_NAME = "data_store"
+const val IS_FIRST_TIME_SK = "is_first_time"
+const val LANG_SK = "lang"
+const val LANG_EN = "en"
+const val LANG_AR = "ar"
+const val USE_CURRENT_LOC_SK = "use_current_loc"
