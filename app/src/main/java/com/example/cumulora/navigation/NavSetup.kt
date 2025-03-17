@@ -34,6 +34,7 @@ fun NavSetup() {
 
         composable<ScreenRoutes.WeatherScreen> {
             WeatherScreenUI(onNavigateToAlarm = {}, onNavigateToSavedWeather = {})
+//            WeatherScreenUIPrev()
         }
 
         composable<ScreenRoutes.AlarmScreen> {

@@ -1,4 +1,4 @@
-package com.example.cumulora.preview
+package com.example.cumulora.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,9 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.utils.weatherIcons
 
-@Preview
 @Composable
-fun TempCard() {
+fun OvalCard() {
     Surface(shape = CircleShape) {
         Column(
             modifier = Modifier
