@@ -7,7 +7,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
@@ -77,10 +79,20 @@ private fun WeatherDetailsSectionChild(
                 .fillMaxSize()
                 .background(Color.Blue)
         ) {
-            LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                items(count = 15) { index ->
-                    OvalCard()
+            Column {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(count = 15) { index ->
+                        OvalCard()
+                    }
                 }
+                Spacer(modifier = Modifier.height(626.dp))
+                Text("Humidity")
+                Text("WindSpeed")
+                Text("Pressure")
+                Text("Clouds")
             }
         }
     }
