@@ -1,7 +1,7 @@
 package com.example.cumulora.data.remote
 
-import com.example.cumulora.data.models.ForecastResponse
-import com.example.cumulora.data.models.WeatherResponse
+import com.example.cumulora.data.models.forecast.ForecastResponse
+import com.example.cumulora.data.models.weather.WeatherResponse
 import com.example.cumulora.utils.API_KEY
 import com.example.cumulora.utils.API_KEY_Q
 import com.example.cumulora.utils.FORECAST_EP

@@ -1,9 +1,7 @@
 package com.example.cumulora.data.remote
 
-import com.example.cumulora.data.models.Forecast
-import com.example.cumulora.data.models.ForecastResponse
-import com.example.cumulora.data.models.Weather
-import com.example.cumulora.data.models.WeatherResponse
+import com.example.cumulora.data.models.forecast.ForecastResponse
+import com.example.cumulora.data.models.weather.WeatherResponse
 
 interface WeatherRemoteDataSource {
 

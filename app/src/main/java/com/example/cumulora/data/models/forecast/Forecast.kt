@@ -1,5 +1,9 @@
-package com.example.cumulora.data.models
+package com.example.cumulora.data.models.forecast
 
+import com.example.cumulora.data.models.weather.Weather
+import com.example.cumulora.data.models.common.Clouds
+import com.example.cumulora.data.models.common.Coord
+import com.example.cumulora.data.models.common.Wind
 import com.google.gson.annotations.SerializedName
 
 
