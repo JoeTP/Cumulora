@@ -22,13 +22,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.cumulora.component.CurrentTemperature
-import com.example.cumulora.component.WeatherDetailsSection
+import com.example.cumulora.features.weather.component.CurrentTemperature
+import com.example.cumulora.features.weather.component.WeatherDetailsSection
 import com.example.cumulora.utils.repoInstance
 
 @Preview
 @Composable
-fun WeatherScreenUI(onNavigateToAlarm: () -> Unit = {}, onNavigateToSavedWeather: () -> Unit = {}) {
+fun WeatherScreenUI() {
 
     val ctx: Context = LocalContext.current
 

@@ -10,6 +10,9 @@ const val FORECAST_EP = "forecast"
 const val API_KEY_Q = "appid"
 const val LAT = "lat"
 const val LON = "lon"
+const val LANG = "lang"
+const val UNIT = "lon"
+val UNIT_TYPE = listOf("standard", "metric", "imperial")
 
 //!DataStoreKeys
 //? "SK" for String Key

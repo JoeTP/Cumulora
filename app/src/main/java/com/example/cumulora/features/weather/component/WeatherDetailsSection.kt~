@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.example.cumulora.component
+package com.example.cumulora.features.weather.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
+import com.example.cumulora.component.OvalCard
 
 @Composable
 fun WeatherDetailsSection() {
@@ -114,6 +115,22 @@ fun CurrentTab() {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
+                WeatherCard("Humidity", R.drawable.humidity) {
+                    Surface(color = Color.Red, modifier = Modifier.fillMaxSize()) {
+                        Text(text = "Item ")
+                    }
+                }
+            }
+            item {
+                WeatherCard("Wind Speed", R.drawable.wind) {
+                    Surface(color = Color.Red, modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            text = "Item ",
+                        )
+                    }
+                }
+            }
+            item {
                 WeatherCard("Pressure", R.drawable.rain) {
                     Surface(color = Color.Red, modifier = Modifier.fillMaxSize()) {
                         Text(
@@ -123,7 +140,7 @@ fun CurrentTab() {
                 }
             }
             item {
-                WeatherCard("Humidity", R.drawable.humidity) {
+                WeatherCard("Clouds", R.drawable.cloud_icon) {
                     Surface(color = Color.Red, modifier = Modifier.fillMaxSize()) {
                         Text(text = "Item ")
                     }

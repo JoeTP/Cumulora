@@ -1,4 +1,4 @@
-package com.example.cumulora.component
+package com.example.cumulora.features.weather.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

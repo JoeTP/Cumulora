@@ -16,33 +16,35 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     private val TAG = "TAG"
 
     private val _mutableWeather: MutableStateFlow<WeatherStateResponse> = MutableStateFlow(
-        WeatherStateResponse.Loading)
+        WeatherStateResponse.Loading
+    )
     val weatherState: StateFlow<WeatherStateResponse> = _mutableWeather
 
     init {
         //pass parameters from shared preference
-        getWeather(32.0, 21.0)
+        getWeather(32.0, 21.0, null, null)
     }
 
-    fun getWeather(lat: Double, lon: Double) = viewModelScope.launch(Dispatchers.IO) {
-        val response = repo.getWeather(lat, lon)
-        try {
-            response.catch {
-                //if response error
-                _mutableWeather.value = WeatherStateResponse.Failure(it.message.toString())
-            }.collect { weather ->
-                if (weather != null) {
-                    _mutableWeather.value = WeatherStateResponse.Success(weather.toFinalWeather())
-                } else {
-                    //if null
-                    _mutableWeather.value = WeatherStateResponse.Failure("Error")
+    fun getWeather(lat: Double, lon: Double, unit: String?, lang: String?) =
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = repo.getWeather(lat, lon, unit, lang)
+            try {
+                response.catch {
+                    //if response error
+                    _mutableWeather.value = WeatherStateResponse.Failure(it.message.toString())
+                }.collect { weather ->
+                    if (weather != null) {
+                        _mutableWeather.value = WeatherStateResponse.Success(weather.toFinalWeather())
+                    } else {
+                        //if null
+                        _mutableWeather.value = WeatherStateResponse.Failure("Error")
+                    }
                 }
+            } catch (e: Exception) {
+                //if network error
+                _mutableWeather.value = WeatherStateResponse.Failure(e.message.toString())
             }
-        } catch (e: Exception) {
-            //if network error
-            _mutableWeather.value = WeatherStateResponse.Failure(e.message.toString())
         }
-    }
 
 }
 

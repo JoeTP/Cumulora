@@ -89,4 +89,8 @@ dependencies {
     //DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.3")
 
+    //UI
+    implementation ("androidx.compose.material:material-icons-extended:$compose_version")
+
+
 }

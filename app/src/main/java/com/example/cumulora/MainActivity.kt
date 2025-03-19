@@ -4,19 +4,33 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cumulora.features.onboard.OnBoardingScreenUI
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.cumulora.component.MyAppBar
 import com.example.cumulora.features.splash.SplashScreenUI
 import com.example.cumulora.features.splash.SplashViewModel
 import com.example.cumulora.navigation.NavSetup
+import com.example.cumulora.navigation.ScreenRoutes
 import com.example.cumulora.ui.theme.CumuloraTheme
 import com.example.cumulora.utils.SharedPrefManager
 
@@ -28,28 +42,31 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CumuloraTheme {
-                AppContent(viewModel())
+                AppContent()
             }
         }
     }
 }
 
 @Composable
-fun AppContent(viewModel: SplashViewModel) {
+fun AppContent(navController: NavHostController = rememberNavController()) {
+
+    val viewModel: SplashViewModel = viewModel()
+
     val isSplashVisible = viewModel.isSplashVisible
 
     if (isSplashVisible) {
         SplashScreenUI(onSplashEnd = viewModel::hideSplash)
     } else {
-        MainLayout()
+        MainLayout(navController)
     }
 }
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainLayout() {
-    Scaffold {
-        NavSetup()
+fun MainLayout(navController: NavHostController) {
+    Scaffold( snackbarHost = {}) { paddingValues ->
+        NavSetup(navController)
     }
 }

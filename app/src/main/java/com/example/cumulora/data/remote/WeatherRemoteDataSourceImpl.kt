@@ -7,11 +7,12 @@ import kotlinx.coroutines.flow.flowOf
 
 class WeatherRemoteDataSourceImpl(private val weatherService: WeatherService) : WeatherRemoteDataSource {
 
-    override suspend fun getWeather(lat: Double, lon: Double): Flow<WeatherResponse?> {
-        return flowOf(weatherService.getWeather(lat, lon).body())
+    override suspend fun getWeather(lat: Double, lon: Double, unit: String?, lang: String?):
+            Flow<WeatherResponse?> {
+        return flowOf(weatherService.getWeather(lat, lon, unit ,lang).body())
     }
 
-    override suspend fun getForecast(lat: Double, lon: Double): ForecastResponse? {
+    override suspend fun getForecast(lat: Double, lon: Double, unit: String): ForecastResponse? {
         return weatherService.getForecast(lat, lon).body()
     }
 }

@@ -1,10 +1,13 @@
 package com.example.cumulora.navigation
 
+import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.example.cumulora.component.MyAppBar
 import com.example.cumulora.features.alarm.AlarmScreenUI
 import com.example.cumulora.features.onboard.OnBoardingScreenUI
 import com.example.cumulora.features.savedweather.SavedWeatherScreenUI
@@ -14,10 +17,11 @@ import com.example.cumulora.utils.IS_FIRST_TIME_SK
 import com.example.cumulora.utils.SharedPrefManager
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun NavSetup() {
+fun NavSetup(navController: NavHostController) {
 
-    val navController = rememberNavController()
+//    val navController = rememberNavController()
     val shared = SharedPrefManager.getInstance()
     val isFirstTime = shared.getBoolean(IS_FIRST_TIME_SK, true)
     val startingScreen = if (isFirstTime) ScreenRoutes.OnboardingScreen else ScreenRoutes.WeatherScreen
@@ -33,8 +37,9 @@ fun NavSetup() {
         }
 
         composable<ScreenRoutes.WeatherScreen> {
-            WeatherScreenUI(onNavigateToAlarm = {}, onNavigateToSavedWeather = {})
-//            WeatherScreenUIPrev()
+            Scaffold(topBar = { MyAppBar(navController) }) {
+                WeatherScreenUI()
+            }
         }
 
         composable<ScreenRoutes.AlarmScreen> {
