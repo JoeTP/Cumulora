@@ -1,34 +1,46 @@
 package com.example.cumulora.features.weather
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.cumulora.data.models.weather.WeatherResponse
 import com.example.cumulora.data.repository.WeatherRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import toFinalWeather
 
-class WeatherViewModel (private val repo: WeatherRepository) : ViewModel() {
+class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
 
-    private val TAG = "MainActivityVM"
+    private val TAG = "TAG"
 
-    private val _mutableWeather: MutableLiveData<WeatherResponse?> = MutableLiveData<WeatherResponse?>()
-    val weather: LiveData<WeatherResponse?> = _mutableWeather
+    private val _mutableWeather: MutableStateFlow<WeatherStateResponse> = MutableStateFlow(
+        WeatherStateResponse.Loading)
+    val weatherState: StateFlow<WeatherStateResponse> = _mutableWeather
+
+    init {
+        //pass parameters from shared preference
+        getWeather(32.0, 21.0)
+    }
 
     fun getWeather(lat: Double, lon: Double) = viewModelScope.launch(Dispatchers.IO) {
         val response = repo.getWeather(lat, lon)
         try {
-            if(response != null) {
-                _mutableWeather.postValue(response)
-                Log.d(TAG, "getWeather: SUCCESS ${response}")
-            }else{
-                Log.e(TAG, "getWeather: EMPTY LIST")
+            response.catch {
+                //if response error
+                _mutableWeather.value = WeatherStateResponse.Failure(it.message.toString())
+            }.collect { weather ->
+                if (weather != null) {
+                    _mutableWeather.value = WeatherStateResponse.Success(weather.toFinalWeather())
+                } else {
+                    //if null
+                    _mutableWeather.value = WeatherStateResponse.Failure("Error")
+                }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "getWeather: ERROR", e)
+            //if network error
+            _mutableWeather.value = WeatherStateResponse.Failure(e.message.toString())
         }
     }
 

@@ -7,6 +7,7 @@ import java.util.TimeZone
 
 fun WeatherResponse.toFinalWeather(): WeatherEntity {
     val currentTemp = this.main.temp
+    val feelsLike = this.main.feelsLike
     val humidity = this.main.humidity
     val windSpeed = this.wind.speed
     val pressure = this.main.pressure
@@ -29,6 +30,7 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
 
     return WeatherEntity(
         currentTemp = currentTemp,
+        feelsLike = feelsLike,
         currentDate = currentDate,
         currentTime = currentTime,
         humidity = humidity,

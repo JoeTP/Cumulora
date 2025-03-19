@@ -31,7 +31,7 @@ fun WeatherCard ( title: String, iconId: Int,color: Color = Color.DarkGray, comp
     ()->
 Unit,) {
 
-    Surface(shape = RoundedCornerShape(20.dp ), color = color) {
+    Surface(shape = RoundedCornerShape(20.dp ), color = color, ) {
         Column ( modifier = Modifier.padding(8.dp).height(160.dp)){
             Row (verticalAlignment = Alignment.Bottom){
                 Image(modifier = Modifier.size(24.dp), painter = painterResource(id = iconId),

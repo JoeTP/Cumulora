@@ -5,10 +5,10 @@ package com.example.cumulora.component
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -28,15 +28,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.cumulora.R
 
 @Composable
 fun WeatherDetailsSection() {
     val tabs = listOf("Current", "5 Days")
     var selectedTabIndex by remember { mutableStateOf(0) }
     val pagerState = rememberPagerState { tabs.size }
+
 
     LaunchedEffect(selectedTabIndex) {
         pagerState.scrollToPage(selectedTabIndex)
@@ -63,6 +66,7 @@ private fun WeatherDetailsSectionChild(
     pagerState: PagerState,
     onTabSelected: (index: Int) -> Unit
 ) {
+
     Column {
         TabRow(selectedTabIndex = selectedTabIndex) {
             tabs.forEachIndexed { index, title ->
@@ -81,36 +85,57 @@ private fun WeatherDetailsSectionChild(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Blue)
+        ) { page ->
+            when (page) {
+                0 -> CurrentTab()
+                1 -> FiveDaysTab()
+            }
+        }
+    }
+}
+
+@Composable
+fun CurrentTab() {
+    Column {
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Column {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(count = 15) { index ->
-                        OvalCard()
+            items(count = 15) { index ->
+                OvalCard()
+            }
+        }
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
+                .height(400.dp)
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {
+                WeatherCard("Pressure", R.drawable.rain) {
+                    Surface(color = Color.Red, modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            text = "Item ",
+                        )
                     }
                 }
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier
-//                        .fillMaxWidth()
-                        .height(400.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(4) { index ->
-                        WeatherCard {
-                            Surface(color = Color.Red) {
-                                Text(
-                                    text = "Item $index",
-                                    modifier = Modifier.padding(16.dp)
-                                )
-                            }
-                        }
+            }
+            item {
+                WeatherCard("Humidity", R.drawable.humidity) {
+                    Surface(color = Color.Red, modifier = Modifier.fillMaxSize()) {
+                        Text(text = "Item ")
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun FiveDaysTab() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(text = "FiveDaysTab")
     }
 }

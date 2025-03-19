@@ -3,6 +3,7 @@ package com.example.cumulora.data.repository
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherResponse
 import com.example.cumulora.data.remote.WeatherRemoteDataSource
+import kotlinx.coroutines.flow.Flow
 
 
 class WeatherRepositoryImpl private constructor(
@@ -26,7 +27,7 @@ class WeatherRepositoryImpl private constructor(
         }
     }
 
-    override suspend fun getWeather(lat: Double, lon: Double): WeatherResponse? {
+    override suspend fun getWeather(lat: Double, lon: Double): Flow<WeatherResponse?> {
         return remoteDataSource.getWeather(
             lat = lat,
             lon = lon
