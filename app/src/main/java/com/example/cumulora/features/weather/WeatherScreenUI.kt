@@ -28,7 +28,7 @@ import com.example.cumulora.utils.repoInstance
 
 @Preview
 @Composable
-fun WeatherScreenUI() {
+fun WeatherScreenUI(modifier: Modifier = Modifier) {
 
     val ctx: Context = LocalContext.current
 
@@ -54,7 +54,7 @@ fun WeatherScreenUI() {
         is WeatherStateResponse.Success -> {
             val data = (weather as WeatherStateResponse.Success).data
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .verticalScroll(scrollState)
             ) {

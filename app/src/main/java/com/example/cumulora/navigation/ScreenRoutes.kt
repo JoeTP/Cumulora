@@ -18,4 +18,5 @@ sealed class ScreenRoutes {
 
     @Serializable
     object SettingsScreen : ScreenRoutes()
+
 }

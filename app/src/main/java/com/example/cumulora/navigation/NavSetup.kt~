@@ -2,7 +2,6 @@ package com.example.cumulora.navigation
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,7 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -47,8 +45,8 @@ fun NavSetup(navController: NavHostController) {
         }
 
         composable<ScreenRoutes.WeatherScreen> {
-            Scaffold(topBar = { MyAppBar(navController) }) {padding ->
-                WeatherScreenUI(Modifier.padding(padding))
+            Scaffold(topBar = { MyAppBar(navController) }) {
+                WeatherScreenUI()
             }
         }
 
@@ -72,8 +70,8 @@ fun NavSetup(navController: NavHostController) {
                         )
                     }
                 })
-            }) {padding ->
-                SettingsScreenUI(Modifier.padding(padding))
+            }) {
+                SettingsScreenUI()
             }
         }
     }
