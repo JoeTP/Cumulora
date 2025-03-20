@@ -8,6 +8,6 @@ interface WeatherRemoteDataSource {
 
     suspend fun getWeather(lat: Double, lon: Double, unit: String?, lang: String?): Flow<WeatherResponse?>
 
-    suspend fun getForecast(lat: Double, lon: Double, unit: String): ForecastResponse?
+    suspend fun getForecast(lat: Double, lon: Double, unit: String?, lang: String?): Flow<ForecastResponse?>
 
 }

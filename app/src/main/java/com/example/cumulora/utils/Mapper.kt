@@ -1,5 +1,5 @@
+import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.models.forecast.ForecastEntity
-import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
 import com.example.cumulora.data.models.weather.WeatherResponse
 import java.text.SimpleDateFormat
@@ -45,6 +45,36 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
     )
 }
 
-fun ForecastResponse.toFinalForecast(): ForecastEntity {
-    TODO( "not implemented" )
+fun Forecast.toFinalForecast(): ForecastEntity {
+    val dt = this.dt
+    val dtTxt = this.dtTxt
+    val temp = this.main.temp
+    val tempMax = this.main.tempMax
+    val tempMin = this.main.tempMin
+    val feelsLike = this.main.feelsLike
+    val humidity = this.main.humidity
+    val windSpeed = this.wind.speed
+    val windDegree = this.wind.deg
+    val pressure = this.main.pressure
+    val clouds = this.clouds.all
+    val icon = this.weather.first().icon
+    val description = this.weather.first().description
+    val main = this.weather.first().main
+
+    return ForecastEntity(
+        dt = dt,
+        dtTxt = dtTxt,
+        main = main,
+        clouds = clouds,
+        temp = temp,
+        tempMax = tempMax,
+        tempMin = tempMin,
+        feelsLike = feelsLike,
+        humidity = humidity,
+        windSpeed = windSpeed,
+        windDegree = windDegree,
+        pressure = pressure,
+        icon = icon,
+        description = description,
+    )
 }

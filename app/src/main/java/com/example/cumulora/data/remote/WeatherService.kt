@@ -4,6 +4,7 @@ import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherResponse
 import com.example.cumulora.utils.API_KEY
 import com.example.cumulora.utils.API_KEY_Q
+import com.example.cumulora.utils.CNT
 import com.example.cumulora.utils.FORECAST_EP
 import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAT
@@ -31,6 +32,9 @@ interface WeatherService {
     suspend fun getForecast(
         @Query(LAT) lat: Double,
         @Query(LON) lon: Double,
+        @Query(UNIT) unit: String?,
+        @Query(LANG) lang: String?,
+        @Query(CNT) cnt: Int = 40,
         @Query(API_KEY_Q) apiKey: String = API_KEY
     ): Response<ForecastResponse>
 

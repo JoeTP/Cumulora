@@ -12,7 +12,8 @@ class WeatherRemoteDataSourceImpl(private val weatherService: WeatherService) : 
         return flowOf(weatherService.getWeather(lat, lon, unit ,lang).body())
     }
 
-    override suspend fun getForecast(lat: Double, lon: Double, unit: String): ForecastResponse? {
-        return weatherService.getForecast(lat, lon).body()
+    override suspend fun getForecast(lat: Double, lon: Double, unit: String?, lang: String?):
+            Flow<ForecastResponse?> {
+        return flowOf(weatherService.getForecast(lat, lon, unit, lang).body())
     }
 }

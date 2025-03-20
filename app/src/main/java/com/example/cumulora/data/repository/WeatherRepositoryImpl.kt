@@ -1,10 +1,11 @@
 package com.example.cumulora.data.repository
 
+import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherResponse
 import com.example.cumulora.data.remote.WeatherRemoteDataSource
-import com.example.cumulora.utils.UNIT_TYPE
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 
 class WeatherRepositoryImpl private constructor(
@@ -21,7 +22,7 @@ class WeatherRepositoryImpl private constructor(
 //            localDataSource: WeatherLocalDataSource
         ): WeatherRepositoryImpl {
             return instance ?: synchronized(this) {
-                instance ?: WeatherRepositoryImpl(remoteDataSource, /*localDataSource*/).also {
+                instance ?: WeatherRepositoryImpl(remoteDataSource /*localDataSource*/).also {
                     instance = it
                 }
             }
@@ -38,12 +39,14 @@ class WeatherRepositoryImpl private constructor(
         )
     }
 
-    override suspend fun getForecast(lat: Double, lon: Double, unit: String): ForecastResponse? {
+    override suspend fun getForecast(lat: Double, lon: Double, unit: String?, lang: String?):
+            Flow<List<Forecast>?> {
         return remoteDataSource.getForecast(
             lat = lat,
             lon = lon,
-            unit = unit
-        )
+            unit = unit,
+            lang = lang
+        ).map {  it?.forecastList }
     }
 
 

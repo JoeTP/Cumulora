@@ -12,6 +12,7 @@ const val LAT = "lat"
 const val LON = "lon"
 const val LANG = "lang"
 const val UNIT = "lon"
+const val CNT = "cnt"
 val UNIT_TYPE = listOf("standard", "metric", "imperial")
 
 //!DataStoreKeys

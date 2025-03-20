@@ -15,10 +15,13 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
 
     private val TAG = "TAG"
 
-    private val _mutableWeather: MutableStateFlow<WeatherStateResponse> = MutableStateFlow(
-        WeatherStateResponse.Loading
-    )
+    private val _mutableWeather: MutableStateFlow<WeatherStateResponse> =
+        MutableStateFlow(WeatherStateResponse.Loading)
     val weatherState: StateFlow<WeatherStateResponse> = _mutableWeather
+
+    private val _mutableForecast: MutableStateFlow<ForecastStateResponse> =
+        MutableStateFlow(ForecastStateResponse.Loading)
+    val forecastState: StateFlow<ForecastStateResponse> = _mutableForecast
 
     init {
         //pass parameters from shared preference
@@ -43,6 +46,27 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
             } catch (e: Exception) {
                 //if network error
                 _mutableWeather.value = WeatherStateResponse.Failure(e.message.toString())
+            }
+        }
+
+    fun getForecast(lat: Double, lon: Double, unit: String, lang: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = repo.getForecast(lat, lon, unit, lang)
+            try {
+                response.catch {
+                    //if response error
+                    _mutableForecast.value = ForecastStateResponse.Failure(it.message.toString())
+                }.collect { forecast ->
+                    if (forecast != null) {
+                        _mutableForecast.value = ForecastStateResponse.Success(forecast)
+                    } else {
+                        //if null
+                        _mutableForecast.value = ForecastStateResponse.Failure("Error")
+                    }
+                }
+            } catch (e: Exception) {
+                //if network error
+                _mutableForecast.value = ForecastStateResponse.Failure(e.message.toString())
             }
         }
 
