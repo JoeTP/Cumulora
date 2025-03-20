@@ -20,17 +20,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
 import com.example.cumulora.component.OvalCard
+import com.example.cumulora.data.models.weather.WeatherEntity
 
 
 @Composable
-fun CurrentTab() {
+fun CurrentTab(weather: WeatherEntity) {
     Column {
         Spacer(modifier = Modifier.height(16.dp))
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(count = 15) { index ->
+            items(count = 8) { index ->
                 OvalCard()
             }
         }
@@ -45,31 +46,30 @@ fun CurrentTab() {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                Humidity("30%")
+                Humidity(weather.humidity.toString())
             }
             item {
-                Wind("30")
+                Wind(weather.windSpeed.toString(), weather.windDegree.toFloat())
             }
             item {
-                Pressure("20")
+                Pressure(weather.pressure.toString())
             }
             item {
-                Clouds("30%")
+                Clouds(weather.clouds.toString())
             }
-//            TODO "Extract data from viewmodel"
-
+                //TODO "Extract data from viewmodel"
         }
     }
 }
 
 @Composable
-private fun Wind(windSpeed: String) {
+private fun Wind(windSpeed: String, windDegree: Float) {
     WeatherCard("Wind Speed", R.drawable.wind) {
         Box(contentAlignment = Alignment.Center) {
             Image(painter = painterResource(id = R.drawable.compas), contentDescription = "")
             Image(
                 painter = painterResource(id = R.drawable.compas_arrow), contentDescription = "",
-                modifier = Modifier.rotate(36f)
+                modifier = Modifier.rotate(windDegree)
             )
             Text(windSpeed)
 //            TODO("DONT FORGET THE UNIT")

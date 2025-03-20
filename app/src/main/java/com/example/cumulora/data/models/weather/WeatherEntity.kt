@@ -7,6 +7,7 @@ data class WeatherEntity(
     val currentTime: String,
     val humidity: Int,
     val windSpeed: Double,
+    val windDegree: Int,
     val pressure: Int,
     val clouds: Int,
     val city: String,

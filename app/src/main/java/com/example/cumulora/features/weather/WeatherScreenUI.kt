@@ -76,7 +76,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier) {
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
                 ) {
-                    WeatherDetailsSection()
+                    WeatherDetailsSection(data)
                 }
             }
         }

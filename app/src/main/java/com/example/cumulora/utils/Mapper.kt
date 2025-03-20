@@ -10,6 +10,7 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
     val feelsLike = this.main.feelsLike
     val humidity = this.main.humidity
     val windSpeed = this.wind.speed
+    val windDegree = this.wind.deg
     val pressure = this.main.pressure
     val clouds = this.clouds.all
     val city = this.name
@@ -35,6 +36,7 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
         currentTime = currentTime,
         humidity = humidity,
         windSpeed = windSpeed,
+        windDegree = windDegree,
         pressure = pressure,
         clouds = clouds,
         city = city,

@@ -32,9 +32,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.cumulora.data.models.weather.WeatherEntity
 
 @Composable
-fun WeatherDetailsSection() {
+fun WeatherDetailsSection(weather: WeatherEntity) {
     val tabs = listOf("Current", "5 Days")
     var selectedTabIndex by remember { mutableStateOf(0) }
     val pagerState = rememberPagerState { tabs.size }
@@ -54,6 +55,7 @@ fun WeatherDetailsSection() {
         tabs = tabs,
         selectedTabIndex = selectedTabIndex,
         pagerState = pagerState,
+        weather = weather,
         onTabSelected = { index -> selectedTabIndex = index }
     )
 }
@@ -63,6 +65,7 @@ private fun WeatherDetailsSectionChild(
     tabs: List<String>,
     selectedTabIndex: Int,
     pagerState: PagerState,
+    weather: WeatherEntity,
     onTabSelected: (index: Int) -> Unit
 ) {
 
@@ -93,7 +96,8 @@ private fun WeatherDetailsSectionChild(
                 }
             }
         }
-        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+
+//        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
         HorizontalPager(
             state = pagerState,
@@ -103,7 +107,7 @@ private fun WeatherDetailsSectionChild(
                 .background(Color.Blue)
         ) { page ->
             when (page) {
-                0 -> CurrentTab()
+                0 -> CurrentTab(weather)
                 1 -> FiveDaysTab()
             }
         }
