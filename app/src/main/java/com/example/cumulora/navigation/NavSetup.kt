@@ -54,6 +54,18 @@ fun NavSetup(navController: NavHostController) {
 
         composable<ScreenRoutes.AlarmScreen> {
             AlarmScreenUI()
+            Scaffold (topBar = {
+                TopAppBar(title = {
+                    Text("Alarms")
+                }, navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                })
+            }){  }
         }
 
         composable<ScreenRoutes.SavedWeatherScreen> {

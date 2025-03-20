@@ -86,7 +86,7 @@ private fun Humidity(humidity: String) {
 
 @Composable
 private fun Pressure(pressure: String) {
-    WeatherCard("Pressure", R.drawable.rain) {
+    WeatherCard("Pressure", R.drawable.pressure) {
         Text(pressure)
     }
 }

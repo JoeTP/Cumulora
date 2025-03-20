@@ -2,6 +2,7 @@ package com.example.cumulora.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,12 +22,12 @@ fun MyAppBar(navController: NavHostController) {
 //    val navController = rememberNavController()
 
     TopAppBar(title = {}, actions = {
-//        IconButton(onClick = {}) {
-//            Icon(
-//                imageVector = Icons.Default.Add,
-//                contentDescription = "Add"
-//            )
-//        }
+        IconButton(onClick = {navController.navigate(ScreenRoutes.AlarmScreen)}) {
+            Icon(
+                imageVector = Icons.Default.Alarm,
+                contentDescription = "Alarm"
+            )
+        }
 //        IconButton(onClick = {}) {
 //            Icon(
 //                imageVector = Icons.Default.Notifications,
