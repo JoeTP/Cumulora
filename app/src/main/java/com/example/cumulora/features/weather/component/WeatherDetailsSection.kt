@@ -34,10 +34,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.cumulora.data.models.forecast.Forecast
+import com.example.cumulora.data.models.forecast.ForecastEntity
+import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
+import com.example.cumulora.features.weather.responsestate.ForecastStateResponse
 
 @Composable
-fun WeatherDetailsSection(weather: WeatherEntity) {
+fun WeatherDetailsSection(weather: WeatherEntity, forecast: ForecastResponse) {
     val tabs = listOf("Current", "5 Days")
     var selectedTabIndex by remember { mutableStateOf(0) }
     val pagerState = rememberPagerState { tabs.size }
@@ -58,6 +62,7 @@ fun WeatherDetailsSection(weather: WeatherEntity) {
         selectedTabIndex = selectedTabIndex,
         pagerState = pagerState,
         weather = weather,
+        forecast = forecast,
         onTabSelected = { index -> selectedTabIndex = index }
     )
 }
@@ -68,6 +73,7 @@ private fun WeatherDetailsSectionChild(
     selectedTabIndex: Int,
     pagerState: PagerState,
     weather: WeatherEntity,
+    forecast: ForecastResponse,
     onTabSelected: (index: Int) -> Unit
 ) {
     val tabIcons = listOf(Icons.Default.SystemUpdateAlt, Icons.Default.CalendarMonth)
@@ -92,7 +98,7 @@ private fun WeatherDetailsSectionChild(
             TabRow(selectedTabIndex = selectedTabIndex) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
-                        // icon = { Icon(imageVector = tabIcons[index], contentDescription = null) },
+                         icon = { Icon(imageVector = tabIcons[index], contentDescription = null) },
                         selected = selectedTabIndex == index,
                         onClick = { onTabSelected(index) },
                         text = { Text(text = title) }
@@ -111,7 +117,7 @@ private fun WeatherDetailsSectionChild(
                 .background(Color.Blue)
         ) { page ->
             when (page) {
-                0 -> CurrentTab(weather)
+                0 -> CurrentTab(weather, forecast)
                 1 -> FiveDaysTab()
             }
         }

@@ -4,10 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cumulora.data.repository.WeatherRepository
+import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
+import com.example.cumulora.features.weather.responsestate.ForecastStateResponse
+import com.example.cumulora.features.weather.responsestate.WeatherStateResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import toFinalWeather
 
@@ -23,10 +28,44 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
         MutableStateFlow(ForecastStateResponse.Loading)
     val forecastState: StateFlow<ForecastStateResponse> = _mutableForecast
 
+    private val _mutableCombinedState: MutableStateFlow<CombinedStateResponse> =
+        MutableStateFlow(CombinedStateResponse.Loading)
+    val combinedState: StateFlow<CombinedStateResponse> = _mutableCombinedState
+
+
     init {
         //pass parameters from shared preference
-        getWeather(32.0, 21.0, null, null)
+//        getWeather(2.0, 01.0, null, null)
+//        getForecast(0.0, 0.0, null, null)
+         getWeatherAndForecast(0.0, 0.0, null, null)
+        }
+
+
+    private fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val weatherDeferred =
+                    async { repo.getWeather(lat, lon, unit, lang).catch { emit(null) }.first() }
+                val forecastDeferred =
+                    async { repo.getForecast(lat, lon, unit, lang).catch { emit(null) }.first() }
+
+                val weather = weatherDeferred.await()
+                val forecast = forecastDeferred.await()
+
+                if (weather != null && forecast != null) {
+                    _mutableCombinedState.value = CombinedStateResponse.Success(
+                        WeatherStateResponse.Success(weather.toFinalWeather()),
+                        ForecastStateResponse.Success(forecast)
+                    )
+                } else {
+                    _mutableCombinedState.value = CombinedStateResponse.Failure("Error fetching data")
+                }
+            } catch (e: Exception) {
+                _mutableCombinedState.value = CombinedStateResponse.Failure(e.message ?: "Unknown error")
+            }
+        }
     }
+
 
     fun getWeather(lat: Double, lon: Double, unit: String?, lang: String?) =
         viewModelScope.launch(Dispatchers.IO) {
@@ -49,7 +88,7 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
             }
         }
 
-    fun getForecast(lat: Double, lon: Double, unit: String, lang: String) =
+    fun getForecast(lat: Double, lon: Double, unit: String?, lang: String?) =
         viewModelScope.launch(Dispatchers.IO) {
             val response = repo.getForecast(lat, lon, unit, lang)
             try {

@@ -40,13 +40,13 @@ class WeatherRepositoryImpl private constructor(
     }
 
     override suspend fun getForecast(lat: Double, lon: Double, unit: String?, lang: String?):
-            Flow<List<Forecast>?> {
+            Flow<ForecastResponse?> {
         return remoteDataSource.getForecast(
             lat = lat,
             lon = lon,
             unit = unit,
             lang = lang
-        ).map {  it?.forecastList }
+        )
     }
 
 

@@ -19,11 +19,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
+import com.example.cumulora.data.models.forecast.Forecast
+import com.example.cumulora.data.models.forecast.ForecastEntity
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 
 @Composable
-fun FiveDaysTab() {
+fun FiveDaysTab(/*forecast: List<Forecast>*/) {
     val daysList = listOf("Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri")
+
+//    val data = forecast.asFlow().filter { it.dtTxt. }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -53,7 +62,7 @@ fun ForecastItem(day: String) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(painter = painterResource(id = R.drawable.scattered_clouds), contentDescription = "")
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("24° / 22°")
+//                Text("${forecast.tempMax} / ${forecast.tempMin}")
             }
         })
 }

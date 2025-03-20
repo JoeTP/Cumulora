@@ -15,10 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.utils.weatherIcons
 
 @Composable
-fun OvalCard() {
+fun OvalCard(forecast : Forecast) {
     Surface(shape = CircleShape) {
         Column(
             modifier = Modifier
@@ -28,12 +29,14 @@ fun OvalCard() {
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("12 AM")
+            val hours = forecast.dtTxt.split(" ", ":")
+            val am_pm = if(hours[1].toInt() < 12) "AM" else "PM"
+            Text("${hours[1]} $am_pm")
             Image(
-                painter = painterResource(id = weatherIcons.getValue("01d")),
+                painter = painterResource(id = weatherIcons.getValue(forecast.weather.first().icon)),
                 contentDescription = ""
             )
-            Text("12°C")
+            Text(forecast.main.temp.toString())
         }
     }
 }

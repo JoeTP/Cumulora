@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.cumulora.features.weather.component.CurrentTemperature
 import com.example.cumulora.features.weather.component.WeatherDetailsSection
+import com.example.cumulora.features.weather.responsestate.ForecastStateResponse
+import com.example.cumulora.features.weather.responsestate.WeatherStateResponse
 import com.example.cumulora.utils.repoInstance
 
 @Preview
@@ -35,6 +37,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier) {
     val viewModel = WeatherViewModel(repoInstance(ctx.applicationContext))
 
     val weather by viewModel.weatherState.collectAsStateWithLifecycle()
+    val forecast by viewModel.forecastState.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
 
@@ -52,31 +55,49 @@ fun WeatherScreenUI(modifier: Modifier = Modifier) {
         }
 
         is WeatherStateResponse.Success -> {
-            val data = (weather as WeatherStateResponse.Success).data
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState)
-            ) {
-
-                Surface(
-                    modifier = Modifier
-                        .height(400.dp)
-                        .fillMaxWidth(), color = Color.Red
-                ) {
-                    CurrentTemperature(
-                        data.city, data.currentTemp, data.feelsLike, data.description,
-                        data.currentDate, data.currentTime
-                    )
+            when(forecast) {
+                is ForecastStateResponse.Failure -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("FAILED TO GET FORECAST")
+                    }
                 }
 
-                Surface(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
-                ) {
-                    WeatherDetailsSection(data)
+                is ForecastStateResponse.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                is ForecastStateResponse.Success -> {
+                    val weatherData = (weather as WeatherStateResponse.Success).data
+                    val forecastData = (forecast as ForecastStateResponse.Success).data
+
+                    Column(
+                        modifier = modifier
+                            .fillMaxSize()
+                            .verticalScroll(scrollState)
+                    ) {
+
+                        Surface(
+                            modifier = Modifier
+                                .height(400.dp)
+                                .fillMaxWidth(), color = Color.Red
+                        ) {
+                            CurrentTemperature(
+                                weatherData.city, weatherData.currentTemp, weatherData.feelsLike, weatherData.description,
+                                weatherData.currentDate, weatherData.currentTime
+                            )
+                        }
+
+                        Surface(
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .fillMaxWidth(),
+                            shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
+                        ) {
+                            WeatherDetailsSection(weatherData, forecastData)
+                        }
+                    }
                 }
             }
         }
