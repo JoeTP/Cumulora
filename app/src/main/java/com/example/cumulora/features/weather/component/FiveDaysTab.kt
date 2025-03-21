@@ -43,13 +43,9 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
         shape = RoundedCornerShape(20.dp)
     ) {
         Column {
-
             for (i in 0..4) {
                 ForecastItem(forecastFiveDays[i])
             }
-
-//            daysList.forEachIndexed { index, s ->
-//            }
         }
     }
 }

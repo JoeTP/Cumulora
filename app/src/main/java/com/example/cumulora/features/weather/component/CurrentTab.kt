@@ -25,7 +25,7 @@ import com.example.cumulora.data.models.weather.WeatherEntity
 
 
 @Composable
-fun CurrentTab(weather: WeatherEntity, forecast : ForecastResponse) {
+fun CurrentTab(weather: WeatherEntity, forecast: ForecastResponse) {
 
     val forecastList = forecast.forecastList
 
@@ -39,6 +39,7 @@ fun CurrentTab(weather: WeatherEntity, forecast : ForecastResponse) {
                 OvalCard(forecastList[index])
             }
         }
+
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyVerticalGrid(
@@ -61,13 +62,12 @@ fun CurrentTab(weather: WeatherEntity, forecast : ForecastResponse) {
             item {
                 Clouds(weather.clouds.toString())
             }
-                //TODO "Extract data from viewmodel"
         }
     }
 }
 
 @Composable
-private fun Wind(windSpeed: String, windDegree: Float) {
+private fun Wind(windSpeed: String, windDegree: Float) =
     WeatherCard("Wind Speed", R.drawable.wind) {
         Box(contentAlignment = Alignment.Center) {
             Image(painter = painterResource(id = R.drawable.compas), contentDescription = "")
@@ -79,25 +79,20 @@ private fun Wind(windSpeed: String, windDegree: Float) {
 //            TODO("DONT FORGET THE UNIT")
         }
     }
+
+
+@Composable
+private fun Humidity(humidity: String) = WeatherCard("Humidity", R.drawable.humidity) {
+    Text(humidity)
+}
+
+
+@Composable
+private fun Pressure(pressure: String) = WeatherCard("Pressure", R.drawable.pressure) {
+    Text(pressure)
 }
 
 @Composable
-private fun Humidity(humidity: String) {
-    WeatherCard("Humidity", R.drawable.humidity) {
-        Text(humidity)
-    }
-}
-
-@Composable
-private fun Pressure(pressure: String) {
-    WeatherCard("Pressure", R.drawable.pressure) {
-        Text(pressure)
-    }
-}
-
-@Composable
-private fun Clouds(clouds: String) {
-    WeatherCard("Clouds", R.drawable.cloud_icon) {
-        Text(clouds)
-    }
+private fun Clouds(clouds: String) = WeatherCard("Clouds", R.drawable.cloud_icon) {
+    Text(clouds)
 }
