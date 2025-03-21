@@ -8,7 +8,8 @@ sealed class ForecastStateResponse {
 
     data object Loading : ForecastStateResponse()
 
-    data class Success(val data: ForecastResponse) : ForecastStateResponse()
+    data class Success(val data: ForecastResponse, val forecastFiveDays: List<Forecast>) :
+        ForecastStateResponse()
 
     data class Failure(val error: String) : ForecastStateResponse()
 

@@ -1,5 +1,7 @@
 package com.example.cumulora.features.weather.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,15 +23,21 @@ import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.models.forecast.ForecastEntity
+import com.example.cumulora.data.models.forecast.ForecastResponse
+import com.example.cumulora.utils.weatherIcons
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun FiveDaysTab(/*forecast: List<Forecast>*/) {
-    val daysList = listOf("Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri")
+fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
+
+    val daysList = listOf("Sat", "Sun", "Mon", "Tue", "Wed",)
 
 //    val data = forecast.asFlow().filter { it.dtTxt. }
 
@@ -40,15 +48,16 @@ fun FiveDaysTab(/*forecast: List<Forecast>*/) {
         shape = RoundedCornerShape(20.dp)
     ) {
         Column {
-            daysList.forEach {
-                ForecastItem(day = it)
+            daysList.forEachIndexed { index, s ->
+                ForecastItem(day = s, forecastFiveDays[index])
             }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ForecastItem(day: String) {
+fun ForecastItem(day: String, forecast: Forecast) {
     ListItem(colors = ListItemDefaults.colors(containerColor = Color.Cyan.copy(alpha = 0.2f)),
         headlineContent = {
             Text(day)
@@ -56,13 +65,24 @@ fun ForecastItem(day: String) {
         supportingContent = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-            ) { Text("30/Mar - Cloudy") }
+            ) { Text("${formatDateToDdMmm(forecast.dtTxt)} - ${forecast.weather.first().description}") }
         },
         trailingContent = {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(painter = painterResource(id = R.drawable.scattered_clouds), contentDescription = "")
+                Image(painter = painterResource(id = weatherIcons.getValue(forecast.weather.first().icon)),
+                    contentDescription
+                = "")
                 Spacer(modifier = Modifier.width(8.dp))
-//                Text("${forecast.tempMax} / ${forecast.tempMin}")
+                Text("${forecast.main.tempMax} / ${forecast.main.tempMin}")
             }
         })
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun formatDateToDdMmm(dateTimeString: String): String {
+    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    val dateTime = LocalDateTime.parse(dateTimeString, inputFormatter)
+
+    val outputFormatter = DateTimeFormatter.ofPattern("dd-MMM")
+    return dateTime.format(outputFormatter)
 }

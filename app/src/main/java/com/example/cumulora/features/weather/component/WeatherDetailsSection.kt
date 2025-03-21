@@ -41,7 +41,7 @@ import com.example.cumulora.data.models.weather.WeatherEntity
 import com.example.cumulora.features.weather.responsestate.ForecastStateResponse
 
 @Composable
-fun WeatherDetailsSection(weather: WeatherEntity, forecast: ForecastResponse) {
+fun WeatherDetailsSection(weather: WeatherEntity, forecast: ForecastResponse, forecastFiveDays: List<Forecast>) {
     val tabs = listOf("Current", "5 Days")
     var selectedTabIndex by remember { mutableStateOf(0) }
     val pagerState = rememberPagerState { tabs.size }
@@ -63,6 +63,7 @@ fun WeatherDetailsSection(weather: WeatherEntity, forecast: ForecastResponse) {
         pagerState = pagerState,
         weather = weather,
         forecast = forecast,
+        forecastFiveDays = forecastFiveDays,
         onTabSelected = { index -> selectedTabIndex = index }
     )
 }
@@ -74,6 +75,7 @@ private fun WeatherDetailsSectionChild(
     pagerState: PagerState,
     weather: WeatherEntity,
     forecast: ForecastResponse,
+    forecastFiveDays: List<Forecast>,
     onTabSelected: (index: Int) -> Unit
 ) {
     val tabIcons = listOf(Icons.Default.SystemUpdateAlt, Icons.Default.CalendarMonth)
@@ -118,7 +120,7 @@ private fun WeatherDetailsSectionChild(
         ) { page ->
             when (page) {
                 0 -> CurrentTab(weather, forecast)
-                1 -> FiveDaysTab()
+                1 -> FiveDaysTab(forecastFiveDays)
             }
         }
     }
