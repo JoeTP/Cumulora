@@ -2,6 +2,7 @@ package com.example.cumulora.data.repository
 
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.models.forecast.ForecastResponse
+import com.example.cumulora.data.models.geocoder.GeocoderResponse
 import com.example.cumulora.data.models.weather.WeatherResponse
 import com.example.cumulora.data.remote.WeatherRemoteDataSource
 import kotlinx.coroutines.flow.Flow
@@ -47,6 +48,10 @@ class WeatherRepositoryImpl private constructor(
             unit = unit,
             lang = lang
         )
+    }
+
+    override suspend fun getGeocoder(query: String): Flow<GeocoderResponse?> {
+        return remoteDataSource.getGeocoder(query, 1)
     }
 
 

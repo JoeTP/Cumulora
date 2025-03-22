@@ -51,8 +51,8 @@ fun NavSetup(navController: NavHostController) {
         }
 
         composable<ScreenRoutes.Weather> {
-            Scaffold(topBar = { MyAppBar(navController) }) {padding ->
-                WeatherScreenUI(Modifier.padding(padding)){
+            Scaffold(topBar = { MyAppBar(navController) }) { padding ->
+                WeatherScreenUI(Modifier.padding(padding)) {
                     navController.navigate(ScreenRoutes.Map)
                 }
             }
@@ -60,7 +60,7 @@ fun NavSetup(navController: NavHostController) {
 
         composable<ScreenRoutes.Alarm> {
             AlarmScreenUI()
-            Scaffold (topBar = {
+            Scaffold(topBar = {
                 TopAppBar(title = {
                     Text("Alarms")
                 }, navigationIcon = {
@@ -71,7 +71,7 @@ fun NavSetup(navController: NavHostController) {
                         )
                     }
                 })
-            }){  }
+            }) { }
         }
 
         composable<ScreenRoutes.SavedWeather> {
@@ -90,13 +90,22 @@ fun NavSetup(navController: NavHostController) {
                         )
                     }
                 })
-            }) {padding ->
+            }) { padding ->
                 SettingsScreenUI(Modifier.padding(padding))
             }
         }
 
         composable<ScreenRoutes.Map> {
-            MapScreenUI()
+            Scaffold(topBar = {
+                TopAppBar(title = { Text("Choose Location") }, navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
+                    }
+                })
+            }) { padding ->
+                MapScreenUI(Modifier.padding(padding))
+            }
         }
     }
 }

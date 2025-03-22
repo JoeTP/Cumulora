@@ -35,6 +35,7 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     private val _mutableCombinedState: MutableStateFlow<CombinedStateResponse> =
         MutableStateFlow(CombinedStateResponse.Loading)
     val combinedState: StateFlow<CombinedStateResponse> = _mutableCombinedState.asStateFlow()
+
     private val _mutableForecastFiveDays = MutableStateFlow(listOf<Forecast>())
     val forecastFiveDays: StateFlow<List<Forecast>> = _mutableForecastFiveDays.asStateFlow()
 

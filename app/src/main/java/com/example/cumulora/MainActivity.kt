@@ -33,13 +33,16 @@ import com.example.cumulora.navigation.NavSetup
 import com.example.cumulora.navigation.ScreenRoutes
 import com.example.cumulora.ui.theme.CumuloraTheme
 import com.example.cumulora.utils.SharedPrefManager
+import com.google.android.libraries.places.api.Places
 
 class MainActivity : ComponentActivity() {
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
-        SharedPrefManager.initialize(this)
         super.onCreate(savedInstanceState)
+        Places.initialize(applicationContext, BuildConfig.GOOGLE_API_KEY)
+        SharedPrefManager.initialize(this)
+
         setContent {
             CumuloraTheme {
                 AppContent()
