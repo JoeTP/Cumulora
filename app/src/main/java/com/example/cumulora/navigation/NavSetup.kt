@@ -1,7 +1,9 @@
 package com.example.cumulora.navigation
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -18,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cumulora.component.MyAppBar
 import com.example.cumulora.features.alarm.AlarmScreenUI
+import com.example.cumulora.features.map.MapScreenUI
 import com.example.cumulora.features.onboard.OnBoardingScreenUI
 import com.example.cumulora.features.savedweather.SavedWeatherScreenUI
 import com.example.cumulora.features.settings.SettingsScreenUI
@@ -26,6 +29,7 @@ import com.example.cumulora.utils.IS_FIRST_TIME_SK
 import com.example.cumulora.utils.SharedPrefManager
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -34,27 +38,29 @@ fun NavSetup(navController: NavHostController) {
 //    val navController = rememberNavController()
     val shared = SharedPrefManager.getInstance()
     val isFirstTime = shared.getBoolean(IS_FIRST_TIME_SK, true)
-    val startingScreen = if (isFirstTime) ScreenRoutes.OnboardingScreen else ScreenRoutes.WeatherScreen
+    val startingScreen = if (isFirstTime) ScreenRoutes.Onboarding else ScreenRoutes.Weather
 
     NavHost(navController = navController, startDestination = startingScreen) {
 
-        composable<ScreenRoutes.OnboardingScreen> {
+        composable<ScreenRoutes.Onboarding> {
             OnBoardingScreenUI {
                 shared.saveData(IS_FIRST_TIME_SK, false)
                 Log.i("TAG", "SAVE ATTEMPT = $isFirstTime ")
-                navController.navigate(ScreenRoutes.WeatherScreen)
+                navController.navigate(ScreenRoutes.Weather)
             }
         }
 
-        composable<ScreenRoutes.WeatherScreen> {
-            Scaffold(topBar = { MyAppBar(navController) }) {padding ->
-                WeatherScreenUI(Modifier.padding(padding))
+        composable<ScreenRoutes.Weather> {
+            Scaffold(topBar = { MyAppBar(navController) }) { padding ->
+                WeatherScreenUI(Modifier.padding(padding)) {
+                    navController.navigate(ScreenRoutes.Map)
+                }
             }
         }
 
-        composable<ScreenRoutes.AlarmScreen> {
+        composable<ScreenRoutes.Alarm> {
             AlarmScreenUI()
-            Scaffold (topBar = {
+            Scaffold(topBar = {
                 TopAppBar(title = {
                     Text("Alarms")
                 }, navigationIcon = {
@@ -65,14 +71,14 @@ fun NavSetup(navController: NavHostController) {
                         )
                     }
                 })
-            }){  }
+            }) { }
         }
 
-        composable<ScreenRoutes.SavedWeatherScreen> {
+        composable<ScreenRoutes.SavedWeather> {
             SavedWeatherScreenUI()
         }
 
-        composable<ScreenRoutes.SettingsScreen> {
+        composable<ScreenRoutes.Settings> {
             Scaffold(topBar = {
                 TopAppBar(title = {
                     Text("Settings")
@@ -84,8 +90,21 @@ fun NavSetup(navController: NavHostController) {
                         )
                     }
                 })
-            }) {padding ->
+            }) { padding ->
                 SettingsScreenUI(Modifier.padding(padding))
+            }
+        }
+
+        composable<ScreenRoutes.Map> {
+            Scaffold(topBar = {
+                TopAppBar(title = { Text("Choose Location") }, navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
+                    }
+                })
+            }) { padding ->
+                MapScreenUI(Modifier.padding(padding))
             }
         }
     }

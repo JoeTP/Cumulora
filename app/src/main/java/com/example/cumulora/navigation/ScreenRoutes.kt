@@ -5,18 +5,21 @@ import kotlinx.serialization.Serializable
 sealed class ScreenRoutes {
 
     @Serializable
-    object OnboardingScreen : ScreenRoutes()
+    object Onboarding : ScreenRoutes()
 
     @Serializable
-    object WeatherScreen : ScreenRoutes()
+    object Weather : ScreenRoutes()
 
     @Serializable
-    object AlarmScreen : ScreenRoutes()
+    object Alarm : ScreenRoutes()
 
     @Serializable
-    object SavedWeatherScreen : ScreenRoutes()
+    object SavedWeather : ScreenRoutes()
 
     @Serializable
-    object SettingsScreen : ScreenRoutes()
+    object Settings : ScreenRoutes()
+
+    @Serializable
+    object Map : ScreenRoutes()
 
 }

@@ -1,9 +1,11 @@
 package com.example.cumulora
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,13 +35,17 @@ import com.example.cumulora.navigation.NavSetup
 import com.example.cumulora.navigation.ScreenRoutes
 import com.example.cumulora.ui.theme.CumuloraTheme
 import com.example.cumulora.utils.SharedPrefManager
+import com.google.android.libraries.places.api.Places
 
 class MainActivity : ComponentActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
-        SharedPrefManager.initialize(this)
         super.onCreate(savedInstanceState)
+        Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.googleApiKey)
+        SharedPrefManager.initialize(this)
+
         setContent {
             CumuloraTheme {
                 AppContent()
@@ -48,6 +54,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppContent(navController: NavHostController = rememberNavController()) {
 
@@ -63,6 +70,7 @@ fun AppContent(navController: NavHostController = rememberNavController()) {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainLayout(navController: NavHostController) {

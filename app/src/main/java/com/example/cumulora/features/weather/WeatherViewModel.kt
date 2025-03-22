@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -33,20 +34,19 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
 
     private val _mutableCombinedState: MutableStateFlow<CombinedStateResponse> =
         MutableStateFlow(CombinedStateResponse.Loading)
-    val combinedState: StateFlow<CombinedStateResponse> = _mutableCombinedState
+    val combinedState: StateFlow<CombinedStateResponse> = _mutableCombinedState.asStateFlow()
+
     private val _mutableForecastFiveDays = MutableStateFlow(listOf<Forecast>())
-    val forecastFiveDays: StateFlow<List<Forecast>> = _mutableForecastFiveDays
+    val forecastFiveDays: StateFlow<List<Forecast>> = _mutableForecastFiveDays.asStateFlow()
 
 
     init {
         //pass parameters from shared preference
-//        getWeather(2.0, 01.0, null, null)
-//        getForecast(0.0, 0.0, null, null)
         getWeatherAndForecast(0.0, 0.0, null, null)
     }
 
 
-    private fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
+     fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val weatherDeferred =
@@ -57,10 +57,11 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
                 val weather = weatherDeferred.await()
                 val forecast = forecastDeferred.await()
 
-                launch{
+                launch {
                     if (forecast != null) {
                         _mutableForecastFiveDays.value = forecast.forecastList
-                            .distinctBy { it.dtTxt.substring(0, 10)
+                            .distinctBy {
+                                it.dtTxt.substring(0, 10)
                             }
                     }
                 }
