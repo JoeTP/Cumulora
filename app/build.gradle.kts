@@ -30,8 +30,8 @@ android {
 
 
         buildConfigField("String", "WEATHER_API_KEY", "\"$weatherApiKey\"")
-        buildConfigField("String", "GOOGLE_API_KEY", "\"$googleMapsApiKey\"")
-
+        buildConfigField("String", "googleApiKey", localProperties.getProperty("GOOGLE_API_KEY"))
+        resValue ("string", "googleApiKey", localProperties.getProperty("GOOGLE_API_KEY"))
 
     }
 

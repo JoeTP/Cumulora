@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,84 +16,88 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.text.toSpannable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.cumulora.BuildConfig
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cumulora.utils.repoInstance
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
-import com.google.android.libraries.places.api.model.LocationBias
-import com.google.android.libraries.places.api.model.PlaceTypes
-import com.google.android.libraries.places.api.model.RectangularBounds
-import com.google.android.libraries.places.api.net.kotlin.awaitFindAutocompletePredictions
 import com.google.android.libraries.places.compose.autocomplete.components.PlacesAutocompleteTextField
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
-import com.google.android.libraries.places.compose.autocomplete.models.toPlaceDetails
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.concatWith
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
 @Composable
 fun MapScreenUI(modifier: Modifier = Modifier) {
 
-    val singapore = LatLng(1.35, 103.87)
-    val singaporeMarkerState = rememberMarkerState(position = singapore)
+    val ctx = LocalContext.current
+    val viewModel : GeocoderViewModel = viewModel(factory = GeocoderViewModelFactory(ctx, repoInstance(ctx)))
+
+//    val singapore = LatLng(1.35, 103.87)
+    val markerState = rememberMarkerState(position = LatLng(1.35, 103.87))
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+        position = CameraPosition.fromLatLngZoom(markerState.position, 10f)
     }
 
-    val ctx = LocalContext.current
+    val latlng = viewModel.stateFlow.collectAsStateWithLifecycle()
+    //TODO: DO THE RESPONSE STATE FOR THE GEOCODER
 
-    Places.initializeWithNewPlacesApiEnabled(ctx, BuildConfig.GOOGLE_API_KEY)
+    var searchText by remember { mutableStateOf("") }
 
-    val searchTextFlow = remember { MutableStateFlow("") }
-    val query by searchTextFlow.collectAsStateWithLifecycle()
-    val geoHelper = GeocoderHelper(ctx)
+    var predictions by remember { mutableStateOf(emptyList<AutocompletePrediction>()) }
+
+
     val result = remember { mutableStateOf<AutocompletePlace?>(null) }
 
-    val prediction = remember { mutableStateOf(emptyList<AutocompletePrediction>()) }
+    LaunchedEffect(searchText) {
+        predictions = viewModel.getAddressPredictions(inputString = searchText)
+    }
 
+    LaunchedEffect(markerState.position) {
+        cameraPositionState.position = CameraPosition.fromLatLngZoom(markerState.position, 10f)
+    }
 
-
-    Box {
+    Box (modifier = Modifier.fillMaxSize()){
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
+            cameraPositionState = cameraPositionState,
+            properties = MapProperties(mapType = MapType.HYBRID)
+
         ) {
             Marker(
-                state = singaporeMarkerState,
+                state = markerState,
                 title = "Singapore",
                 snippet = "Marker in Singapore"
             )
         }
         PlacesAutocompleteTextField(
             modifier = modifier.padding(top = 20.dp),
-            searchText = query,
-            predictions = prediction.value.map { it.toPlaceDetails() },
-            onQueryChanged = {
-//                searchTextlll", "MapScreenUI: $it")
-                searchTextFlow.value = it
-                CoroutineScope(Dispatchers.IO).launch {
-                    prediction.value = geoHelper.getAddressPredictions(inputString = it)
-                }
-
+            searchText = searchText,
+            predictions = predictions.map { prediction ->
+                AutocompletePlace(
+                    placeId = prediction.placeId,
+                    primaryText = prediction.getPrimaryText(null).toSpannable(),
+                    secondaryText = prediction.getSecondaryText(null).toSpannable()
+                )
             },
-            onSelected = { autocompletePlace: AutocompletePlace ->
+            onQueryChanged = { q -> searchText = q },
+            onSelected = { autocompletePlace ->
                 result.value = autocompletePlace
-                searchTextFlow.value = autocompletePlace.primaryText.toString()
-                prediction.value = emptyList()
-                Log.d("TAG", "MapScreenUI: ${result.value}")
+                predictions = emptyList()
+                markerState.position = LatLng(10.35, 103.87)
+                Log.d("TAG", "Selected Place: ${autocompletePlace.primaryText}")
             },
             selectedPlace = result.value,
         )
+
     }
 }
