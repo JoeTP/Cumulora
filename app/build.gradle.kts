@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -10,6 +12,13 @@ android {
     namespace = "com.example.cumulora"
     compileSdk = 35
 
+
+    val localProperties = Properties().apply {
+        load(File(rootProject.projectDir, "local.properties").inputStream())
+    }
+    val weatherApiKey: String = localProperties.getProperty("WEATHER_API_KEY") ?: ""
+    val googleMapsApiKey: String = localProperties.getProperty("GOOGLE_API_KEY") ?: ""
+
     defaultConfig {
         applicationId = "com.example.cumulora"
         minSdk = 24
@@ -18,7 +27,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+
+        buildConfigField("String", "WEATHER_API_KEY", "\"$weatherApiKey\"")
+        buildConfigField("String", "GOOGLE_API_KEY", "\"$googleMapsApiKey\"")
+
+
     }
+
 
     buildTypes {
         release {
@@ -34,11 +50,15 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
 
 dependencies {
+    val room_version = "2.6.1"
+    val nav_version = "2.8.8"
+    val compose_version = "1.0.0"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -61,37 +81,36 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     //Room
-    val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
-    // Kotlin Symbol Processing (KSP)
+    //*Kotlin Symbol Processing (KSP)
     ksp("androidx.room:room-compiler:$room_version")
-    // optional - Kotlin Extensions and Coroutines support for Room
+    //*optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
 
-    //LiveData
-    //*To deal with live data in compose
-    val compose_version = "1.0.0"
-    implementation("androidx.compose.runtime:runtime-livedata:$compose_version")
+//    //LiveData
+//    //*To deal with live data in compose
+//    implementation("androidx.compose.runtime:runtime-livedata:$compose_version")
 
     //view model
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
-    //Glide & lottie
-    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
-    implementation("com.airbnb.android:lottie-compose:6.1.0")
-
     //Navigation
-    val nav_version = "2.8.8"
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 
-    //DataStore
-    implementation("androidx.datastore:datastore-preferences:1.1.3")
+    //Maps
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.maps.android:maps-compose:4.4.1")
+    //*Places
+    implementation("com.google.maps.android:places-compose:0.1.2")
 
     //UI
-    implementation ("androidx.compose.material:material-icons-extended:$compose_version")
-    implementation ("androidx.compose.material3:material3:1.3.1")
+    implementation("androidx.compose.material:material-icons-extended:$compose_version")
+    implementation("androidx.compose.material3:material3:1.3.1")
 
+    //Glide & lottie
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
 
 }

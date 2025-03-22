@@ -65,7 +65,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
             ) {
                 CurrentTemperature(
                     weatherData.city, weatherData.currentTemp, weatherData.feelsLike, weatherData.description,
-                    weatherData.currentDate, weatherData.currentTime, weatherData.icon, onMapNavigate
+                    weatherData.currentDate, weatherData.currentTime, weatherData.icon
                 )
 
                 WeatherDetailsSection(weatherData, forecastData, forecastFiveDays)

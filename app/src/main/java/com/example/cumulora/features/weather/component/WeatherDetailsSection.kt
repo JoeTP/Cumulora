@@ -2,6 +2,8 @@
 
 package com.example.cumulora.features.weather.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -35,13 +38,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.data.models.forecast.Forecast
-import com.example.cumulora.data.models.forecast.ForecastEntity
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
-import com.example.cumulora.features.weather.responsestate.ForecastStateResponse
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun WeatherDetailsSection(weather: WeatherEntity, forecast: ForecastResponse, forecastFiveDays: List<Forecast>) {
+fun WeatherDetailsSection(
+    weather: WeatherEntity,
+    forecast: ForecastResponse,
+    forecastFiveDays: List<Forecast>
+) {
     val tabs = listOf("Current", "5 Days")
     var selectedTabIndex by remember { mutableStateOf(0) }
     val pagerState = rememberPagerState { tabs.size }
@@ -57,17 +63,26 @@ fun WeatherDetailsSection(weather: WeatherEntity, forecast: ForecastResponse, fo
         }
     }
 
-    WeatherDetailsSectionChild(
-        tabs = tabs,
-        selectedTabIndex = selectedTabIndex,
-        pagerState = pagerState,
-        weather = weather,
-        forecast = forecast,
-        forecastFiveDays = forecastFiveDays,
-        onTabSelected = { index -> selectedTabIndex = index }
-    )
+    Surface(
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp),
+        color = Color.LightGray
+    ) {
+        WeatherDetailsSectionChild(
+            tabs = tabs,
+            selectedTabIndex = selectedTabIndex,
+            pagerState = pagerState,
+            weather = weather,
+            forecast = forecast,
+            forecastFiveDays = forecastFiveDays,
+            onTabSelected = { index -> selectedTabIndex = index }
+        )
+    }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun WeatherDetailsSectionChild(
     tabs: List<String>,
@@ -100,7 +115,7 @@ private fun WeatherDetailsSectionChild(
             TabRow(selectedTabIndex = selectedTabIndex) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
-                         icon = { Icon(imageVector = tabIcons[index], contentDescription = null) },
+                        icon = { Icon(imageVector = tabIcons[index], contentDescription = null) },
                         selected = selectedTabIndex == index,
                         onClick = { onTabSelected(index) },
                         text = { Text(text = title) }
@@ -109,7 +124,7 @@ private fun WeatherDetailsSectionChild(
             }
         }
 
-       // HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+        // HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
         HorizontalPager(
             state = pagerState,

@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.data.models.forecast.Forecast
+import com.example.cumulora.utils.formatDateToDdMmm
 import com.example.cumulora.utils.weatherIcons
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -32,7 +33,7 @@ import java.util.Locale
 @Composable
 fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
 
-    val daysList = listOf("Sat", "Sun", "Mon", "Tue", "Wed")
+//    val daysList = listOf("Sat", "Sun", "Mon", "Tue", "Wed")
 
 //    val data = forecast.asFlow().filter { it.dtTxt. }
 
@@ -76,18 +77,4 @@ fun ForecastItem(forecast: Forecast) {
                 }
             }
         })
-}
-
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun formatDateToDdMmm(dateTimeString: String): Pair<String, String> {
-    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-    val dateTime = LocalDateTime.parse(dateTimeString, inputFormatter)
-
-    val dateFormatter = DateTimeFormatter.ofPattern("dd-MMM")
-    val formattedDate = dateTime.format(dateFormatter)
-
-    val dayName = dateTime.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-
-    return Pair<String, String>(dayName, formattedDate)
 }
