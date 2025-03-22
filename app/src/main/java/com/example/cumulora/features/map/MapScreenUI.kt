@@ -53,7 +53,9 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
 
     var predictions by remember { mutableStateOf(emptyList<AutocompletePrediction>()) }
 
-    val viewModel : GeocoderViewModel = viewModel(factory =  GeocoderViewModelFactory(ctx))
+    val places = Places.createClient(ctx)
+
+    val viewModel : GeocoderViewModel = viewModel(factory =  GeocoderViewModelFactory(places))
 
     var result by remember { mutableStateOf<AutocompletePlace?>(null) }
 
