@@ -12,16 +12,19 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cumulora.features.weather.component.CurrentTemperature
 import com.example.cumulora.features.weather.component.WeatherDetailsSection
 import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
 import com.example.cumulora.utils.repoInstance
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -29,11 +32,16 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
 
     val ctx: Context = LocalContext.current
 
-    val viewModel = WeatherViewModel(repoInstance(ctx.applicationContext))
+    val viewModel: WeatherViewModel = viewModel(factory = WeatherViewModelFactory(repoInstance(ctx.applicationContext)))
 
     val combinedState by viewModel.combinedState.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
+
+//    LaunchedEffect (Unit){
+//        viewModel.getWeatherAndForecast(0.0, 0.0, null, null)
+//    }
+
 
     when (combinedState) {
         is CombinedStateResponse.Failure -> {

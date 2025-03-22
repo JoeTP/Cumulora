@@ -46,7 +46,7 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     }
 
 
-    private fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
+     fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val weatherDeferred =

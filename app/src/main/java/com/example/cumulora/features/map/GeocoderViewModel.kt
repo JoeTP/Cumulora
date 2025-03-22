@@ -12,8 +12,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceTypes
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
+import com.google.maps.android.compose.MarkerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,15 +28,32 @@ import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class GeocoderViewModel(private val ctx: Context, val repo: WeatherRepository): ViewModel() {
+class GeocoderViewModel(private val ctx: Context): ViewModel() {
 
-    private val _mutableStateFlow = MutableStateFlow<GeocoderResponse?>(null)
-    val stateFlow = _mutableStateFlow.asStateFlow()
 
-    val client = Places.createClient(ctx)
-    lateinit var coordinates: MutableState<LatLng?>
+    fun getLocationName(autocompletePlace: AutocompletePlace, markerState: MarkerState){
+
+        val placeFields = listOf(Place.Field.LOCATION)
+        val request = FetchPlaceRequest.builder(autocompletePlace.placeId, placeFields).build()
+
+        Places.createClient(ctx).fetchPlace(request)
+            .addOnSuccessListener { response ->
+                val place = response.place
+                val newPosition =
+                    place.location ?: LatLng(0.0, 0.0)
+                markerState.position = newPosition
+                Log.d(
+                    "TAG",
+                    "Selected Place: ${autocompletePlace.primaryText}, Coordinates: $newPosition"
+                )
+            }
+            .addOnFailureListener { exception ->
+                Log.e("TAG", "Error fetching place details: ${exception.message}")
+            }
+    }
 
     suspend fun getAddressPredictions(inputString: String): List<AutocompletePrediction> {
+        val client = Places.createClient(ctx)
 
         return suspendCoroutine { continuation ->
             val token = AutocompleteSessionToken.newInstance()
@@ -53,42 +74,14 @@ class GeocoderViewModel(private val ctx: Context, val repo: WeatherRepository): 
         }
     }
 
-    suspend fun hamada(query: String){
 
-        repo.getGeocoder(query).catch {
-
-        }.collect {
-            _mutableStateFlow.value = it
-        }
-    }
-
-//    suspend fun
-
-    fun fetchCoordinates(addressString: String) {
-        val geocoder = Geocoder(ctx, Locale.getDefault())
-
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val addresses = geocoder.getFromLocationName(addressString, 1)
-                if (addresses?.isNotEmpty() == true) {
-                    val latitude = addresses[0].latitude
-                    val longitude = addresses[0].longitude
-                    coordinates.value = LatLng(latitude, longitude)
-                } else {
-                    coordinates.value = null
-                }
-            } catch (e: Exception) {
-                coordinates.value = null
-            }
-        }
-    }
 
 }
 
-class GeocoderViewModelFactory(private val ctx: Context, private val repo: WeatherRepository) : ViewModelProvider.Factory {
+class GeocoderViewModelFactory(private val ctx: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GeocoderViewModel::class.java)) {
-            return GeocoderViewModel(ctx, repo) as T
+            return GeocoderViewModel(ctx) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
