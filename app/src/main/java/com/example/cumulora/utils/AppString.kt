@@ -2,6 +2,7 @@ package com.example.cumulora.utils
 
 //!Local
 const val DATABASE_NAME = "weather_db"
+const val SHARED_PREF_NAME = "sharedPref"
 
 
 //!Remote

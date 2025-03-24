@@ -29,7 +29,7 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
 
@@ -51,7 +51,7 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ForecastItem(forecast: Forecast) {
     ListItem(colors = ListItemDefaults.colors(containerColor = Color.Cyan.copy(alpha = 0.2f)),

@@ -70,7 +70,7 @@ fun AppContent(navController: NavHostController = rememberNavController()) {
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainLayout(navController: NavHostController) {

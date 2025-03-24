@@ -1,8 +1,12 @@
 package com.example.cumulora.features.weather
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cumulora.AppInitializer
+import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.repository.WeatherRepository
 import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
@@ -18,9 +22,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import toFinalWeather
 
-class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
+class WeatherViewModel(private val repo: WeatherRepository) :
+    ViewModel() {
 
     private val TAG = "TAG"
+
+
+    private lateinit var sharedPref: SharedPreferenceHelper
 
     /*
         private val _mutableWeather: MutableStateFlow<WeatherStateResponse> =
@@ -41,12 +49,16 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
 
 
     init {
-        //pass parameters from shared preference
-        getWeatherAndForecast(0.0, 0.0, null, null)
+        sharedPref = SharedPreferenceHelper.getInstance(AppInitializer.getAppContext())
+       viewModelScope.launch {
+           //pass parameters from shared preference
+           Log.d("TAG", "LATLNG: ${getLastLatLng().first}, ${getLastLatLng().second}")
+           getWeatherAndForecast(getLastLatLng().first, getLastLatLng().second, null, null)
+       }
     }
 
 
-     fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
+    private fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val weatherDeferred =
@@ -67,6 +79,7 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
                 }
 
                 if (weather != null && forecast != null) {
+                    cachingLatLng(70.0, 8.0)
                     _mutableCombinedState.value = CombinedStateResponse.Success(
                         WeatherStateResponse.Success(weather.toFinalWeather()),
                         ForecastStateResponse.Success(forecast, forecastFiveDays.value)
@@ -79,6 +92,18 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
                 _mutableCombinedState.value = CombinedStateResponse.Failure(e.message ?: "Unknown error")
             }
         }
+    }
+
+    private fun cachingLatLng(lat: Double, lon: Double) {
+        sharedPref.saveData("lastLat", lat)
+        sharedPref.saveData("lastLon", lon)
+    }
+
+    private fun getLastLatLng(): Pair<Double, Double> {
+        return Pair(
+            sharedPref.getData("lastLat", 0.0),
+            sharedPref.getData("lastLon", 0.0)
+        )
     }
 
 
@@ -126,7 +151,9 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
 
 }
 
-class WeatherViewModelFactory(private val repo: WeatherRepository) : ViewModelProvider.Factory {
+class WeatherViewModelFactory(
+    private val repo: WeatherRepository,
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(WeatherViewModel::class.java)) {
             return WeatherViewModel(repo) as T

@@ -29,7 +29,7 @@ import com.example.cumulora.utils.IS_FIRST_TIME_SK
 import com.example.cumulora.utils.SharedPrefManager
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

@@ -15,4 +15,8 @@ interface WeatherRepository {
 
     suspend fun getGeocoder(query: String): Flow<GeocoderResponse?>
 
+//    fun cachingLatLng(lat: Double, lon: Double)
+
+//     fun getLastLatLng(): Pair<Double, Double>
+
 }

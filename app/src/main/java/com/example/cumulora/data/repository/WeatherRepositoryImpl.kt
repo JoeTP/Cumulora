@@ -54,5 +54,13 @@ class WeatherRepositoryImpl private constructor(
         return remoteDataSource.getGeocoder(query, 1)
     }
 
+//    override fun cachingLatLng(lat: Double, lon: Double) {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun getLastLatLng(): Pair<Double, Double> {
+//        TODO("Not yet implemented")
+//    }
+
 
 }

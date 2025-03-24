@@ -41,7 +41,7 @@ import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
 
-@RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WeatherDetailsSection(
     weather: WeatherEntity,
@@ -82,7 +82,7 @@ fun WeatherDetailsSection(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun WeatherDetailsSectionChild(
     tabs: List<String>,
