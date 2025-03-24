@@ -28,7 +28,7 @@ class WeatherViewModel(private val repo: WeatherRepository) :
     private val TAG = "TAG"
 
 
-    private lateinit var sharedPref: SharedPreferenceHelper
+    private var sharedPref: SharedPreferenceHelper
 
     /*
         private val _mutableWeather: MutableStateFlow<WeatherStateResponse> =
