@@ -34,8 +34,8 @@ import kotlin.coroutines.suspendCoroutine
 class GeocoderViewModel(private val repo: WeatherRepository, private val placesClient: PlacesClient) :
     ViewModel() {
 
-    private val sharedPref: SharedPreferenceHelper =
-        SharedPreferenceHelper.getInstance(AppInitializer.getAppContext())
+//    private val sharedPref: SharedPreferenceHelper =
+//        SharedPreferenceHelper.getInstance(AppInitializer.getAppContext())
 
     fun getLocationName(autocompletePlace: AutocompletePlace, markerState: MarkerState) {
 
@@ -111,8 +111,8 @@ class GeocoderViewModel(private val repo: WeatherRepository, private val placesC
     }
 
     fun saveLocation(lat: Double, lon: Double) = viewModelScope.launch {
-            val unit = sharedPref.getData("unit", "metric")
-            val lang = sharedPref.getData("lang", "en")
+            val unit = repo.getCachedData("unit", "metric")
+            val lang = repo.getCachedData("lang", "en")
             val weatherDeferred =
                 async { repo.getWeather(lat, lon, unit, lang).catch { emit(null) }.first() }
             val forecastDeferred =
@@ -125,8 +125,8 @@ class GeocoderViewModel(private val repo: WeatherRepository, private val placesC
         }
 
     fun cacheLastLatLon(lat: String, lon: String) {
-        sharedPref.saveData("lastLat", lat)
-        sharedPref.saveData("lastLon", lon)
+        repo.cacheData("lastLat", lat)
+        repo.cacheData("lastLon", lon)
     }
 
 

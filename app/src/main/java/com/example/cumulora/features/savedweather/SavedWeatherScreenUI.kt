@@ -75,7 +75,6 @@ fun SavedWeatherScreenUI(modifier: Modifier = Modifier, snackbarHostState: Snack
                 if (weatherList.isEmpty()) {
                     NoData()
                 } else {
-
                     LazyColumn {
                         items(weatherList, key = { it.cityName }) {
                             SwipeToDeleteContainer(

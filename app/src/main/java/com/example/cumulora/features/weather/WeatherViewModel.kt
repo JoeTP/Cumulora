@@ -1,12 +1,8 @@
 package com.example.cumulora.features.weather
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cumulora.AppInitializer
-import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.repository.WeatherRepository
 import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
@@ -19,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import toFinalWeather
 
@@ -29,7 +24,7 @@ class WeatherViewModel(private val repo: WeatherRepository) :
     private val TAG = "TAG"
 
 
-    private var sharedPref: SharedPreferenceHelper = SharedPreferenceHelper.getInstance(AppInitializer.getAppContext())
+//    private var sharedPref: SharedPreferenceHelper = SharedPreferenceHelper.getInstance(AppInitializer.getAppContext())
 
     /*
         private val _mutableWeather: MutableStateFlow<WeatherStateResponse> =
@@ -97,14 +92,14 @@ class WeatherViewModel(private val repo: WeatherRepository) :
     }
 
     private fun cachingLatLng(lat: String, lon: String) {
-        sharedPref.saveData("lastLat", lat)
-        sharedPref.saveData("lastLon", lon)
+        repo.cacheData("lastLat", lat)
+        repo.cacheData("lastLon", lon)
     }
 
      fun getLastLatLng(): Pair<Double, Double> {
-        return Pair(
-            sharedPref.getData("lastLat", "0.0").toDouble(),
-            sharedPref.getData("lastLon", "0.0").toDouble()
+        return Pair<Double, Double> (
+            repo.getCachedData("lastLat", "0.0" ).toDouble(),
+            repo.getCachedData("lastLon", "0.0").toDouble()
         )
     }
 

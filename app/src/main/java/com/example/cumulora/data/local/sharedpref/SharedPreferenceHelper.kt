@@ -2,29 +2,28 @@ package com.example.cumulora.data.local.sharedpref
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.cumulora.utils.SHARED_PREF_NAME
-import kotlinx.coroutines.flow.Flow
 
 class SharedPreferenceHelper private constructor(context: Context) : SharedPref {
 
 
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
 
-
-    companion object{
+    companion object {
 
         @Volatile
         private var INSTANCE: SharedPreferenceHelper? = null
 
-        fun getInstance(context: Context): SharedPreferenceHelper {
-            return INSTANCE ?: synchronized(this) {
+        fun initSharedPref(context: Context) {
+            INSTANCE ?: synchronized(this) {
                 INSTANCE ?: SharedPreferenceHelper(context.applicationContext).also {
                     INSTANCE = it
                 }
             }
         }
 
+        fun getInstance() = INSTANCE!!
     }
 
 
@@ -50,14 +49,4 @@ class SharedPreferenceHelper private constructor(context: Context) : SharedPref 
             else -> throw IllegalArgumentException("Unsupported type")
         }
     }
-
-//    fun getLatFlow(): Flow<Double> {
-//        return sharedPreferences.getDoubleFlow("lastLat", 0.0)
-//    }
-//
-//    fun getLonFlow(): Flow<Double> {
-//        return sharedPreferences.getDoubleFlow("lastLon", 0.0)
-//    }
-
-
 }

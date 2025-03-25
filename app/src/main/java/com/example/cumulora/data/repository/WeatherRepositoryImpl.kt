@@ -66,13 +66,13 @@ class WeatherRepositoryImpl private constructor(
         localDataSource.deleteSavedWeather(favoriteWeather)
     }
 
-//    override fun cachingLatLng(lat: Double, lon: Double) {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun getLastLatLng(): Pair<Double, Double> {
-//        TODO("Not yet implemented")
-//    }
+    override fun <T> cacheData(key: String, value: T) {
+        localDataSource.cacheData(key, value)
+    }
+
+    override fun <T> getCachedData(key: String, defaultValue: T): T {
+       return localDataSource.getData(key, defaultValue) as T
+    }
 
 
 }
