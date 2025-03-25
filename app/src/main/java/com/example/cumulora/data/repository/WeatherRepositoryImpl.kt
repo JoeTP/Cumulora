@@ -1,17 +1,17 @@
 package com.example.cumulora.data.repository
 
-import com.example.cumulora.data.models.forecast.Forecast
+import com.example.cumulora.data.local.SavedWeather
+import com.example.cumulora.data.local.WeatherLocalDataSource
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.geocoder.GeocoderResponse
 import com.example.cumulora.data.models.weather.WeatherResponse
 import com.example.cumulora.data.remote.WeatherRemoteDataSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 
 class WeatherRepositoryImpl private constructor(
     private val remoteDataSource: WeatherRemoteDataSource,
-//    private val localDataSource: WeatherLocalDataSource
+    private val localDataSource: WeatherLocalDataSource
 ) : WeatherRepository {
 
     companion object {
@@ -20,10 +20,10 @@ class WeatherRepositoryImpl private constructor(
 
         fun getInstance(
             remoteDataSource: WeatherRemoteDataSource,
-//            localDataSource: WeatherLocalDataSource
+            localDataSource: WeatherLocalDataSource
         ): WeatherRepositoryImpl {
             return instance ?: synchronized(this) {
-                instance ?: WeatherRepositoryImpl(remoteDataSource /*localDataSource*/).also {
+                instance ?: WeatherRepositoryImpl(remoteDataSource, localDataSource).also {
                     instance = it
                 }
             }
@@ -52,6 +52,14 @@ class WeatherRepositoryImpl private constructor(
 
     override suspend fun getGeocoder(query: String): Flow<GeocoderResponse?> {
         return remoteDataSource.getGeocoder(query, 1)
+    }
+
+    override suspend fun getSavedWeather(): Flow<List<SavedWeather>> {
+        return localDataSource.getSavedWeather()
+    }
+
+    override suspend fun saveWeather(favoriteWeather: SavedWeather) {
+        localDataSource.saveWeather(favoriteWeather)
     }
 
 //    override fun cachingLatLng(lat: Double, lon: Double) {
