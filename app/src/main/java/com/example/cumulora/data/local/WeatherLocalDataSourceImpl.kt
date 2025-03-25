@@ -23,4 +23,8 @@ class WeatherLocalDataSourceImpl(private val weatherDao: WeatherDao) : WeatherLo
         weatherDao.insertWeather(favoriteWeather)
     }
 
+    override suspend fun deleteSavedWeather(favoriteWeather: SavedWeather) {
+        weatherDao.deleteWeather(favoriteWeather)
+    }
+
 }

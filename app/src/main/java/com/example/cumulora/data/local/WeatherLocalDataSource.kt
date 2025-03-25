@@ -8,7 +8,7 @@ interface WeatherLocalDataSource {
 //
     suspend fun saveWeather(favoriteWeather: SavedWeather)
 //
-//    suspend fun deleteWeatherAndForecast()
+    suspend fun deleteSavedWeather(favoriteWeather: SavedWeather)
 //
 //    suspend fun updateWeatherAndForecast(combinedStateResponse: CombinedStateResponse)
 

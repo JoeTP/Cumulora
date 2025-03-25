@@ -7,8 +7,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -54,11 +58,18 @@ fun AppContent(navController: NavHostController = rememberNavController()) {
 
 
 //@RequiresApi(Build.VERSION_CODES.O)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "RememberReturnType")
 @Composable
 fun MainLayout(navController: NavHostController) {
-    Scaffold(snackbarHost = {}) { paddingValues ->
-        NavSetup(navController)
+    // Create the snackbar host state at the root level
+    val snackbarHostState = remember { SnackbarHostState() }
 
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
+    ) { paddingValues ->
+        // Pass the snackbarHostState to NavSetup
+        NavSetup(navController, snackbarHostState)
     }
 }

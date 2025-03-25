@@ -12,6 +12,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -34,7 +35,7 @@ import com.example.cumulora.utils.SharedPrefManager
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun NavSetup(navController: NavHostController) {
+fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostState) {
 
     val shared = SharedPrefManager.getInstance()
     val isFirstTime = shared.getBoolean(IS_FIRST_TIME_SK, true)
@@ -95,11 +96,11 @@ fun NavSetup(navController: NavHostController) {
                     navController.navigate(
                         ScreenRoutes.Map
                     )
-                }){
+                }) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
                 }
             }) { padding ->
-                SavedWeatherScreenUI(Modifier.padding(padding))
+                SavedWeatherScreenUI(Modifier.padding(padding), snackbarHostState)
             }
         }
 

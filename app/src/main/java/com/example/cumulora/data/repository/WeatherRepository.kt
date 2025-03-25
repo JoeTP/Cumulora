@@ -19,5 +19,7 @@ interface WeatherRepository {
 
     suspend fun saveWeather(favoriteWeather: SavedWeather)
 
+    suspend fun deleteWeather(favoriteWeather: SavedWeather)
+
 
 }

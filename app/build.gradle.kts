@@ -58,7 +58,7 @@ android {
 dependencies {
     val room_version = "2.6.1"
     val nav_version = "2.8.8"
-    val compose_version = "1.0.0"
+    val compose_version = "1.6.3"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -108,12 +108,10 @@ dependencies {
 
     //UI
     implementation("androidx.compose.material:material-icons-extended:$compose_version")
-    implementation("androidx.compose.material3:material3:1.3.1")
 
     //Glide & lottie
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     implementation("com.airbnb.android:lottie-compose:6.1.0")
 
-    //Shared Preferences
 
 }

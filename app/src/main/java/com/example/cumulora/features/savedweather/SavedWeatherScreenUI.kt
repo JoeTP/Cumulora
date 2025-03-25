@@ -1,72 +1,193 @@
 package com.example.cumulora.features.savedweather
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxState
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cumulora.features.savedweather.component.SavedWeatherCard
 import com.example.cumulora.utils.repoInstance
-
+import kotlinx.coroutines.delay
 
 @Composable
-fun SavedWeatherScreenUI(modifier: Modifier = Modifier) {
-
+fun SavedWeatherScreenUI(modifier: Modifier = Modifier, snackbarHostState: SnackbarHostState) {
     val context = LocalContext.current
-
-    val viewModel: SavedWeatherViewModel =
-        viewModel(factory = SavedWeatherViewModelFactory(repoInstance(context)))
-
+    val viewModel: SavedWeatherViewModel = viewModel(
+        factory = SavedWeatherViewModelFactory(repoInstance(context))
+    )
     val savedWeatherListState by viewModel.savedWeatherList.collectAsStateWithLifecycle()
-
     val msg by viewModel.message.collectAsStateWithLifecycle()
-
     val snackBarHostState = remember { SnackbarHostState() }
 
-
-    when (savedWeatherListState) {
-        is SavedWeatherStateResponse.Loading -> {
-            LoadingData()
+    // Show snackbar for general messages
+    LaunchedEffect(msg) {
+        if (msg.isNotBlank()) {
+            snackBarHostState.showSnackbar(msg, duration = SnackbarDuration.Short)
         }
+    }
 
-        is SavedWeatherStateResponse.Failure -> {
-            LaunchedEffect(msg) {
-                if (msg.isNotBlank())
-                    snackBarHostState.showSnackbar(msg, duration = SnackbarDuration.Short)
+    Box(modifier = modifier.fillMaxSize()) {
+        when (savedWeatherListState) {
+            is SavedWeatherStateResponse.Loading -> {
+                LoadingData()
             }
-        }
 
-        is SavedWeatherStateResponse.Success -> {
-            val savedWeatherList = (savedWeatherListState as SavedWeatherStateResponse.Success).data
-            if (savedWeatherList.isEmpty()) {
-                NoData(modifier)
-            } else {
-                val localList = (savedWeatherListState as SavedWeatherStateResponse.Success).data
-                LazyColumn(
-                    modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    itemsIndexed(localList) { index, item ->
-                        SavedWeatherCard(item)
+            is SavedWeatherStateResponse.Failure -> {
+                // Error message handled by the LaunchedEffect above
+            }
+
+            is SavedWeatherStateResponse.Success -> {
+                val weatherList = (savedWeatherListState as SavedWeatherStateResponse.Success).data
+
+                if (weatherList.isEmpty()) {
+                    NoData()
+                } else {
+
+                    LazyColumn {
+                        items(weatherList, key = { it.cityName }) {
+                            SwipeToDeleteContainer(
+                                item = it,
+                                onDelete = { viewModel.deleteSavedWeather(it) },
+                                onRestore = { viewModel.restoreDeletedWeather(it) },
+                                snackBarHostState = snackbarHostState,
+                                content = { weather ->
+                                    SavedWeatherCard(weather)
+                                }
+                            )
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun <T> SwipeToDeleteContainer(
+    item: T,
+    onDelete: (T) -> Unit,
+    onRestore: (T) -> Unit,
+    snackBarHostState: SnackbarHostState,
+    animationDuration: Int = 500,
+    content: @Composable (T) -> Unit
+) {
+    var isRemoved by remember { mutableStateOf(false) }
+    val currentItem by rememberUpdatedState(item)
+
+    val state = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value == SwipeToDismissBoxValue.EndToStart) {
+                isRemoved = true
+                true
+            } else {
+                false
+            }
+        }
+    )
+
+    LaunchedEffect(isRemoved, currentItem) {
+        if (isRemoved) {
+            val result = snackBarHostState.showSnackbar(
+                message = "Item deleted",
+                actionLabel = "Undo",
+                duration = SnackbarDuration.Short
+            )
+
+            if (result == SnackbarResult.ActionPerformed) {
+                onRestore(currentItem)
+                isRemoved = false
+
+                state.snapTo(SwipeToDismissBoxValue.Settled)
+            } else {
+                delay(animationDuration.toLong())
+                onDelete(currentItem)
+            }
+        }
+    }
+
+    AnimatedVisibility(
+        visible = !isRemoved,
+        enter = expandVertically(
+            animationSpec = tween(durationMillis = animationDuration),
+            expandFrom = Alignment.Top
+        ) + fadeIn(),
+        exit = shrinkVertically(
+            animationSpec = tween(durationMillis = animationDuration),
+            shrinkTowards = Alignment.Top
+        ) + fadeOut()
+    ) {
+        SwipeToDismissBox(
+            state = rememberSwipeToDismissBoxState( // Ensure state resets properly
+                confirmValueChange = { value ->
+                    if (value == SwipeToDismissBoxValue.EndToStart) {
+                        isRemoved = true
+                        true
+                    } else {
+                        false
+                    }
+                }
+            ),
+            backgroundContent = { DeleteBackground(swipeDismissState = state) },
+            enableDismissFromStartToEnd = false
+        ) {
+            content(currentItem)
+        }
+    }
+}
+
+@Composable
+fun DeleteBackground(swipeDismissState: SwipeToDismissBoxState) {
+    val color = if (swipeDismissState.dismissDirection == SwipeToDismissBoxValue.EndToStart) {
+        Color.Red
+    } else {
+        Color.Transparent
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color)
+            .padding(horizontal = 24.dp),
+        contentAlignment = Alignment.CenterEnd
+    ) {
+        Icon(
+            imageVector = Icons.Default.Delete,
+            contentDescription = null,
+            tint = Color.White
+        )
     }
 }
 

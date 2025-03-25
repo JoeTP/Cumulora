@@ -36,6 +36,14 @@ class SavedWeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
         }
     }
 
+    fun deleteSavedWeather(savedWeather: SavedWeather) = viewModelScope.launch(Dispatchers.IO) {
+        repo.deleteWeather(savedWeather)
+    }
+
+    fun restoreDeletedWeather(savedWeather: SavedWeather) = viewModelScope.launch(Dispatchers.IO) {
+        repo.saveWeather(savedWeather)
+    }
+
 
 
 }

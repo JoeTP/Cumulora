@@ -62,6 +62,10 @@ class WeatherRepositoryImpl private constructor(
         localDataSource.saveWeather(favoriteWeather)
     }
 
+    override suspend fun deleteWeather(favoriteWeather: SavedWeather) {
+        localDataSource.deleteSavedWeather(favoriteWeather)
+    }
+
 //    override fun cachingLatLng(lat: Double, lon: Double) {
 //        TODO("Not yet implemented")
 //    }
