@@ -1,17 +1,10 @@
 package com.example.cumulora.features.map
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.pm.PackageManager
 import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.cumulora.AppInitializer
 import com.example.cumulora.data.local.SavedWeather
-import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.data.repository.WeatherRepository
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -20,7 +13,6 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceTypes
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
 import com.google.maps.android.compose.MarkerState
@@ -31,11 +23,8 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class GeocoderViewModel(private val repo: WeatherRepository, private val placesClient: PlacesClient) :
+class MapViewModel(private val repo: WeatherRepository, private val placesClient: PlacesClient) :
     ViewModel() {
-
-//    private val sharedPref: SharedPreferenceHelper =
-//        SharedPreferenceHelper.getInstance(AppInitializer.getAppContext())
 
     fun getLocationName(autocompletePlace: AutocompletePlace, markerState: MarkerState) {
 
@@ -55,39 +44,6 @@ class GeocoderViewModel(private val repo: WeatherRepository, private val placesC
                 Log.e("TAG", "Error fetching place details: ${exception.message}")
             }
     }
-
-
-//    fun getLocationNameFromMarker(
-//        context: Context,
-//        markerState: MarkerState,
-//        placesClient: PlacesClient,
-//        onSuccess: (String) -> Unit,
-//        onFailure: (Exception) -> Unit
-//    ) {
-//        // Check permissions first
-//        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-//            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//
-//            val latLng = markerState.position
-//            val placeFields = listOf(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
-//
-//            placesClient.findCurrentPlace(FindCurrentPlaceRequest.newInstance(placeFields))
-//                .addOnSuccessListener { response ->
-//                    val place = response.placeLikelihoods.firstOrNull()?.place
-//                    place?.let {
-//                        val preciseLocation = it.latLng ?: latLng
-//                        markerState.position = preciseLocation
-//                        val locationName = it.name ?: it.address ?: "Unknown location"
-//                        onSuccess(locationName)
-//                    } ?: onFailure(Exception("No place found"))
-//                }
-//                .addOnFailureListener { exception ->
-//                    onFailure(exception)
-//                }
-//        } else {
-//            onFailure(SecurityException("Location permission not granted"))
-//        }
-//    }
 
     suspend fun getAddressPredictions(inputString: String): List<AutocompletePrediction> {
 
@@ -132,12 +88,3 @@ class GeocoderViewModel(private val repo: WeatherRepository, private val placesC
 
 }
 
-class GeocoderViewModelFactory(private val repo: WeatherRepository, private val placesClient: PlacesClient) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(GeocoderViewModel::class.java)) {
-            return GeocoderViewModel(repo, placesClient) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.text.toSpannable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cumulora.utils.repoInstance
 import com.google.android.gms.maps.model.CameraPosition
@@ -52,8 +51,8 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
 
     val places = Places.createClient(ctx)
 
-    val viewModel: GeocoderViewModel = viewModel(
-        factory = GeocoderViewModelFactory(
+    val viewModel: MapViewModel = viewModel(
+        factory = MapViewModelFactory(
             repoInstance(ctx),
             places
         )
