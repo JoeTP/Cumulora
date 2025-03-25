@@ -19,18 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cumulora.utils.repoInstance
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.compose.autocomplete.components.PlacesAutocompleteTextField
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
 import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
@@ -55,7 +50,7 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
 
     val places = Places.createClient(ctx)
 
-    val viewModel : GeocoderViewModel = viewModel(factory =  GeocoderViewModelFactory(places))
+    val viewModel: GeocoderViewModel = viewModel(factory = GeocoderViewModelFactory(places))
 
     var result by remember { mutableStateOf<AutocompletePlace?>(null) }
 
@@ -85,7 +80,13 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
                 visible = isTapped,
                 onInfoWindowClick = {
                     //TODO: Add to favorites HERE and show snack bar "CITY NAME added to favorites"
-                    Log.i("TAG", "ADD TO FAV: ")
+                    Log.i(
+                        "TAG", "ADD TO FAV: ${markerState.position.latitude}, ${markerState.position.longitude}"
+                    )
+                    viewModel.selectPlace(
+                        markerState.position.latitude.toString(),
+                        markerState.position.longitude.toString()
+                    )
                 }
             )
         }
@@ -117,7 +118,7 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
                 predictions = emptyList()
                 isTapped = true
                 //TODO: SAVE THE LATLNG TO SHARED PREF SO U CAN CALL IT BACK IN THE HOME SCREEN
-               viewModel.getLocationName(autocompletePlace, markerState)
+                viewModel.getLocationName(autocompletePlace, markerState)
             },
             selectedPlace = result,
         )

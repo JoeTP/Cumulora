@@ -114,4 +114,6 @@ dependencies {
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     implementation("com.airbnb.android:lottie-compose:6.1.0")
 
+    //Shared Preferences
+
 }

@@ -3,6 +3,7 @@ package com.example.cumulora.data.local.sharedpref
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.cumulora.utils.SHARED_PREF_NAME
+import kotlinx.coroutines.flow.Flow
 
 class SharedPreferenceHelper private constructor(context: Context) : SharedPref {
 
@@ -34,7 +35,6 @@ class SharedPreferenceHelper private constructor(context: Context) : SharedPref 
                 is Int -> putInt(key, value)
                 is Boolean -> putBoolean(key, value)
                 is Float -> putFloat(key, value)
-                is Double -> putFloat(key, value.toFloat())
                 else -> throw IllegalArgumentException("Unsupported type")
             }
             apply()
@@ -47,10 +47,17 @@ class SharedPreferenceHelper private constructor(context: Context) : SharedPref 
             is Int -> sharedPreferences.getInt(key, defaultValue) as T
             is Boolean -> sharedPreferences.getBoolean(key, defaultValue) as T
             is Float -> sharedPreferences.getFloat(key, defaultValue) as T
-            is Double -> sharedPreferences.getFloat(key, defaultValue.toFloat()).toDouble() as T
             else -> throw IllegalArgumentException("Unsupported type")
         }
     }
+
+//    fun getLatFlow(): Flow<Double> {
+//        return sharedPreferences.getDoubleFlow("lastLat", 0.0)
+//    }
+//
+//    fun getLonFlow(): Flow<Double> {
+//        return sharedPreferences.getDoubleFlow("lastLon", 0.0)
+//    }
 
 
 }
