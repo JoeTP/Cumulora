@@ -18,7 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.text.toSpannable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cumulora.utils.repoInstance
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
@@ -30,7 +32,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MissingPermission")
 @Composable
 fun MapScreenUI(modifier: Modifier = Modifier) {
     val ctx = LocalContext.current
@@ -50,7 +52,12 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
 
     val places = Places.createClient(ctx)
 
-    val viewModel: GeocoderViewModel = viewModel(factory = GeocoderViewModelFactory(places))
+    val viewModel: GeocoderViewModel = viewModel(
+        factory = GeocoderViewModelFactory(
+            repoInstance(ctx),
+            places
+        )
+    )
 
     var result by remember { mutableStateOf<AutocompletePlace?>(null) }
 
@@ -67,7 +74,6 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
-//            properties = MapProperties(mapType = MapType.HYBRID),
             onMapClick = { latLng ->
                 markerState.position = latLng
                 isTapped = true
@@ -81,9 +87,17 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
                 onInfoWindowClick = {
                     //TODO: Add to favorites HERE and show snack bar "CITY NAME added to favorites"
                     Log.i(
-                        "TAG", "ADD TO FAV: ${markerState.position.latitude}, ${markerState.position.longitude}"
+                        "TAG",
+                        "ADD TO FAV: ${markerState.position.latitude}, ${markerState.position.longitude}"
                     )
-                    viewModel.selectPlace(
+
+                    //TODO: This is not the place!!!!
+                    viewModel.saveLocation(
+                        markerState.position.latitude,
+                        markerState.position.longitude,
+                    )
+
+                    viewModel.cacheLastLatLon(
                         markerState.position.latitude.toString(),
                         markerState.position.longitude.toString()
                     )

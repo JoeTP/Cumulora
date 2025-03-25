@@ -46,7 +46,7 @@ class WeatherViewModel(private val repo: WeatherRepository) :
     val combinedState: StateFlow<CombinedStateResponse> = _mutableCombinedState.asStateFlow()
 
     private val _mutableForecastFiveDays = MutableStateFlow(listOf<Forecast>())
-    val forecastFiveDays: StateFlow<List<Forecast>> = _mutableForecastFiveDays.asStateFlow()
+//    val forecastFiveDays: StateFlow<List<Forecast>> = _mutableForecastFiveDays.asStateFlow()
 
 
 
@@ -84,7 +84,7 @@ class WeatherViewModel(private val repo: WeatherRepository) :
                     cachingLatLng(lat.toString(), lon.toString())
                     _mutableCombinedState.value = CombinedStateResponse.Success(
                         WeatherStateResponse.Success(weather.toFinalWeather()),
-                        ForecastStateResponse.Success(forecast, forecastFiveDays.value)
+                        ForecastStateResponse.Success(forecast, _mutableForecastFiveDays.value)
                     )
 
                 } else {
