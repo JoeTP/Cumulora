@@ -81,7 +81,7 @@ class WeatherViewModel(private val repo: WeatherRepository) :
                 }
 
                 if (weather != null && forecast != null) {
-                    cachingLatLng("70.0", "8.0")
+                    cachingLatLng(lat.toString(), lon.toString())
                     _mutableCombinedState.value = CombinedStateResponse.Success(
                         WeatherStateResponse.Success(weather.toFinalWeather()),
                         ForecastStateResponse.Success(forecast, forecastFiveDays.value)

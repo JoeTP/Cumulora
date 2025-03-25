@@ -37,10 +37,6 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
 
     val scrollState = rememberScrollState()
 
-//    LaunchedEffect (Unit){
-//        viewModel.getWeatherAndForecast(0.0, 0.0, null, null)
-//    }
-
     LaunchedEffect(Unit) {
         var lat = viewModel.getLastLatLng().first
         var lon = viewModel.getLastLatLng().second
