@@ -14,9 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
+import com.example.cumulora.data.local.SavedWeather
 
 @Composable
-fun SavedWeatherCard() {
+fun SavedWeatherCard(savedWeather: SavedWeather) {
 
     Row(
         Modifier
@@ -26,9 +27,9 @@ fun SavedWeatherCard() {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
-            Text("City")
+            Text(savedWeather.cityName)
         }
-        Text("Temp")
+        Text(savedWeather.weatherResponse?.main?.temp.toString())
         Icon(painter = painterResource(R.drawable.scattered_clouds), contentDescription = "")
     }
 
