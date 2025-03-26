@@ -27,12 +27,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cumulora.R
+import com.example.cumulora.utils.CURRENT_LANG
+import com.example.cumulora.utils.formatNumberBasedOnLanguage
 import com.example.cumulora.utils.weatherIcons
 
 @Composable
 fun CurrentTemperature(
-    cityName: String, temperature: Double, feelsLike: Double, description: String, date:
-    String, time: String, icon: String,
+    cityName: String,
+    temperature: Double,
+    feelsLike: Double,
+    description: String,
+    time: String,
+    icon: String,
     onMapNavigate: () -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -57,17 +63,17 @@ fun CurrentTemperature(
             )
             Row(modifier = Modifier.background(Color.Gray), verticalAlignment = Alignment.Top) {
                 Text(
-                    text = "$temperature",
+                    text = temperature.toString().formatNumberBasedOnLanguage(CURRENT_LANG),
                     color = Color.White,
                     textAlign = TextAlign.Center,
                     fontSize = 54.sp
                 )
-                Text("C")
+                Text(stringResource(R.string.c))
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(painter = painterResource(id = R.drawable.temp_feel_like), contentDescription = "Map")
                 Spacer(Modifier.width(8.dp))
-                Text(stringResource(R.string.feels_like, feelsLike))
+                Text(stringResource(R.string.feels_like, feelsLike.toString().formatNumberBasedOnLanguage(CURRENT_LANG)))
             }
             Text(description)
         }

@@ -111,47 +111,7 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     }
 
 
-    /*    fun getWeather(lat: Double, lon: Double, unit: String?, lang: String?) =
-            viewModelScope.launch(Dispatchers.IO) {
-                val response = repo.getWeather(lat, lon, unit, lang)
-                try {
-                    response.catch {
-                        //if response error
-                        _mutableWeather.value = WeatherStateResponse.Failure(it.message.toString())
-                    }.collect { weather ->
-                        if (weather != null) {
-                            _mutableWeather.value = WeatherStateResponse.Success(weather.toFinalWeather())
-                        } else {
-                            //if null
-                            _mutableWeather.value = WeatherStateResponse.Failure("Error")
-                        }
-                    }
-                } catch (e: Exception) {
-                    //if network error
-                    _mutableWeather.value = WeatherStateResponse.Failure(e.message.toString())
-                }
-            }
-
-        fun getForecast(lat: Double, lon: Double, unit: String?, lang: String?) =
-            viewModelScope.launch(Dispatchers.IO) {
-                val response = repo.getForecast(lat, lon, unit, lang)
-                try {
-                    response.catch {
-                        //if response error
-                        _mutableForecast.value = ForecastStateResponse.Failure(it.message.toString())
-                    }.collect { forecast ->
-                        if (forecast != null) {
-                            _mutableForecast.value = ForecastStateResponse.Success(forecast)
-                        } else {
-                            //if null
-                            _mutableForecast.value = ForecastStateResponse.Failure("Error")
-                        }
-                    }
-                } catch (e: Exception) {
-                    //if network error
-                    _mutableForecast.value = ForecastStateResponse.Failure(e.message.toString())
-                }
-            }*/
+    fun getLang(): String = repo.getCachedData(LANG, "en")
 
 }
 

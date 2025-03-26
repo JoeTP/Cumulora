@@ -21,4 +21,9 @@
     <string name="today">Today</string>
     <string name="_5_days">5 Days</string>
     <string name="failed_to_get_data">FAILED TO GET DATA</string>
+    <string name="am">AM</string>
+    <string name="pm">PM</string>
+    <string name="c">°C</string>
+    <string name="f">°F</string>
+    <string name="k">K</string>
 </resources>

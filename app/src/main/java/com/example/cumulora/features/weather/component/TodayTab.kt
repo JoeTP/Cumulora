@@ -23,10 +23,12 @@ import com.example.cumulora.R
 import com.example.cumulora.component.OvalCard
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
+import com.example.cumulora.utils.CURRENT_LANG
+import com.example.cumulora.utils.formatNumberBasedOnLanguage
 
 
 @Composable
-fun CurrentTab(weather: WeatherEntity, forecast: ForecastResponse) {
+fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
 
     val forecastList = forecast.forecastList
 
@@ -37,7 +39,7 @@ fun CurrentTab(weather: WeatherEntity, forecast: ForecastResponse) {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(count = 8) { index ->
-                OvalCard(forecastList[index])
+                OvalCard(forecastList[index], CURRENT_LANG)
             }
         }
 
@@ -52,16 +54,16 @@ fun CurrentTab(weather: WeatherEntity, forecast: ForecastResponse) {
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                Humidity(weather.humidity.toString())
+                Humidity(weather.humidity.toString().formatNumberBasedOnLanguage(CURRENT_LANG))
             }
             item {
-                Wind(weather.windSpeed.toString(), weather.windDegree.toFloat())
+                Wind(weather.windSpeed.toString().formatNumberBasedOnLanguage(CURRENT_LANG), weather.windDegree.toFloat())
             }
             item {
-                Pressure(weather.pressure.toString())
+                Pressure(weather.pressure.toString().formatNumberBasedOnLanguage(CURRENT_LANG))
             }
             item {
-                Clouds(weather.clouds.toString())
+                Clouds(weather.clouds.toString().formatNumberBasedOnLanguage(CURRENT_LANG))
             }
         }
     }

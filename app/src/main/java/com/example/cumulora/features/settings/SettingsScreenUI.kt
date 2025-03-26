@@ -32,6 +32,7 @@ import com.example.cumulora.R
 import com.example.cumulora.core.factories.SettingsViewModelFactory
 import com.example.cumulora.features.settings.component.ListTile
 import com.example.cumulora.utils.repoInstance
+import com.example.cumulora.utils.restartActivity
 import java.util.Locale
 
 @Composable
@@ -52,6 +53,7 @@ fun SettingsScreenUI(modifier: Modifier = Modifier) {
             currentSelected = langOptions.indexOf(settingsState.lang)
         ) {
             viewModel.changeLang(langOptions[it])
+            restartActivity(ctx)
         }
 
         CustomDivider()

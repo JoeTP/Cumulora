@@ -1,7 +1,9 @@
 package com.example.cumulora
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
@@ -14,23 +16,6 @@ class AppInitializer : Application() {
     companion object {
         private lateinit var instance: AppInitializer
             private set
-
-//        fun applyLanguage(context: Context): Context {
-//            val locale = Locale(SharedPreferenceHelper.getInstance().getData("lang", "en"))
-//            Locale.setDefault(locale)
-//
-//            val config = Configuration(context.resources.configuration)
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                config.setLocale(locale)
-//                config.setLayoutDirection(locale)
-//                return context.createConfigurationContext(config)
-//            } else {
-//                config.locale = locale
-//                config.setLayoutDirection(locale)
-//                context.resources.updateConfiguration(config, context.resources.displayMetrics)
-//            }
-//            return context
-//        }
     }
 
     override fun onCreate() {
@@ -39,5 +24,4 @@ class AppInitializer : Application() {
         SharedPreferenceHelper.initSharedPref(this)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
-
 }

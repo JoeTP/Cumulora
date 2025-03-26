@@ -2,8 +2,6 @@
 
 package com.example.cumulora.features.weather.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,13 +40,14 @@ import com.example.cumulora.R
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
+import com.example.cumulora.utils.CURRENT_LANG
 
 //@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WeatherDetailsSection(
     weather: WeatherEntity,
     forecast: ForecastResponse,
-    forecastFiveDays: List<Forecast>
+    forecastFiveDays: List<Forecast>,
 ) {
     val tabs = listOf(stringResource(R.string.today), stringResource(R.string._5_days))
     var selectedTabIndex by remember { mutableStateOf(0) }
@@ -136,7 +135,7 @@ private fun WeatherDetailsSectionChild(
                 .background(Color.Blue)
         ) { page ->
             when (page) {
-                0 -> CurrentTab(weather, forecast)
+                0 -> TodayTab(weather, forecast)
                 1 -> FiveDaysTab(forecastFiveDays)
             }
         }

@@ -5,6 +5,7 @@ const val DATABASE_NAME = "weather_db"
 const val FAVORITE_TABLE_NAME = "favorite_table"
 const val SHARED_PREF_NAME = "app_prefs"
 const val LOCATION_TYPE = "locationType"
+var CURRENT_LANG = ""
 
 
 //!Remote

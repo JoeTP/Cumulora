@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -22,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cumulora.R
+import com.example.cumulora.component.BackButton
 import com.example.cumulora.component.MyAppBar
 import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.features.alarm.AlarmScreenUI
@@ -30,6 +32,7 @@ import com.example.cumulora.features.onboard.OnBoardingScreenUI
 import com.example.cumulora.features.savedweather.SavedWeatherScreenUI
 import com.example.cumulora.features.settings.SettingsScreenUI
 import com.example.cumulora.features.weather.WeatherScreenUI
+import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.IS_FIRST_TIME_SK
 
 
@@ -71,12 +74,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                 TopAppBar(title = {
                     Text(stringResource(R.string.alarms))
                 }, navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
+                        BackButton( navController)
                 })
             }) { }
         }
@@ -86,12 +84,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                 TopAppBar(title = {
                     Text(stringResource(R.string.saved_countries))
                 }, navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
+                    BackButton( navController)
                 })
             }, floatingActionButton = {
                 FloatingActionButton(onClick = {
@@ -111,12 +104,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                 TopAppBar(title = {
                     Text(stringResource(R.string.settings))
                 }, navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
+                    BackButton( navController)
                 })
             }) { padding ->
                 SettingsScreenUI(Modifier.padding(padding))
@@ -126,10 +114,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
         composable<ScreenRoutes.Map> {
             Scaffold(topBar = {
                 TopAppBar(title = { Text(stringResource(R.string.choose_location)) }, navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
-                    }
+                    BackButton( navController)
                 })
             }) { padding ->
                 MapScreenUI(Modifier.padding(padding))
