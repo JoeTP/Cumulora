@@ -1,7 +1,5 @@
 package com.example.cumulora.features.weather.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,15 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.data.models.forecast.Forecast
+import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.formatDateToDdMmm
+import com.example.cumulora.utils.formatNumberBasedOnLanguage
 import com.example.cumulora.utils.weatherIcons
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
-import java.util.Locale
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
 
@@ -51,7 +47,7 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ForecastItem(forecast: Forecast) {
     ListItem(colors = ListItemDefaults.colors(containerColor = Color.Cyan.copy(alpha = 0.2f)),
@@ -72,7 +68,8 @@ fun ForecastItem(forecast: Forecast) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column(horizontalAlignment = Alignment.End) {
-                    Text("${forecast.main.tempMax} / ${forecast.main.tempMin}")
+                    Text("${forecast.main.tempMax.toString().formatNumberBasedOnLanguage(CURRENT_LANG)} / " +
+                            "${forecast.main.tempMin.toString().formatNumberBasedOnLanguage(CURRENT_LANG)}")
                     Text(forecast.weather.first().description)
                 }
             }

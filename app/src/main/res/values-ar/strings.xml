@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">كومولورا</string>
+    <string name="wind_speed">سرعة الرياح</string>
+    <string name="humidity">الرطوبة</string>
+    <string name="pressure">الضغط</string>
+    <string name="clouds">السحاب</string>
+    <string name="feels_like">تشعر بـ %1$s°</string>
+    <string name="last_updated">آخر تحديث %1$s</string>
+    <string name="search_for_city">ابحث عن مدينة</string>
+    <string name="select_location">اختر الموقع</string>
+    <string name="alarms">المنبهات</string>
+    <string name="saved_countries">البلدان المحفوظة</string>
+    <string name="settings">الإعدادات</string>
+    <string name="choose_location">اختر موقعًا</string>
+    <string name="no_saved_weather">لا توجد بيانات طقس محفوظة</string>
+    <string name="location_deleted">تم حذف الموقع</string>
+    <string name="undo">تراجع</string>
+    <string name="language">اللغة</string>
+    <string name="location">الموقع</string>
+    <string name="units">الوحدات</string>
+    <string name="today">اليوم</string>
+    <string name="_5_days">٥ أيام</string>
+    <string name="failed_to_get_data">فشل في الحصول على البيانات</string>
+    <string name="am">ص</string>
+    <string name="pm">م</string>
+    <string name="c">°س</string>
+    <string name="f">°ف</string>
+    <string name="k">ك</string>
+</resources>

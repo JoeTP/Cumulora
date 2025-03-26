@@ -11,7 +11,7 @@ import com.example.cumulora.utils.LAT
 import com.example.cumulora.utils.LIMIT
 import com.example.cumulora.utils.LON
 import com.example.cumulora.utils.Q
-import com.example.cumulora.utils.UNIT
+import com.example.cumulora.utils.UNITS
 import com.example.cumulora.utils.WEATHER_EP
 import retrofit2.Response
 import retrofit2.http.GET
@@ -24,19 +24,17 @@ interface WeatherService {
     suspend fun getWeather(
         @Query(LAT) lat: Double,
         @Query(LON) lon: Double,
-        @Query(UNIT) unit: String?,
+        @Query(UNITS) unit: String?,
         @Query(LANG) lang: String?,
-//        @Query(API_KEY_Q) apiKey: String = API_KEY
     ): Response<WeatherResponse>
 
     @GET(FORECAST_EP)
     suspend fun getForecast(
         @Query(LAT) lat: Double,
         @Query(LON) lon: Double,
-        @Query(UNIT) unit: String?,
+        @Query(UNITS) unit: String?,
         @Query(LANG) lang: String?,
         @Query(CNT) cnt: Int = 40,
-//        @Query(API_KEY_Q) apiKey: String = API_KEY
     ): Response<ForecastResponse>
 
     @GET(GEOCODER_EP)

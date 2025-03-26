@@ -17,27 +17,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.cumulora.R
+import com.example.cumulora.core.factories.MapViewModelFactory
 import com.example.cumulora.utils.repoInstance
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.compose.autocomplete.components.PlacesAutocompleteTextField
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
 import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MissingPermission")
 @Composable
-fun MapScreenUI(modifier: Modifier = Modifier) {
+fun MapScreenUI(modifier: Modifier = Modifier, navController: NavController) {
     val ctx = LocalContext.current
 
     //TODO: Call shared preference with the last saved location and set it as the marker position
@@ -53,7 +53,14 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
 
     var predictions by remember { mutableStateOf(emptyList<AutocompletePrediction>()) }
 
-    val viewModel : GeocoderViewModel = viewModel(factory =  GeocoderViewModelFactory(ctx))
+    val places = Places.createClient(ctx)
+
+    val viewModel: MapViewModel = viewModel(
+        factory = MapViewModelFactory(
+            repoInstance(ctx),
+            places
+        )
+    )
 
     var result by remember { mutableStateOf<AutocompletePlace?>(null) }
 
@@ -70,7 +77,6 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
-//            properties = MapProperties(mapType = MapType.HYBRID),
             onMapClick = { latLng ->
                 markerState.position = latLng
                 isTapped = true
@@ -78,12 +84,20 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
         ) {
             Marker(
                 state = markerState,
-                title = "Add to favorites",
+                title = stringResource(R.string.select_location),
                 snippet = result?.secondaryText.toString(),
                 visible = isTapped,
                 onInfoWindowClick = {
                     //TODO: Add to favorites HERE and show snack bar "CITY NAME added to favorites"
-                    Log.i("TAG", "ADD TO FAV: ")
+                    Log.i("TAG", "LAST LOCATION: ${markerState.position.latitude}, ${markerState.position.longitude}")
+
+                    //TODO: This is not the place!!!!
+                    viewModel.saveLocation(
+                        markerState.position.latitude,
+                        markerState.position.longitude,
+                    )
+                    navController.popBackStack()
+
                 }
             )
         }
@@ -96,7 +110,7 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
         ) {
         }
         PlacesAutocompleteTextField(
-            placeHolderText = "Search for city",
+            placeHolderText = stringResource(R.string.search_for_city),
             modifier = modifier
                 .padding(top = 8.dp),
             searchText = searchText,
@@ -115,7 +129,7 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
                 predictions = emptyList()
                 isTapped = true
                 //TODO: SAVE THE LATLNG TO SHARED PREF SO U CAN CALL IT BACK IN THE HOME SCREEN
-               viewModel.getLocationName(autocompletePlace, markerState)
+                viewModel.getLocationName(autocompletePlace, markerState)
             },
             selectedPlace = result,
         )

@@ -2,8 +2,6 @@
 
 package com.example.cumulora.features.weather.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,19 +34,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.cumulora.R
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
+import com.example.cumulora.utils.CURRENT_LANG
 
-@RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WeatherDetailsSection(
     weather: WeatherEntity,
     forecast: ForecastResponse,
-    forecastFiveDays: List<Forecast>
+    forecastFiveDays: List<Forecast>,
 ) {
-    val tabs = listOf("Current", "5 Days")
+    val tabs = listOf(stringResource(R.string.today), stringResource(R.string._5_days))
     var selectedTabIndex by remember { mutableStateOf(0) }
     val pagerState = rememberPagerState { tabs.size }
 
@@ -82,7 +83,7 @@ fun WeatherDetailsSection(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun WeatherDetailsSectionChild(
     tabs: List<String>,
@@ -134,7 +135,7 @@ private fun WeatherDetailsSectionChild(
                 .background(Color.Blue)
         ) { page ->
             when (page) {
-                0 -> CurrentTab(weather, forecast)
+                0 -> TodayTab(weather, forecast)
                 1 -> FiveDaysTab(forecastFiveDays)
             }
         }

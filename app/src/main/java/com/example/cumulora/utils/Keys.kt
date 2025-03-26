@@ -13,7 +13,7 @@ class ApiKeyInterceptor(private val apiKey: String) : Interceptor {
         val originalUrl = originalRequest.url()
 
         val newUrl = originalUrl.newBuilder()
-            .addQueryParameter("appid", apiKey)
+            .addQueryParameter(API_KEY_Q, apiKey)
             .build()
 
         val newRequest = originalRequest.newBuilder()

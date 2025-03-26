@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Cumulora</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="humidity">Humidity</string>
+    <string name="pressure">Pressure</string>
+    <string name="clouds">Clouds</string>
+    <string name="feels_like">feels like %1$s°</string>
+    <string name="last_updated">Last Updated %1$s</string>
+    <string name="search_for_city">Search for city</string>
+    <string name="select_location">Select Location</string>
+    <string name="alarms">Alarms</string>
+    <string name="saved_countries">Saved Countries</string>
+    <string name="settings">Settings</string>
+    <string name="choose_location">Choose Location</string>
+    <string name="no_saved_weather">No Saved Weather</string>
+    <string name="location_deleted">Location deleted</string>
+    <string name="undo">Undo</string>
+    <string name="language">Language</string>
+    <string name="location">Location</string>
+    <string name="units">Units</string>
+    <string name="today">Today</string>
+    <string name="_5_days">5 Days</string>
+    <string name="failed_to_get_data">FAILED TO GET DATA</string>
+    <string name="am">AM</string>
+    <string name="pm">PM</string>
+    <string name="c">°C</string>
+    <string name="f">°F</string>
+    <string name="k">K</string>
 </resources>
