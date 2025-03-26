@@ -15,22 +15,22 @@ class AppInitializer : Application() {
         private lateinit var instance: AppInitializer
             private set
 
-        fun applyLanguage(context: Context): Context {
-            val locale = Locale(SharedPreferenceHelper.getInstance().getData("lang", "en"))
-            Locale.setDefault(locale)
-
-            val config = Configuration(context.resources.configuration)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                config.setLocale(locale)
-                config.setLayoutDirection(locale)
-                return context.createConfigurationContext(config)
-            } else {
-                config.locale = locale
-                config.setLayoutDirection(locale)
-                context.resources.updateConfiguration(config, context.resources.displayMetrics)
-            }
-            return context
-        }
+//        fun applyLanguage(context: Context): Context {
+//            val locale = Locale(SharedPreferenceHelper.getInstance().getData("lang", "en"))
+//            Locale.setDefault(locale)
+//
+//            val config = Configuration(context.resources.configuration)
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                config.setLocale(locale)
+//                config.setLayoutDirection(locale)
+//                return context.createConfigurationContext(config)
+//            } else {
+//                config.locale = locale
+//                config.setLayoutDirection(locale)
+//                context.resources.updateConfiguration(config, context.resources.displayMetrics)
+//            }
+//            return context
+//        }
     }
 
     override fun onCreate() {
@@ -40,7 +40,4 @@ class AppInitializer : Application() {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(applyLanguage(base))
-    }
 }

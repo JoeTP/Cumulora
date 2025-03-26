@@ -29,24 +29,15 @@ import com.google.android.libraries.places.api.Places
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        val context = AppInitializer.applyLanguage(this)
         super.onCreate(savedInstanceState)
 
         Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.googleApiKey)
         SharedPrefManager.initialize(this)
         setContent {
             CumuloraTheme {
-                CompositionLocalProvider(
-                    LocalContext provides context
-                ) {
                     AppContent()
-                }
             }
         }
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(AppInitializer.applyLanguage(newBase))
     }
 }
 
