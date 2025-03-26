@@ -56,6 +56,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.appcompat)
     val room_version = "2.6.1"
     val nav_version = "2.8.8"
     val compose_version = "1.6.3"

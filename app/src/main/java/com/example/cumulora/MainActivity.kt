@@ -1,6 +1,7 @@
 package com.example.cumulora
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,6 +14,7 @@ import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -25,19 +27,26 @@ import com.google.android.libraries.places.api.Places
 
 
 class MainActivity : ComponentActivity() {
-
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val context = AppInitializer.applyLanguage(this)
         super.onCreate(savedInstanceState)
+
         Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.googleApiKey)
         SharedPrefManager.initialize(this)
-
         setContent {
             CumuloraTheme {
-                AppContent()
+                CompositionLocalProvider(
+                    LocalContext provides context
+                ) {
+                    AppContent()
+                }
             }
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppInitializer.applyLanguage(newBase))
     }
 }
 
