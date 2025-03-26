@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
 import com.example.cumulora.component.OvalCard
@@ -68,7 +69,7 @@ fun CurrentTab(weather: WeatherEntity, forecast: ForecastResponse) {
 
 @Composable
 private fun Wind(windSpeed: String, windDegree: Float) =
-    WeatherCard("Wind Speed", R.drawable.wind) {
+    WeatherCard(stringResource(R.string.wind_speed), R.drawable.wind) {
         Box(contentAlignment = Alignment.Center) {
             Image(painter = painterResource(id = R.drawable.compas), contentDescription = "")
             Image(
@@ -82,17 +83,17 @@ private fun Wind(windSpeed: String, windDegree: Float) =
 
 
 @Composable
-private fun Humidity(humidity: String) = WeatherCard("Humidity", R.drawable.humidity) {
+private fun Humidity(humidity: String) = WeatherCard(stringResource(R.string.humidity), R.drawable.humidity) {
     Text(humidity)
 }
 
 
 @Composable
-private fun Pressure(pressure: String) = WeatherCard("Pressure", R.drawable.pressure) {
+private fun Pressure(pressure: String) = WeatherCard(stringResource(R.string.pressure), R.drawable.pressure) {
     Text(pressure)
 }
 
 @Composable
-private fun Clouds(clouds: String) = WeatherCard("Clouds", R.drawable.cloud_icon) {
+private fun Clouds(clouds: String) = WeatherCard(stringResource(R.string.clouds), R.drawable.cloud_icon) {
     Text(clouds)
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,7 +67,7 @@ fun CurrentTemperature(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(painter = painterResource(id = R.drawable.temp_feel_like), contentDescription = "Map")
                 Spacer(Modifier.width(8.dp))
-                Text("feels like $feelsLike°")
+                Text(stringResource(R.string.feels_like, feelsLike))
             }
             Text(description)
         }
@@ -77,7 +78,7 @@ fun CurrentTemperature(
                 imageVector = Icons.Default.Refresh,
                 contentDescription = ""
             )
-            Text("Last Updated $time")
+            Text(stringResource(R.string.last_updated, time))
         }
 
     }

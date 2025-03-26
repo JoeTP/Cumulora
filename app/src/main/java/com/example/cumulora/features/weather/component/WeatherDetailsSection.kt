@@ -36,7 +36,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.cumulora.R
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
@@ -48,7 +50,7 @@ fun WeatherDetailsSection(
     forecast: ForecastResponse,
     forecastFiveDays: List<Forecast>
 ) {
-    val tabs = listOf("Current", "5 Days")
+    val tabs = listOf(stringResource(R.string.today), stringResource(R.string._5_days))
     var selectedTabIndex by remember { mutableStateOf(0) }
     val pagerState = rememberPagerState { tabs.size }
 

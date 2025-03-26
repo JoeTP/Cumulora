@@ -17,8 +17,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cumulora.R
 import com.example.cumulora.core.factories.MapViewModelFactory
 import com.example.cumulora.utils.repoInstance
 import com.google.android.gms.maps.model.CameraPosition
@@ -81,7 +83,7 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
         ) {
             Marker(
                 state = markerState,
-                title = "Add to favorites",
+                title = stringResource(R.string.select_location),
                 snippet = result?.secondaryText.toString(),
                 visible = isTapped,
                 onInfoWindowClick = {
@@ -113,7 +115,7 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
         ) {
         }
         PlacesAutocompleteTextField(
-            placeHolderText = "Search for city",
+            placeHolderText = stringResource(R.string.search_for_city),
             modifier = modifier
                 .padding(top = 8.dp),
             searchText = searchText,

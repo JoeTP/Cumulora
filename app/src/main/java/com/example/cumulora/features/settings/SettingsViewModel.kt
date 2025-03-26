@@ -3,6 +3,9 @@ package com.example.cumulora.features.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cumulora.data.repository.WeatherRepository
+import com.example.cumulora.utils.LANG
+import com.example.cumulora.utils.LOCATION_TYPE
+import com.example.cumulora.utils.UNITS
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -26,9 +29,9 @@ class SettingsViewModel(private val repo: WeatherRepository) : ViewModel() {
         viewModelScope.launch {
             _settingsState.emit(
                 SettingsState(
-                    unit = repo.getCachedData("unit", ""),
-                    locationType = repo.getCachedData("locationType", ""),
-                    lang = repo.getCachedData("lang", "")
+                    unit = repo.getCachedData(UNITS, ""),
+                    locationType = repo.getCachedData(LOCATION_TYPE, ""),
+                    lang = repo.getCachedData(LANG, "")
                 )
             )
         }
@@ -36,7 +39,7 @@ class SettingsViewModel(private val repo: WeatherRepository) : ViewModel() {
 
     fun changeUnit(unit: String) {
         viewModelScope.launch {
-            repo.cacheData("unit", unit)
+            repo.cacheData(UNITS, unit)
             _settingsState.emit(settingsState.last().copy(unit = unit))
             repo.notifySettingsChanged()
         }

@@ -23,10 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cumulora.R
 import com.example.cumulora.core.factories.SettingsViewModelFactory
 import com.example.cumulora.features.settings.component.ListTile
 import com.example.cumulora.utils.repoInstance
@@ -38,12 +40,13 @@ fun SettingsScreenUI(modifier: Modifier = Modifier) {
     val viewModel: SettingsViewModel = viewModel(factory = SettingsViewModelFactory(repoInstance(ctx)))
     val settingsState by viewModel.settingsState.collectAsStateWithLifecycle(initialValue = SettingsState())
 
+    //TODO: Get from enum
     val langOptions = listOf("en", "ar")
     val locationOptions = listOf("my location", "custom")
     val unitOptions = listOf("metric", "imperial", "standard")
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        ListTile("Language", Icons.Outlined.Language)
+        ListTile(stringResource(R.string.language), Icons.Outlined.Language)
         SingleChoiceSegmentedButton(
             options = langOptions,
             currentSelected = langOptions.indexOf(settingsState.lang)
@@ -53,7 +56,7 @@ fun SettingsScreenUI(modifier: Modifier = Modifier) {
 
         CustomDivider()
 
-        ListTile("Location", Icons.Outlined.Map)
+        ListTile(stringResource(R.string.location), Icons.Outlined.Map)
         SingleChoiceSegmentedButton(
             options = locationOptions,
             currentSelected = locationOptions.indexOf(settingsState.locationType)
@@ -63,7 +66,7 @@ fun SettingsScreenUI(modifier: Modifier = Modifier) {
 
         CustomDivider()
 
-        ListTile("Units", Icons.Outlined.Straighten)
+        ListTile(stringResource(R.string.units), Icons.Outlined.Straighten)
         SingleChoiceSegmentedButton(
             options = unitOptions,
             currentSelected = unitOptions.indexOf(settingsState.unit)

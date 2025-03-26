@@ -15,8 +15,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cumulora.R
 import com.example.cumulora.core.factories.WeatherViewModelFactory
 import com.example.cumulora.features.weather.component.CurrentTemperature
 import com.example.cumulora.features.weather.component.WeatherDetailsSection
@@ -47,7 +49,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
             val ex = combinedState as CombinedStateResponse.Failure
             Log.e("TAG", "WeatherScreenUI: ${ex.error}")
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("FAILED TO GET DATA")
+                Text(stringResource(R.string.failed_to_get_data))
             }
         }
 

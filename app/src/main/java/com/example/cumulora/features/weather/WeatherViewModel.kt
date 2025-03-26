@@ -12,6 +12,8 @@ import com.example.cumulora.features.settings.SettingsViewModel
 import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
 import com.example.cumulora.features.weather.responsestate.ForecastStateResponse
 import com.example.cumulora.features.weather.responsestate.WeatherStateResponse
+import com.example.cumulora.utils.LANG
+import com.example.cumulora.utils.UNITS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
@@ -50,8 +52,8 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
         _mutableCombinedState.value = CombinedStateResponse.Loading
         try {
             val (lat, lon) = getLastLatLng()
-            val unit = repo.getCachedData("unit", "")
-            val lang = repo.getCachedData("lang", "")
+            val unit = repo.getCachedData(UNITS, "")
+            val lang = repo.getCachedData(LANG, "")
             getWeatherAndForecast(lat, lon, unit, lang)
             Log.d(TAG, "refreshWeatherWithCurrentSettings: ${unit} ${lang} ")
         } catch (e: Exception) {

@@ -18,11 +18,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.features.splash.SplashScreenUI
 import com.example.cumulora.features.splash.SplashViewModel
 import com.example.cumulora.navigation.NavSetup
 import com.example.cumulora.ui.theme.CumuloraTheme
-import com.example.cumulora.utils.SharedPrefManager
 import com.google.android.libraries.places.api.Places
 
 
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.googleApiKey)
-        SharedPrefManager.initialize(this)
+        SharedPreferenceHelper.initSharedPref(this)
         setContent {
             CumuloraTheme {
                     AppContent()

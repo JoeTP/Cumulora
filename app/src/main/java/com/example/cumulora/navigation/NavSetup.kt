@@ -17,10 +17,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.cumulora.R
 import com.example.cumulora.component.MyAppBar
+import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.features.alarm.AlarmScreenUI
 import com.example.cumulora.features.map.MapScreenUI
 import com.example.cumulora.features.onboard.OnBoardingScreenUI
@@ -28,7 +31,6 @@ import com.example.cumulora.features.savedweather.SavedWeatherScreenUI
 import com.example.cumulora.features.settings.SettingsScreenUI
 import com.example.cumulora.features.weather.WeatherScreenUI
 import com.example.cumulora.utils.IS_FIRST_TIME_SK
-import com.example.cumulora.utils.SharedPrefManager
 
 
 //@RequiresApi(Build.VERSION_CODES.O)
@@ -37,8 +39,8 @@ import com.example.cumulora.utils.SharedPrefManager
 @Composable
 fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostState) {
 
-    val shared = SharedPrefManager.getInstance()
-    val isFirstTime = shared.getBoolean(IS_FIRST_TIME_SK, true)
+    val shared = SharedPreferenceHelper.getInstance()
+    val isFirstTime = shared.getData(IS_FIRST_TIME_SK, true)
     val startingScreen = if (isFirstTime) ScreenRoutes.Onboarding else ScreenRoutes.Weather
 
     NavHost(navController = navController, startDestination = startingScreen) {
@@ -67,7 +69,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
             AlarmScreenUI()
             Scaffold(topBar = {
                 TopAppBar(title = {
-                    Text("Alarms")
+                    Text(stringResource(R.string.alarms))
                 }, navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
@@ -82,7 +84,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
         composable<ScreenRoutes.SavedWeather> {
             Scaffold(topBar = {
                 TopAppBar(title = {
-                    Text("Saved Countries")
+                    Text(stringResource(R.string.saved_countries))
                 }, navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
@@ -107,7 +109,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
         composable<ScreenRoutes.Settings> {
             Scaffold(topBar = {
                 TopAppBar(title = {
-                    Text("Settings")
+                    Text(stringResource(R.string.settings))
                 }, navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
@@ -123,7 +125,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
 
         composable<ScreenRoutes.Map> {
             Scaffold(topBar = {
-                TopAppBar(title = { Text("Choose Location") }, navigationIcon = {
+                TopAppBar(title = { Text(stringResource(R.string.choose_location)) }, navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
 
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")

@@ -28,11 +28,9 @@ class SavedWeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
         try {
             repo.getSavedWeather().collect{
             _mutableSavedWeather.value = SavedWeatherStateResponse.Success(it)
-                _mutableMessage.value = "LOADED DATA"
             }
         }catch (e: Exception) {
             _mutableSavedWeather.value = SavedWeatherStateResponse.Failure(e.message ?: "Unknown error")
-            _mutableMessage.value = e.message ?: "Unknown error"
         }
     }
 

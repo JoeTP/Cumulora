@@ -2,12 +2,13 @@ package com.example.cumulora.data.local.sharedpref
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.cumulora.utils.SHARED_PREF_NAME
 
 class SharedPreferenceHelper private constructor(context: Context) : SharedPref {
 
 
     private val sharedPreferences: SharedPreferences =
-        context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
 
 
     companion object {

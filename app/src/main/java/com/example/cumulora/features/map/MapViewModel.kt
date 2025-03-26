@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cumulora.data.local.SavedWeather
 import com.example.cumulora.data.repository.WeatherRepository
+import com.example.cumulora.utils.LANG
+import com.example.cumulora.utils.UNITS
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
@@ -67,8 +69,9 @@ class MapViewModel(private val repo: WeatherRepository, private val placesClient
     }
 
     fun saveLocation(lat: Double, lon: Double) = viewModelScope.launch {
-            val unit = repo.getCachedData("unit", "metric")
-            val lang = repo.getCachedData("lang", "en")
+        //TODO: metric should come from ENUM
+            val unit = repo.getCachedData(UNITS, "metric")
+            val lang = repo.getCachedData(LANG, "en")
             val weatherDeferred =
                 async { repo.getWeather(lat, lon, unit, lang).catch { emit(null) }.first() }
             val forecastDeferred =

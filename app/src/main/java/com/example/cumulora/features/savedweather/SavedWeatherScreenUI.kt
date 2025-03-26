@@ -1,5 +1,6 @@
 package com.example.cumulora.features.savedweather
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -35,9 +36,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cumulora.R
 import com.example.cumulora.core.factories.SavedWeatherViewModelFactory
 import com.example.cumulora.features.savedweather.component.SavedWeatherCard
 import com.example.cumulora.utils.repoInstance
@@ -102,6 +105,7 @@ fun <T> SwipeToDeleteContainer(
     onRestore: (T) -> Unit,
     snackBarHostState: SnackbarHostState,
     animationDuration: Int = 500,
+    context: Context = LocalContext.current,
     content: @Composable (T) -> Unit
 ) {
     var isRemoved by remember { mutableStateOf(false) }
@@ -121,8 +125,8 @@ fun <T> SwipeToDeleteContainer(
     LaunchedEffect(isRemoved, currentItem) {
         if (isRemoved) {
             val result = snackBarHostState.showSnackbar(
-                message = "Item deleted",
-                actionLabel = "Undo",
+                message = context.getString(R.string.location_deleted),
+                actionLabel = context.getString(R.string.undo),
                 duration = SnackbarDuration.Short
             )
 
@@ -194,7 +198,7 @@ fun DeleteBackground(swipeDismissState: SwipeToDismissBoxState) {
 @Composable
 fun NoData(modifier: Modifier = Modifier) {
     Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("No Saved Weather")
+        Text(stringResource(R.string.no_saved_weather))
     }
 }
 
