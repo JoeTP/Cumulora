@@ -118,7 +118,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                     BackButton( navController)
                 })
             }) { padding ->
-                MapScreenUI(Modifier.padding(padding))
+                MapScreenUI(Modifier.padding(padding), navController)
             }
         }
     }

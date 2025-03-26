@@ -2,11 +2,12 @@ package com.example.cumulora.features.map
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cumulora.data.local.SavedWeather
 import com.example.cumulora.data.repository.WeatherRepository
 import com.example.cumulora.utils.LANG
+import com.example.cumulora.utils.LAST_LAT
+import com.example.cumulora.utils.LAST_LON
 import com.example.cumulora.utils.UNITS
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -34,14 +35,14 @@ class MapViewModel(private val repo: WeatherRepository, private val placesClient
         val request = FetchPlaceRequest.builder(autocompletePlace.placeId, placeFields).build()
 
         placesClient.fetchPlace(request).addOnSuccessListener { response ->
-                val place = response.place
-                val newPosition = place.location ?: LatLng(0.0, 0.0)
-                markerState.position = newPosition
-                Log.d(
-                    "TAG",
-                    "Selected Place: ${autocompletePlace.primaryText}, Coordinates: $newPosition"
-                )
-            }
+            val place = response.place
+            val newPosition = place.location ?: LatLng(0.0, 0.0)
+            markerState.position = newPosition
+            Log.d(
+                "TAG",
+                "Selected Place: ${autocompletePlace.primaryText}, Coordinates: $newPosition"
+            )
+        }
             .addOnFailureListener { exception ->
                 Log.e("TAG", "Error fetching place details: ${exception.message}")
             }
@@ -69,23 +70,20 @@ class MapViewModel(private val repo: WeatherRepository, private val placesClient
     }
 
     fun saveLocation(lat: Double, lon: Double) = viewModelScope.launch {
+        cacheLastLatLon(lat.toString(), lon.toString())
         //TODO: metric should come from ENUM
-            val unit = repo.getCachedData(UNITS, "metric")
-            val lang = repo.getCachedData(LANG, "en")
-            val weatherDeferred =
-                async { repo.getWeather(lat, lon, unit, lang).catch { emit(null) }.first() }
-            val forecastDeferred =
-                async { repo.getForecast(lat, lon, unit, lang).catch { emit(null) }.first() }
+        val unit = repo.getCachedData(UNITS, "")
+        val lang = repo.getCachedData(LANG, "")
+        val weatherDeferred = async { repo.getWeather(lat, lon, unit, lang).catch { emit(null) }.first() }
+        val forecastDeferred = async { repo.getForecast(lat, lon, unit, lang).catch { emit(null) }.first() }
+        val weather = weatherDeferred.await()
+        val forecast = forecastDeferred.await()
+        repo.saveWeather(SavedWeather(forecast?.city?.name ?: "", weather, forecast))
+    }
 
-            val weather = weatherDeferred.await()
-            val forecast = forecastDeferred.await()
-
-            repo.saveWeather(SavedWeather(forecast?.city?.name ?: "", weather, forecast))
-        }
-
-    fun cacheLastLatLon(lat: String, lon: String) {
-        repo.cacheData("lastLat", lat)
-        repo.cacheData("lastLon", lon)
+     fun cacheLastLatLon(lat: String, lon: String) {
+        repo.cacheData(LAST_LAT, lat)
+        repo.cacheData(LAST_LON, lon)
     }
 
 

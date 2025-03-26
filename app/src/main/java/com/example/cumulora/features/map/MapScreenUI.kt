@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.cumulora.R
 import com.example.cumulora.core.factories.MapViewModelFactory
 import com.example.cumulora.utils.repoInstance
@@ -36,7 +37,7 @@ import com.google.maps.android.compose.rememberMarkerState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MissingPermission")
 @Composable
-fun MapScreenUI(modifier: Modifier = Modifier) {
+fun MapScreenUI(modifier: Modifier = Modifier, navController: NavController) {
     val ctx = LocalContext.current
 
     //TODO: Call shared preference with the last saved location and set it as the marker position
@@ -88,21 +89,15 @@ fun MapScreenUI(modifier: Modifier = Modifier) {
                 visible = isTapped,
                 onInfoWindowClick = {
                     //TODO: Add to favorites HERE and show snack bar "CITY NAME added to favorites"
-                    Log.i(
-                        "TAG",
-                        "ADD TO FAV: ${markerState.position.latitude}, ${markerState.position.longitude}"
-                    )
+                    Log.i("TAG", "LAST LOCATION: ${markerState.position.latitude}, ${markerState.position.longitude}")
 
                     //TODO: This is not the place!!!!
                     viewModel.saveLocation(
                         markerState.position.latitude,
                         markerState.position.longitude,
                     )
+                    navController.popBackStack()
 
-                    viewModel.cacheLastLatLon(
-                        markerState.position.latitude.toString(),
-                        markerState.position.longitude.toString()
-                    )
                 }
             )
         }

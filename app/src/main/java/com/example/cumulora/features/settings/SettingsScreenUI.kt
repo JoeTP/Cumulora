@@ -41,16 +41,10 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
     val ctx = LocalContext.current
     val viewModel: SettingsViewModel = viewModel(factory = SettingsViewModelFactory(repoInstance(ctx)))
     val settingsState by viewModel.settingsState.collectAsStateWithLifecycle()
-    val scope = rememberCoroutineScope()
     //TODO: Get from enum
     val langOptions = listOf("en", "ar")
     val locationOptions = listOf("my location", "custom")
     val unitOptions = listOf("metric", "imperial", "standard")
-
-    LaunchedEffect(settingsState) {
-        Log.d("TAG", "SettingsScreenUI: ${settingsState.locationType}")
-    }
-
 
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
