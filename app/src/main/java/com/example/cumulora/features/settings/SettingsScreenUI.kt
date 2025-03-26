@@ -1,6 +1,5 @@
 package com.example.cumulora.features.settings
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -17,34 +16,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cumulora.R
 import com.example.cumulora.core.factories.SettingsViewModelFactory
 import com.example.cumulora.features.settings.component.ListTile
+import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.repoInstance
 import com.example.cumulora.utils.restartActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 @Composable
-fun SettingsScreenUI(modifier: Modifier = Modifier) {
+fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit) {
     val ctx = LocalContext.current
     val viewModel: SettingsViewModel = viewModel(factory = SettingsViewModelFactory(repoInstance(ctx)))
-    val settingsState by viewModel.settingsState.collectAsStateWithLifecycle(initialValue = SettingsState())
-
+    val settingsState by viewModel.settingsState.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
     //TODO: Get from enum
     val langOptions = listOf("en", "ar")
     val locationOptions = listOf("my location", "custom")
     val unitOptions = listOf("metric", "imperial", "standard")
+
+    LaunchedEffect(settingsState) {
+        Log.d("TAG", "SettingsScreenUI: ${settingsState.locationType}")
+    }
+
+
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         ListTile(stringResource(R.string.language), Icons.Outlined.Language)
@@ -52,8 +59,10 @@ fun SettingsScreenUI(modifier: Modifier = Modifier) {
             options = langOptions,
             currentSelected = langOptions.indexOf(settingsState.lang)
         ) {
-            viewModel.changeLang(langOptions[it])
-            restartActivity(ctx)
+            if (CURRENT_LANG != langOptions[it]) {
+                viewModel.changeLang(langOptions[it])
+                restartActivity(ctx)
+            }
         }
 
         CustomDivider()
@@ -64,6 +73,11 @@ fun SettingsScreenUI(modifier: Modifier = Modifier) {
             currentSelected = locationOptions.indexOf(settingsState.locationType)
         ) {
             viewModel.changeLocationType(locationOptions[it])
+            Log.d("TAG", "FROM LOCATION LIST: ${locationOptions[it]}")
+            Log.d("TAG", "SETTING STATE: ${settingsState.locationType}")
+            if (locationOptions[it] == locationOptions.last()) {
+                    onNavigateToMap()
+            }
         }
 
         CustomDivider()
@@ -115,5 +129,6 @@ fun SingleChoiceSegmentedButton(
         }
     }
 }
+
 @Composable
 fun CustomDivider() = HorizontalDivider(Modifier.padding(bottom = 10.dp, top = 20.dp))

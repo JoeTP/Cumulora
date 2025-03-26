@@ -32,7 +32,6 @@ import com.example.cumulora.features.onboard.OnBoardingScreenUI
 import com.example.cumulora.features.savedweather.SavedWeatherScreenUI
 import com.example.cumulora.features.settings.SettingsScreenUI
 import com.example.cumulora.features.weather.WeatherScreenUI
-import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.IS_FIRST_TIME_SK
 
 
@@ -107,7 +106,9 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                     BackButton( navController)
                 })
             }) { padding ->
-                SettingsScreenUI(Modifier.padding(padding))
+                SettingsScreenUI(Modifier.padding(padding)){
+                    navController.navigate(ScreenRoutes.Map)
+                }
             }
         }
 
