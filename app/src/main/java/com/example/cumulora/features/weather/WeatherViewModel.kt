@@ -1,61 +1,65 @@
 package com.example.cumulora.features.weather
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.repository.WeatherRepository
+import com.example.cumulora.data.repository.WeatherRepositoryImpl
+import com.example.cumulora.features.settings.SettingsViewModel
 import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
 import com.example.cumulora.features.weather.responsestate.ForecastStateResponse
 import com.example.cumulora.features.weather.responsestate.WeatherStateResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import toFinalWeather
 
-class WeatherViewModel(private val repo: WeatherRepository) :
-    ViewModel() {
+@OptIn(FlowPreview::class)
+class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
 
     private val TAG = "TAG"
-
-
-//    private var sharedPref: SharedPreferenceHelper = SharedPreferenceHelper.getInstance(AppInitializer.getAppContext())
-
-    /*
-        private val _mutableWeather: MutableStateFlow<WeatherStateResponse> =
-            MutableStateFlow(WeatherStateResponse.Loading)
-        val weatherState: StateFlow<WeatherStateResponse> = _mutableWeather
-
-        private val _mutableForecast: MutableStateFlow<ForecastStateResponse> =
-            MutableStateFlow(ForecastStateResponse.Loading)
-        val forecastState: StateFlow<ForecastStateResponse> = _mutableForecast
-    */
 
     private val _mutableCombinedState: MutableStateFlow<CombinedStateResponse> =
         MutableStateFlow(CombinedStateResponse.Loading)
     val combinedState: StateFlow<CombinedStateResponse> = _mutableCombinedState.asStateFlow()
 
     private val _mutableForecastFiveDays = MutableStateFlow(listOf<Forecast>())
-//    val forecastFiveDays: StateFlow<List<Forecast>> = _mutableForecastFiveDays.asStateFlow()
-
 
 
     init {
-//        sharedPref = SharedPreferenceHelper.getInstance(AppInitializer.getAppContext())
-//       viewModelScope.launch {
-//           //pass parameters from shared preference
-//           Log.d("TAG", "LATLNG: ${getLastLatLng().first}, ${getLastLatLng().second}")
-//           getWeatherAndForecast(getLastLatLng().first, getLastLatLng().second, null, null)
-//       }
+        viewModelScope.launch {
+            WeatherRepositoryImpl.settingsChanges
+                .debounce(500)
+                .collect {
+                refreshWeatherWithCurrentSettings()
+            }
+        }
     }
 
+     fun refreshWeatherWithCurrentSettings() {
+        _mutableCombinedState.value = CombinedStateResponse.Loading
+        try {
+            val (lat, lon) = getLastLatLng()
+            val unit = repo.getCachedData("unit", "")
+            val lang = repo.getCachedData("lang", "")
+            getWeatherAndForecast(lat, lon, unit, lang)
+            Log.d(TAG, "refreshWeatherWithCurrentSettings: ${unit} ${lang} ")
+        } catch (e: Exception) {
+            _mutableCombinedState.value = CombinedStateResponse.Failure("Refresh failed: ${e.message}")
+        }
+    }
 
-     fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
+    private fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val weatherDeferred =
@@ -65,6 +69,7 @@ class WeatherViewModel(private val repo: WeatherRepository) :
 
                 val weather = weatherDeferred.await()
                 val forecast = forecastDeferred.await()
+                Log.d(TAG, "getWeatherAndForecast: ${weather?.main?.temp}")
 
                 launch {
                     if (forecast != null) {

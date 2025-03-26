@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cumulora.core.factories.WeatherViewModelFactory
 import com.example.cumulora.features.weather.component.CurrentTemperature
 import com.example.cumulora.features.weather.component.WeatherDetailsSection
 import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
@@ -38,9 +39,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
     val scrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
-        var lat = viewModel.getLastLatLng().first
-        var lon = viewModel.getLastLatLng().second
-        viewModel.getWeatherAndForecast(lat, lon, null, null)
+        viewModel.refreshWeatherWithCurrentSettings()
     }
 
     when (combinedState) {

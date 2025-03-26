@@ -7,6 +7,9 @@ import com.example.cumulora.data.models.geocoder.GeocoderResponse
 import com.example.cumulora.data.models.weather.WeatherResponse
 import com.example.cumulora.data.remote.WeatherRemoteDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 
 class WeatherRepositoryImpl private constructor(
@@ -14,7 +17,11 @@ class WeatherRepositoryImpl private constructor(
     private val localDataSource: WeatherLocalDataSource
 ) : WeatherRepository {
 
+
     companion object {
+        private val _settingsChanges = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+        val settingsChanges: SharedFlow<Unit> = _settingsChanges.asSharedFlow()
+
         @Volatile
         private var instance: WeatherRepositoryImpl? = null
 
@@ -71,8 +78,12 @@ class WeatherRepositoryImpl private constructor(
     }
 
     override fun <T> getCachedData(key: String, defaultValue: T): T {
-       return localDataSource.getData(key, defaultValue) as T
+        return localDataSource.getData(key, defaultValue) as T
     }
 
+
+    override fun notifySettingsChanged() {
+        _settingsChanges.tryEmit(Unit)
+    }
 
 }

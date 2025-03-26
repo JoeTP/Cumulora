@@ -21,6 +21,8 @@ interface WeatherRepository {
 
     suspend fun deleteWeather(favoriteWeather: SavedWeather)
 
+    fun notifySettingsChanged()
+
     fun<T> cacheData(key: String, value: T)
 
     fun<T> getCachedData(key: String, defaultValue: T) : T
