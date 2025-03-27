@@ -1,5 +1,6 @@
 package com.example.cumulora.features.weather
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -17,11 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -39,11 +36,11 @@ import com.example.cumulora.core.factories.WeatherViewModelFactory
 import com.example.cumulora.features.weather.component.CurrentTemperature
 import com.example.cumulora.features.weather.component.WeatherDetailsSection
 import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
-import com.example.cumulora.ui.theme.Purple
 import com.example.cumulora.utils.repoInstance
 
 
 //@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("NewApi")
 @Composable
 fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
 
@@ -128,9 +125,9 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
                     CurrentTemperature(
                         weatherData.city,
                         weatherData.currentTemp,
-                        weatherData.feelsLike,
                         weatherData.description,
                         weatherData.currentTime,
+                        weatherData.currentDate,
                         weatherData.icon,
                         onMapNavigate
                     )

@@ -12,5 +12,7 @@ data class WeatherEntity(
     val clouds: Int,
     val city: String,
     val icon: String,
-    val description: String
+    val description: String,
+    val sunRise :Long,
+    val sunSet :Long
 )

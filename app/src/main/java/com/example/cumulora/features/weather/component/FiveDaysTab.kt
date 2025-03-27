@@ -26,13 +26,8 @@ import com.example.cumulora.utils.formatNumberBasedOnLanguage
 import com.example.cumulora.utils.weatherIcons
 
 
-//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
-
-//    val daysList = listOf("Sat", "Sun", "Mon", "Tue", "Wed")
-
-//    val data = forecast.asFlow().filter { it.dtTxt. }
 
     Surface(
         modifier = Modifier
@@ -76,9 +71,7 @@ fun ForecastItem(forecast: Forecast) {
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         "${forecast.main.tempMax.toString().formatNumberBasedOnLanguage(CURRENT_LANG)} / " +
-                                "${
-                                    forecast.main.tempMin.toString().formatNumberBasedOnLanguage(CURRENT_LANG)
-                                }"
+                                forecast.main.tempMin.toString().formatNumberBasedOnLanguage(CURRENT_LANG)
                     )
                     Text(forecast.weather.first().description)
                 }

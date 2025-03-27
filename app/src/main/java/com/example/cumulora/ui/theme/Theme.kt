@@ -46,7 +46,7 @@ fun CumuloraTheme(
             if (/*darkTheme*/false) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-//        darkTheme -> DarkColorScheme
+        darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 

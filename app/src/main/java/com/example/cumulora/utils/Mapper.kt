@@ -18,6 +18,9 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
     val icon = this.weatherList.firstOrNull()?.icon ?: ""
     val description = this.weatherList.firstOrNull()?.description ?: ""
 
+    val sunRise = this.sys.sunrise
+    val sunSet = this.sys.sunset
+
     val epochSeconds = this.dt
     val timezoneOffsetSeconds = this.timezone
     val localTimeMillis = (epochSeconds + timezoneOffsetSeconds) * 1000
@@ -42,6 +45,8 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
         clouds = clouds,
         city = city,
         icon = icon,
+        sunRise = sunRise,
+        sunSet = sunSet,
         description = description
     )
 }

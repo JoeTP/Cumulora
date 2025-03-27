@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +27,7 @@ import com.example.cumulora.component.OvalCard
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
 import com.example.cumulora.utils.CURRENT_LANG
+import com.example.cumulora.utils.DayNightIndicator
 import com.example.cumulora.utils.formatNumberBasedOnLanguage
 
 
@@ -35,7 +36,11 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
 
     val forecastList = forecast.forecastList
 
-    Column(modifier = Modifier.background(Color.Transparent)) {
+    Column(
+        modifier = Modifier
+            .background(Color.Transparent)
+            .padding(horizontal = 16.dp),
+    ) {
         Spacer(modifier = Modifier.height(16.dp))
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
@@ -48,36 +53,44 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyVerticalGrid(
+        LazyVerticalStaggeredGrid(
 //            contentPadding = PaddingValues(bottom = 82.dp),
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .height(400.dp)
-                .padding(horizontal = 16.dp),
+            columns = StaggeredGridCells.Fixed(2),
+            modifier = Modifier.height(300.dp),
 //            userScrollEnabled = false,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalItemSpacing = 16.dp,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
                 Humidity(weather.humidity.toString().formatNumberBasedOnLanguage(CURRENT_LANG))
             }
             item {
-                Wind(weather.windSpeed.toString().formatNumberBasedOnLanguage(CURRENT_LANG), weather.windDegree.toFloat())
+                Wind(
+                    weather.windSpeed.toString().formatNumberBasedOnLanguage(CURRENT_LANG),
+                    weather.windDegree.toFloat()
+                )
             }
             item {
                 Pressure(weather.pressure.toString().formatNumberBasedOnLanguage(CURRENT_LANG))
             }
+
+            item{}
+
             item {
                 Clouds(weather.clouds.toString().formatNumberBasedOnLanguage(CURRENT_LANG))
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        DayNight(weather.sunRise, weather.sunSet)
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
 @Composable
 private fun Wind(windSpeed: String, windDegree: Float) =
     WeatherCard(stringResource(R.string.wind_speed), R.drawable.wind) {
-        Box(contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             Image(painter = painterResource(id = R.drawable.compas), contentDescription = "")
             Image(
                 painter = painterResource(id = R.drawable.compas_arrow), contentDescription = "",
@@ -103,4 +116,12 @@ private fun Pressure(pressure: String) = WeatherCard(stringResource(R.string.pre
 @Composable
 private fun Clouds(clouds: String) = WeatherCard(stringResource(R.string.clouds), R.drawable.cloud_icon) {
     Text(clouds)
+}
+
+@Composable
+private fun DayNight(sunRise: Long, sunSet: Long) = WeatherCard(
+    stringResource(R.string.sun), R
+        .drawable.cloud_icon
+) {
+    DayNightIndicator(sunRise, sunSet)
 }
