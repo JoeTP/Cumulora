@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
@@ -68,8 +69,10 @@ fun WeatherDetailsSection(
         modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth(),
+        //TODO: HERE TO MAKE THE BLUR Effect
+        color = Color.Transparent,
         shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp),
-        color = Color.LightGray
+
     ) {
         WeatherDetailsSectionChild(
             tabs = tabs,
@@ -100,7 +103,8 @@ private fun WeatherDetailsSectionChild(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(24.dp),
+                .height(24.dp)
+                .background(Color.Transparent),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -109,13 +113,15 @@ private fun WeatherDetailsSectionChild(
                     .width(50.dp)
                     .height(4.dp),
                 shape = CircleShape,
-                color = Color.Black,
+                color = colorResource(R.color.black),
             ) {}
         }
-        Surface(shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)) {
-            TabRow(selectedTabIndex = selectedTabIndex) {
+        Surface(color = Color.Transparent, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)) {
+            TabRow(modifier = Modifier.background(Color.Transparent), containerColor = Color.Transparent, selectedTabIndex = 
+            selectedTabIndex) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
+                        modifier = Modifier.background(Color.Transparent),
                         icon = { Icon(imageVector = tabIcons[index], contentDescription = null) },
                         selected = selectedTabIndex == index,
                         onClick = { onTabSelected(index) },
@@ -132,7 +138,7 @@ private fun WeatherDetailsSectionChild(
             userScrollEnabled = false,
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Blue)
+                .background(Color.Transparent)
         ) { page ->
             when (page) {
                 0 -> TodayTab(weather, forecast)

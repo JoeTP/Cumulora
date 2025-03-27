@@ -2,9 +2,11 @@ package com.example.cumulora.features.weather
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -16,10 +18,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.cumulora.R
 import com.example.cumulora.core.factories.WeatherViewModelFactory
 import com.example.cumulora.features.weather.component.CurrentTemperature
@@ -30,7 +38,7 @@ import com.example.cumulora.utils.repoInstance
 
 //@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
+fun WeatherScreenUI(modifier: Modifier, onMapNavigate: () -> Unit) {
 
     val ctx: Context = LocalContext.current
 
@@ -43,23 +51,37 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
 
     val scrollState = rememberScrollState()
 
+    val lottie by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading))
+
+    val progress by animateLottieCompositionAsState(
+        composition = lottie,
+        restartOnPlay = true,
+        speed = 1f,
+        isPlaying = true,
+    )
+
     LaunchedEffect(Unit) {
         viewModel.refreshWeatherWithCurrentSettings()
     }
-
     when (combinedState) {
         is CombinedStateResponse.Failure -> {
             val ex = combinedState as CombinedStateResponse.Failure
             Log.e("TAG", "WeatherScreenUI: ${ex.error}")
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(stringResource(R.string.failed_to_get_data))
             }
         }
 
         is CombinedStateResponse.Loading -> {
             Log.e("TAG", "WeatherScreenUI:")
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+            Box(modifier = modifier.fillMaxSize()
+                .background(Color.Transparent), contentAlignment = Alignment
+                .Center) {
+                LottieAnimation(
+                    composition = lottie,
+                    progress = { progress },
+                    modifier = Modifier.size(120.dp)
+                )
             }
         }
 
@@ -74,6 +96,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
                 modifier = modifier
                     .fillMaxSize()
                     .verticalScroll(scrollState)
+                    .background(Color.Transparent)
             ) {
                 CurrentTemperature(
                     weatherData.city,

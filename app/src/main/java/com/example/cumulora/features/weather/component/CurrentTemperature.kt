@@ -41,7 +41,8 @@ fun CurrentTemperature(
     icon: String,
     onMapNavigate: () -> Unit
 ) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)
+        .background(Color.Transparent)) {
         Row(
             modifier = Modifier.clickable { onMapNavigate() },
             verticalAlignment = Alignment.CenterVertically
@@ -61,10 +62,9 @@ fun CurrentTemperature(
                 painter = painterResource(id = weatherIcons.getValue(icon)),
                 contentDescription = ""
             )
-            Row(modifier = Modifier.background(Color.Gray), verticalAlignment = Alignment.Top) {
+            Row(verticalAlignment = Alignment.Top) {
                 Text(
                     text = temperature.toString().formatNumberBasedOnLanguage(CURRENT_LANG),
-                    color = Color.White,
                     textAlign = TextAlign.Center,
                     fontSize = 54.sp
                 )

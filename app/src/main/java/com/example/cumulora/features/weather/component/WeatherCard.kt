@@ -21,11 +21,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun WeatherCard(
-    title: String, iconId: Int, color: Color = Color.DarkGray,
+    title: String, iconId: Int,
     composable: @Composable () -> Unit,
 ) {
 
-    Surface(shape = RoundedCornerShape(20.dp), color = color) {
+    Surface(shape = RoundedCornerShape(20.dp)) {
         Column(modifier = Modifier
             .padding(8.dp)
             .height(160.dp)) {
