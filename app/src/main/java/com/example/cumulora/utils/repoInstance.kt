@@ -13,7 +13,6 @@ import com.example.cumulora.data.repository.WeatherRepositoryImpl
 fun repoInstance(ctx: Context): WeatherRepository {
     return WeatherRepositoryImpl.getInstance(
         WeatherRemoteDataSourceImpl(WeatherApiClient.weatherService),
-        WeatherLocalDataSourceImpl.getInstance(AppDataBase.getInstance(ctx).weatherDao(),
-            SharedPreferenceHelper.getInstance())
+        WeatherLocalDataSourceImpl.getInstance(AppDataBase.getInstance(ctx).weatherDao(), SharedPreferenceHelper.getInstance())
     )
 }

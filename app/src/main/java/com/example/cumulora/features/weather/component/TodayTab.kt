@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -48,10 +49,12 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyVerticalGrid(
+//            contentPadding = PaddingValues(bottom = 82.dp),
             columns = GridCells.Fixed(2),
             modifier = Modifier
                 .height(400.dp)
                 .padding(horizontal = 16.dp),
+//            userScrollEnabled = false,
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {

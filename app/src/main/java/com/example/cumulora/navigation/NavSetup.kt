@@ -3,26 +3,21 @@ package com.example.cumulora.navigation
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -68,15 +63,14 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                     Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorite")
                 }
             }) { padding ->
-                Box{
-                    Image(modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable
-                        .clear_sky_daytime),
-                        contentDescription
-                    = "", contentScale = ContentScale.Fit)
-                    WeatherScreenUI(Modifier.padding(padding)) {
-                        navController.navigate(ScreenRoutes.Map)
-                    }
+                WeatherScreenUI(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                ) {
+                    navController.navigate(ScreenRoutes.Map)
                 }
+
             }
         }
 
@@ -86,7 +80,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                 TopAppBar(title = {
                     Text(stringResource(R.string.alarms))
                 }, navigationIcon = {
-                        BackButton( navController)
+                    BackButton(navController)
                 })
             }) { }
         }
@@ -96,7 +90,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                 TopAppBar(title = {
                     Text(stringResource(R.string.saved_countries))
                 }, navigationIcon = {
-                    BackButton( navController)
+                    BackButton(navController)
                 })
             }, floatingActionButton = {
                 FloatingActionButton(onClick = {
@@ -116,10 +110,10 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                 TopAppBar(title = {
                     Text(stringResource(R.string.settings))
                 }, navigationIcon = {
-                    BackButton( navController)
+                    BackButton(navController)
                 })
             }) { padding ->
-                SettingsScreenUI(Modifier.padding(padding)){
+                SettingsScreenUI(Modifier.padding(padding)) {
                     navController.navigate(ScreenRoutes.Map)
                 }
             }
@@ -128,7 +122,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
         composable<ScreenRoutes.Map> {
             Scaffold(topBar = {
                 TopAppBar(title = { Text(stringResource(R.string.choose_location)) }, navigationIcon = {
-                    BackButton( navController)
+                    BackButton(navController)
                 })
             }) { padding ->
                 MapScreenUI(Modifier.padding(padding), navController)

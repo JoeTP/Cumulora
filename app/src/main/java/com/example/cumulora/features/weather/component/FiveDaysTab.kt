@@ -37,7 +37,12 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(
+                start = 16.dp,
+                end = 16.dp,
+                top = 16.dp,
+                bottom = 28.dp
+            )
             .background(Color.Transparent),
         shape = RoundedCornerShape(20.dp)
     ) {
@@ -49,7 +54,6 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
     }
 }
 
-//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ForecastItem(forecast: Forecast) {
     ListItem(colors = ListItemDefaults.colors(containerColor = Color.Cyan.copy(alpha = 0.2f)),
@@ -70,8 +74,12 @@ fun ForecastItem(forecast: Forecast) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column(horizontalAlignment = Alignment.End) {
-                    Text("${forecast.main.tempMax.toString().formatNumberBasedOnLanguage(CURRENT_LANG)} / " +
-                            "${forecast.main.tempMin.toString().formatNumberBasedOnLanguage(CURRENT_LANG)}")
+                    Text(
+                        "${forecast.main.tempMax.toString().formatNumberBasedOnLanguage(CURRENT_LANG)} / " +
+                                "${
+                                    forecast.main.tempMin.toString().formatNumberBasedOnLanguage(CURRENT_LANG)
+                                }"
+                    )
                     Text(forecast.weather.first().description)
                 }
             }

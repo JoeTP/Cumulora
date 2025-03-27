@@ -109,6 +109,7 @@ dependencies {
 
     //UI
     implementation("androidx.compose.material:material-icons-extended:$compose_version")
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
 
     //Glide & lottie
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
