@@ -27,4 +27,7 @@
     <string name="c">°C</string>
     <string name="f">°F</string>
     <string name="k">K</string>
+    <string name="sunrise_sunset">Sunrise/Sunset</string>
+    <string name="max_min">Max/Min </string>
+    <string name="details">Details</string>
 </resources>

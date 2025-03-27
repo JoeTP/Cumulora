@@ -8,6 +8,8 @@ import java.util.TimeZone
 
 fun WeatherResponse.toFinalWeather(): WeatherEntity {
     val currentTemp = this.main.temp
+    val maxTemp = this.main.tempMax
+    val minTemp = this.main.tempMin
     val feelsLike = this.main.feelsLike
     val humidity = this.main.humidity
     val windSpeed = this.wind.speed
@@ -35,6 +37,8 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
 
     return WeatherEntity(
         currentTemp = currentTemp,
+        maxTemp = maxTemp,
+        minTemp = minTemp,
         feelsLike = feelsLike,
         currentDate = currentDate,
         currentTime = currentTime,

@@ -95,7 +95,7 @@ fun CurrentTemperature(
                 imageVector = Icons.Default.Refresh,
                 contentDescription = ""
             )
-            Text(stringResource(R.string.last_updated, "${formatDate(date)} - ${formatTimeTo12Hour(time)}"))
+//            Text(stringResource(R.string.last_updated, "${formatDate(date)} - ${formatTimeTo12Hour(time)}"))
         }
 
     }
