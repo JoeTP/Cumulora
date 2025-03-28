@@ -58,8 +58,8 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
     val scrollProgress = remember(scrollState.value) {
         minOf(scrollState.value / 500f, 1f)
     }
-    val startColor = Color.Black.copy(alpha = 0.6f)
-    val endColor = Color.Black.copy(alpha = 0.9f)
+    val startColor = Color.Black.copy(alpha = 0.3f)
+    val endColor = Color.Black.copy(alpha = 0.92f)
     val currentBgColor = remember(scrollProgress) {
         lerp(startColor, endColor, scrollProgress)
     }
@@ -70,6 +70,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
         composition = lottie,
         restartOnPlay = true,
         speed = 1f,
+        iterations = 1,
         isPlaying = true,
     )
 
@@ -96,6 +97,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, onMapNavigate: () -> Unit) {
                 LottieAnimation(
                     composition = lottie,
                     progress = { progress },
+
                     modifier = Modifier.size(120.dp)
                 )
             }

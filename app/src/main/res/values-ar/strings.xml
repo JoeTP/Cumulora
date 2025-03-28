@@ -28,7 +28,7 @@
     <string name="f">°ف</string> <!-- درجة فهرنهايت -->
     <string name="k">ك</string> <!-- كلفن -->
     <string name="sunrise_sunset">الشروق/الغروب</string>
-    <string name="max_min">الحد الأقصى/الأدنى </string>
+    <string name="max_min">العظمى/الصغرى</string>
     <string name="details">التفاصيل</string>
 
 </resources>

@@ -103,12 +103,13 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
                 //TODO: UNIT
                 Row(Modifier.fillMaxSize(),horizontalArrangement = Arrangement
                     .SpaceBetween) {
-                    Column {
+                    Column(Modifier.fillMaxHeight(),verticalArrangement = Arrangement.SpaceBetween) {
                         Row {
                             Icon(imageVector = Icons.Default.Air, contentDescription = "")
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(stringResource(R.string.wind_speed))
                         }
+                        Spacer(modifier = Modifier.height(12.dp))
                         Text(weather.windSpeed.toString().formatNumberBasedOnLanguage(CURRENT_LANG))
 
                     }
