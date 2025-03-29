@@ -1,4 +1,4 @@
-package com.example.cumulora.data.local
+package com.example.cumulora.data.local.weather
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,6 +6,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.example.cumulora.data.models.alarm.Alarm
+import com.example.cumulora.utils.ALARMS_TABLE
 import com.example.cumulora.utils.FAVORITE_TABLE_NAME
 import kotlinx.coroutines.flow.Flow
 
@@ -23,5 +25,20 @@ interface WeatherDao {
 
     @Update
     suspend fun updateWeather(favoriteWeather: SavedWeather)
+
+    @Query("SELECT * FROM $ALARMS_TABLE")
+    fun getAllAlarms(): Flow<List<Alarm>>
+
+    @Query("SELECT * FROM $ALARMS_TABLE WHERE id = :id")
+    suspend fun getAlarmById(id: Int): Alarm?
+
+    @Insert
+    suspend fun insertAlarm(alarm: Alarm)
+
+    @Delete
+    suspend fun deleteAlarm(alarm: Alarm)
+
+    @Update
+    suspend fun updateAlarm(alarm: Alarm)
 
 }

@@ -1,6 +1,6 @@
 package com.example.cumulora.features.savedweather
 
-import com.example.cumulora.data.local.SavedWeather
+import com.example.cumulora.data.local.weather.SavedWeather
 
 
 sealed class SavedWeatherStateResponse {

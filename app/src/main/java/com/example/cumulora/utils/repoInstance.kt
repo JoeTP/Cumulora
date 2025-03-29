@@ -2,7 +2,7 @@ package com.example.cumulora.utils
 
 import android.content.Context
 import com.example.cumulora.data.local.AppDataBase
-import com.example.cumulora.data.local.WeatherLocalDataSourceImpl
+import com.example.cumulora.data.local.weather.WeatherLocalDataSourceImpl
 import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.data.remote.WeatherApiClient
 import com.example.cumulora.data.remote.WeatherRemoteDataSourceImpl

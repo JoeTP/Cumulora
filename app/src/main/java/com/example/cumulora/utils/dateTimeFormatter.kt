@@ -29,9 +29,9 @@ fun formatDateToDdMmm(dateTimeString: String): Pair<String, String> {
 }
 
 @SuppressLint("NewApi")
-fun formatUnixTimeToHHMM(unixTimestamp: Long): String {
-    val instant = Instant.ofEpochSecond(unixTimestamp)
-    val formatter = DateTimeFormatter.ofPattern("HH:mm")
+fun formatUnixTimeToHHMM(unixTimestamp: Long?): String {
+    val instant = unixTimestamp?.let { Instant.ofEpochSecond(it) }
+    val formatter = DateTimeFormatter.ofPattern("HH:mm a")
         .withZone(ZoneId.systemDefault())
     return formatter.format(instant)
 }

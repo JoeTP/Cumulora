@@ -8,7 +8,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -65,13 +67,10 @@ fun SavedWeatherScreenUI(modifier: Modifier = Modifier, snackbarHostState: Snack
 
     Box(modifier = modifier.fillMaxSize()) {
         when (savedWeatherListState) {
-            is SavedWeatherStateResponse.Loading -> {
-                LoadingData()
-            }
 
-            is SavedWeatherStateResponse.Failure -> {
-                // Error message handled by the LaunchedEffect above
-            }
+            is SavedWeatherStateResponse.Loading -> { LoadingData() }
+
+            is SavedWeatherStateResponse.Failure -> {}
 
             is SavedWeatherStateResponse.Success -> {
                 val weatherList = (savedWeatherListState as SavedWeatherStateResponse.Success).data
@@ -79,7 +78,9 @@ fun SavedWeatherScreenUI(modifier: Modifier = Modifier, snackbarHostState: Snack
                 if (weatherList.isEmpty()) {
                     NoData()
                 } else {
-                    LazyColumn {
+                    LazyColumn (modifier = Modifier.padding(horizontal = 16.dp), contentPadding =
+                    PaddingValues(top = 16.dp, bottom = 86.dp), verticalArrangement =
+                    Arrangement.spacedBy(16.dp)) {
                         items(weatherList, key = { it.cityName }) {
                             SwipeToDeleteContainer(
                                 item = it,

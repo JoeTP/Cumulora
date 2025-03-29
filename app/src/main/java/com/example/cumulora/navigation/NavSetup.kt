@@ -2,12 +2,11 @@ package com.example.cumulora.navigation
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddAlarm
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -18,8 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -47,7 +44,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
     val isFirstTime = shared.getData(IS_FIRST_TIME_SK, true)
     val startingScreen = if (isFirstTime) ScreenRoutes.Onboarding else ScreenRoutes.Weather
 
-    NavHost(navController = navController, startDestination = startingScreen) {
+    NavHost(navController = navController, startDestination = startingScreen/*ScreenRoutes.SavedWeather*/) {
 
         composable<ScreenRoutes.Onboarding> {
             OnBoardingScreenUI {
@@ -75,14 +72,15 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
         }
 
         composable<ScreenRoutes.Alarm> {
-            AlarmScreenUI()
             Scaffold(topBar = {
                 TopAppBar(title = {
                     Text(stringResource(R.string.alarms))
                 }, navigationIcon = {
                     BackButton(navController)
                 })
-            }) { }
+            }) { padding ->
+                AlarmScreenUI(Modifier.padding(padding))
+            }
         }
 
         composable<ScreenRoutes.SavedWeather> {

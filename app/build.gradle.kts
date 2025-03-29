@@ -60,6 +60,8 @@ dependencies {
     val room_version = "2.6.1"
     val nav_version = "2.8.8"
     val compose_version = "1.6.3"
+    val work_version = "2.10.0"
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -88,9 +90,9 @@ dependencies {
     //*optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
 
-//    //LiveData
-//    //*To deal with live data in compose
-//    implementation("androidx.compose.runtime:runtime-livedata:$compose_version")
+    //WorkManager
+    implementation("androidx.work:work-runtime-ktx:$work_version")
+    implementation("androidx.work:work-runtime:$work_version")
 
     //view model
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7")

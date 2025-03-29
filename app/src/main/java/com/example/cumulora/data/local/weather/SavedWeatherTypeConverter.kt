@@ -1,4 +1,4 @@
-package com.example.cumulora.data.local
+package com.example.cumulora.data.local.weather
 
 import androidx.room.TypeConverter
 import com.example.cumulora.data.models.forecast.ForecastResponse
