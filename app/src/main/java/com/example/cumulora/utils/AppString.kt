@@ -5,6 +5,7 @@ const val DATABASE_NAME = "weather_db"
 const val FAVORITE_TABLE_NAME = "favorite_table"
 const val SHARED_PREF_NAME = "app_prefs"
 const val LOCATION_TYPE = "locationType"
+const val ALARMS_TABLE = "alarms_table"
 var CURRENT_LANG = ""
 
 
@@ -37,3 +38,10 @@ const val LANG_SK = "lang"
 const val LANG_EN = "en"
 const val LANG_AR = "ar"
 const val USE_CURRENT_LOC_SK = "use_current_loc"
+
+
+//!Worker IDs
+const val ALARM_ID_KEY = "alarm_id"
+const val ALARM_LABEL_KEY = "alarm_label"
+const val DURATION_KEY = "duration_minutes"
+const val ALARM_CHANNEL_ID = "alarm_channel"

@@ -8,6 +8,8 @@ import java.util.TimeZone
 
 fun WeatherResponse.toFinalWeather(): WeatherEntity {
     val currentTemp = this.main.temp
+    val maxTemp = this.main.tempMax
+    val minTemp = this.main.tempMin
     val feelsLike = this.main.feelsLike
     val humidity = this.main.humidity
     val windSpeed = this.wind.speed
@@ -17,6 +19,9 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
     val city = this.name
     val icon = this.weatherList.firstOrNull()?.icon ?: ""
     val description = this.weatherList.firstOrNull()?.description ?: ""
+
+    val sunRise = this.sys.sunrise
+    val sunSet = this.sys.sunset
 
     val epochSeconds = this.dt
     val timezoneOffsetSeconds = this.timezone
@@ -32,6 +37,8 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
 
     return WeatherEntity(
         currentTemp = currentTemp,
+        maxTemp = maxTemp,
+        minTemp = minTemp,
         feelsLike = feelsLike,
         currentDate = currentDate,
         currentTime = currentTime,
@@ -42,6 +49,8 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
         clouds = clouds,
         city = city,
         icon = icon,
+        sunRise = sunRise,
+        sunSet = sunSet,
         description = description
     )
 }

@@ -2,6 +2,8 @@ package com.example.cumulora.data.models.weather
 
 data class WeatherEntity(
     val currentTemp: Double,
+    val maxTemp: Double,
+    val minTemp: Double,
     val feelsLike: Double,
     val currentDate: String,
     val currentTime: String,
@@ -12,5 +14,7 @@ data class WeatherEntity(
     val clouds: Int,
     val city: String,
     val icon: String,
-    val description: String
+    val description: String,
+    val sunRise :Long,
+    val sunSet :Long
 )

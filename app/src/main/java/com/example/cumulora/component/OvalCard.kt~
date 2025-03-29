@@ -33,9 +33,9 @@ fun OvalCard(forecast: Forecast, lang: String) {
     Surface(shape = CircleShape) {
         Column(
             modifier = Modifier
-                .height(150.dp)
-                .width(70.dp)
-                .padding(vertical = 15.dp),
+                .height(120.dp)
+                .width(60.dp)
+                .padding(vertical = 10.dp),
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -44,9 +44,7 @@ fun OvalCard(forecast: Forecast, lang: String) {
                 painter = painterResource(id = weatherIcons.getValue(forecast.weather.first().icon)),
                 contentDescription = ""
             )
-            Text(forecast.main.temp.toInt().toString().formatNumberBasedOnLanguage(lang)+ " " +
-                    stringResource(R
-                .string.k))
+            Text(forecast.main.temp.toString().formatNumberBasedOnLanguage(lang))
         }
     }
 }

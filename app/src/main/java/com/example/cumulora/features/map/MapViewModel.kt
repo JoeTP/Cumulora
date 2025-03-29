@@ -3,7 +3,7 @@ package com.example.cumulora.features.map
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cumulora.data.local.SavedWeather
+import com.example.cumulora.data.local.weather.SavedWeather
 import com.example.cumulora.data.repository.WeatherRepository
 import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAST_LAT
@@ -29,24 +29,34 @@ import kotlin.coroutines.suspendCoroutine
 class MapViewModel(private val repo: WeatherRepository, private val placesClient: PlacesClient) :
     ViewModel() {
 
-    fun getLocationName(autocompletePlace: AutocompletePlace, markerState: MarkerState) {
+     fun getLocationName(
+        autocompletePlace: AutocompletePlace,
+        markerState: MarkerState
+    ) = viewModelScope.launch {
+        try {
+            val placeFields = listOf(Place.Field.LOCATION)
+            val request = FetchPlaceRequest.builder(autocompletePlace.placeId, placeFields).build()
 
-        val placeFields = listOf(Place.Field.LOCATION)
-        val request = FetchPlaceRequest.builder(autocompletePlace.placeId, placeFields).build()
-
-        placesClient.fetchPlace(request).addOnSuccessListener { response ->
-            val place = response.place
-            val newPosition = place.location ?: LatLng(0.0, 0.0)
-            markerState.position = newPosition
-            Log.d(
-                "TAG",
-                "Selected Place: ${autocompletePlace.primaryText}, Coordinates: $newPosition"
-            )
-        }
-            .addOnFailureListener { exception ->
-                Log.e("TAG", "Error fetching place details: ${exception.message}")
+            val place = suspendCoroutine { continuation ->
+                placesClient.fetchPlace(request)
+                    .addOnSuccessListener { response ->
+                        continuation.resume(response.place)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("TAG", "Error fetching place details: ${exception.message}")
+                        continuation.resume(null)
+                    }
             }
+
+            place?.location?.let { location ->
+                markerState.position = LatLng(location.latitude, location.longitude)
+                Log.d("TAG", "Selected Place: ${autocompletePlace.primaryText}, Coordinates: $location")
+            }
+        } catch (e: Exception) {
+            Log.e("TAG", "Error in getLocationName: ${e.message}")
+        }
     }
+
 
     suspend fun getAddressPredictions(inputString: String): List<AutocompletePrediction> {
 
@@ -81,7 +91,7 @@ class MapViewModel(private val repo: WeatherRepository, private val placesClient
         repo.saveWeather(SavedWeather(forecast?.city?.name ?: "", weather, forecast))
     }
 
-     fun cacheLastLatLon(lat: String, lon: String) {
+    fun cacheLastLatLon(lat: String, lon: String) {
         repo.cacheData(LAST_LAT, lat)
         repo.cacheData(LAST_LON, lon)
     }

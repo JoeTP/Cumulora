@@ -1,7 +1,8 @@
 package com.example.cumulora.data.repository
 
-import com.example.cumulora.data.local.SavedWeather
-import com.example.cumulora.data.local.WeatherLocalDataSource
+import com.example.cumulora.data.local.weather.SavedWeather
+import com.example.cumulora.data.local.weather.WeatherLocalDataSource
+import com.example.cumulora.data.models.alarm.Alarm
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.geocoder.GeocoderResponse
 import com.example.cumulora.data.models.weather.WeatherResponse
@@ -79,6 +80,26 @@ class WeatherRepositoryImpl private constructor(
 
     override fun <T> getCachedData(key: String, defaultValue: T): T {
         return localDataSource.getData(key, defaultValue) as T
+    }
+
+    override suspend fun getAlarms(): Flow<List<Alarm>> {
+        return localDataSource.getAlarms()
+    }
+
+    override suspend fun getAlarm(id: Int): Alarm? {
+        return localDataSource.getAlarmById(id)
+    }
+
+    override suspend fun addAlarm(alarm: Alarm) {
+        localDataSource.addAlarm(alarm)
+    }
+
+    override suspend fun deleteAlarm(alarm: Alarm) {
+        localDataSource.deleteAlarm(alarm)
+    }
+
+    override suspend fun updateAlarm(alarm: Alarm) {
+        localDataSource.updateAlarm(alarm)
     }
 
 

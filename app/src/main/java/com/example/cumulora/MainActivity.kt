@@ -1,6 +1,7 @@
 package com.example.cumulora
 
 import android.annotation.SuppressLint
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,6 +19,8 @@ import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.features.splash.SplashScreenUI
 import com.example.cumulora.features.splash.SplashViewModel
 import com.example.cumulora.navigation.NavSetup
+import com.example.cumulora.receiver.AlarmCancelReceiver
+import com.example.cumulora.receiver.AlarmReceiver
 import com.example.cumulora.ui.theme.CumuloraTheme
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.LANG
@@ -26,6 +29,7 @@ import java.util.Locale
 
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +37,13 @@ class MainActivity : ComponentActivity() {
         Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.googleApiKey)
         CURRENT_LANG = SharedPreferenceHelper.getInstance().getData(LANG, "en")
         applyLanguage(CURRENT_LANG)
+
+        val intentFilter = IntentFilter("com.example.cumulora.receiver.AlarmReceiver")
+        registerReceiver(AlarmReceiver(), intentFilter)
+
+        val intentFilter2 = IntentFilter("com.example.cumulora.receiver.AlarmCancelReceiver")
+        registerReceiver(AlarmCancelReceiver(), intentFilter2)
+
         setContent { CumuloraTheme { AppContent() } }
     }
 

@@ -1,4 +1,4 @@
-package com.example.cumulora.data.local
+package com.example.cumulora.data.local.weather
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

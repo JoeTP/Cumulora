@@ -109,10 +109,6 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
             repo.getCachedData("lastLon", "0.0").toDouble()
         )
     }
-
-
-    fun getLang(): String = repo.getCachedData(LANG, "en")
-
 }
 
 

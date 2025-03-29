@@ -1,11 +1,9 @@
 package com.example.cumulora.features.savedweather
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.cumulora.data.local.SavedWeather
+import com.example.cumulora.data.local.weather.SavedWeather
 import com.example.cumulora.data.repository.WeatherRepository
-import com.example.cumulora.navigation.ScreenRoutes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

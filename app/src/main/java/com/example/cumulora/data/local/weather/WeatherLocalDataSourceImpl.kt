@@ -1,6 +1,7 @@
-package com.example.cumulora.data.local
+package com.example.cumulora.data.local.weather
 
 import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
+import com.example.cumulora.data.models.alarm.Alarm
 import kotlinx.coroutines.flow.Flow
 
 class WeatherLocalDataSourceImpl(private val weatherDao: WeatherDao,
@@ -35,5 +36,25 @@ class WeatherLocalDataSourceImpl(private val weatherDao: WeatherDao,
 
     override fun <T> getData(key: String, defaultValue: T): T {
        return sharedPref.getData(key, defaultValue)
+    }
+
+    override suspend fun getAlarms(): Flow<List<Alarm>> {
+        return weatherDao.getAllAlarms()
+    }
+
+    override suspend fun getAlarmById(id: Int): Alarm? {
+        return weatherDao.getAlarmById(id)
+    }
+
+    override suspend fun addAlarm(alarm: Alarm) {
+        weatherDao.insertAlarm(alarm)
+    }
+
+    override suspend fun deleteAlarm(alarm: Alarm) {
+        weatherDao.deleteAlarm(alarm)
+    }
+
+    override suspend fun updateAlarm(alarm: Alarm) {
+        weatherDao.updateAlarm(alarm)
     }
 }

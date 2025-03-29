@@ -127,9 +127,9 @@ fun MapScreenUI(modifier: Modifier = Modifier, navController: NavController) {
             onSelected = { autocompletePlace ->
                 result = autocompletePlace
                 predictions = emptyList()
-                isTapped = true
                 //TODO: SAVE THE LATLNG TO SHARED PREF SO U CAN CALL IT BACK IN THE HOME SCREEN
                 viewModel.getLocationName(autocompletePlace, markerState)
+                isTapped = true
             },
             selectedPlace = result,
         )

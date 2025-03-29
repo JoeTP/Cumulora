@@ -2,16 +2,15 @@ package com.example.cumulora.navigation
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.AddAlarm
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -45,7 +44,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
     val isFirstTime = shared.getData(IS_FIRST_TIME_SK, true)
     val startingScreen = if (isFirstTime) ScreenRoutes.Onboarding else ScreenRoutes.Weather
 
-    NavHost(navController = navController, startDestination = startingScreen) {
+    NavHost(navController = navController, startDestination = startingScreen/*ScreenRoutes.SavedWeather*/) {
 
         composable<ScreenRoutes.Onboarding> {
             OnBoardingScreenUI {
@@ -61,21 +60,27 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                     Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorite")
                 }
             }) { padding ->
-                WeatherScreenUI(Modifier.padding(padding)) {
+                WeatherScreenUI(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                ) {
                     navController.navigate(ScreenRoutes.Map)
                 }
+
             }
         }
 
         composable<ScreenRoutes.Alarm> {
-            AlarmScreenUI()
             Scaffold(topBar = {
                 TopAppBar(title = {
                     Text(stringResource(R.string.alarms))
                 }, navigationIcon = {
-                        BackButton( navController)
+                    BackButton(navController)
                 })
-            }) { }
+            }) { padding ->
+                AlarmScreenUI(Modifier.padding(padding))
+            }
         }
 
         composable<ScreenRoutes.SavedWeather> {
@@ -83,7 +88,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                 TopAppBar(title = {
                     Text(stringResource(R.string.saved_countries))
                 }, navigationIcon = {
-                    BackButton( navController)
+                    BackButton(navController)
                 })
             }, floatingActionButton = {
                 FloatingActionButton(onClick = {
@@ -103,10 +108,10 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                 TopAppBar(title = {
                     Text(stringResource(R.string.settings))
                 }, navigationIcon = {
-                    BackButton( navController)
+                    BackButton(navController)
                 })
             }) { padding ->
-                SettingsScreenUI(Modifier.padding(padding)){
+                SettingsScreenUI(Modifier.padding(padding)) {
                     navController.navigate(ScreenRoutes.Map)
                 }
             }
@@ -115,7 +120,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
         composable<ScreenRoutes.Map> {
             Scaffold(topBar = {
                 TopAppBar(title = { Text(stringResource(R.string.choose_location)) }, navigationIcon = {
-                    BackButton( navController)
+                    BackButton(navController)
                 })
             }) { padding ->
                 MapScreenUI(Modifier.padding(padding), navController)

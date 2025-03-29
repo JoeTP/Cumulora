@@ -5,10 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.cumulora.data.local.weather.SavedWeather
+import com.example.cumulora.data.local.weather.SavedWeatherTypeConverter
+import com.example.cumulora.data.local.weather.WeatherDao
+import com.example.cumulora.data.models.alarm.Alarm
+import com.example.cumulora.data.models.alarm.AlarmTypeConverter
 import com.example.cumulora.utils.DATABASE_NAME
 
-@Database(entities = [SavedWeather::class], version = 1)
-@TypeConverters(SavedWeatherTypeConverter::class)
+@Database(entities = [SavedWeather::class, Alarm::class], version = 3)
+@TypeConverters(SavedWeatherTypeConverter::class, AlarmTypeConverter::class)
 abstract class AppDataBase : RoomDatabase(){
 
     abstract fun weatherDao(): WeatherDao
