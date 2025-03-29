@@ -31,12 +31,19 @@
             android:theme="@style/Theme.Cumulora"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
-                <action android:name="androi.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".receiver.AlarmReceiver" android:exported="true" android:enabled="true" />
+        <receiver
+            android:name=".receiver.AlarmReceiver"
+            android:exported="true"
+            android:enabled="true"/>
+        <receiver
+            android:name=".receiver.AlarmCancelReceiver"
+            android:exported="true"
+            android:enabled="true"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/googleApiKey" />
