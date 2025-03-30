@@ -53,18 +53,11 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
         }
 
         composable<ScreenRoutes.Weather> {
-            Scaffold(topBar = { MyAppBar(navController) }, floatingActionButton = {
-                MultiFab(navController)
-            }) { padding ->
                 WeatherScreenUI(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding)
+                    navController = navController
                 ) {
                     navController.navigate(ScreenRoutes.Map)
                 }
-
-            }
         }
 
         composable<ScreenRoutes.Alarm> {
