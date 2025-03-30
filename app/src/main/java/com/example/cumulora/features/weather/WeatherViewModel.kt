@@ -110,4 +110,6 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
             repo.getCachedData(LAST_LON, "0.0").toDouble()
         )
     }
+
+    fun getUnit(): String = repo.getCachedData(UNITS, DEFAULT_UNITS)
 }

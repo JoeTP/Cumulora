@@ -29,8 +29,11 @@ import com.example.cumulora.R
 import com.example.cumulora.core.factories.SettingsViewModelFactory
 import com.example.cumulora.features.settings.component.ListTile
 import com.example.cumulora.utils.CURRENT_LANG
+import com.example.cumulora.utils.getTempUnitSymbol
+import com.example.cumulora.utils.getTemperatureUnit
 import com.example.cumulora.utils.repoInstance
 import com.example.cumulora.utils.restartActivity
+import com.google.android.libraries.places.compose.autocomplete.data.getUnitsConverter
 import java.util.Locale
 
 val TAG = "SettingsScreenUI"
@@ -43,7 +46,8 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
     //TODO: Get from enum
     val langOptions = listOf("en", "ar")
     val locationOptions = listOf("my location", "custom")
-    val unitOptions = listOf("metric", "imperial", "standard")
+    val unitOptions = listOf(stringResource(R.string.c), stringResource(R.string.f), stringResource(R.string.k))
+    val speedOptions = listOf(stringResource(R.string.ms), stringResource(R.string.mph))
 
 
     LaunchedEffect(Unit) {
@@ -85,10 +89,11 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
         ListTile(stringResource(R.string.units), Icons.Outlined.Straighten)
         SingleChoiceSegmentedButton(
             options = unitOptions,
-            currentSelected = unitOptions.indexOf(settingsState.unit)
+            currentSelected = unitOptions.indexOf(ctx.getTempUnitSymbol(settingsState.unit))
         ) {
-            viewModel.changeUnit(unitOptions[it])
+            viewModel.changeUnit(getTemperatureUnit(unitOptions[it]))
         }
+//        Text("Speed: ${speedOptions.indexOf(unitOptions[])}")
 
         CustomDivider()
     }

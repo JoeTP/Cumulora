@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,6 +39,7 @@ fun CurrentTemperature(
     time: String,
     date: String,
     icon: String,
+    tempUnit: String,
     onMapNavigate: () -> Unit
 ) {
     Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
@@ -63,7 +67,7 @@ fun CurrentTemperature(
                     textAlign = TextAlign.Center,
                     fontSize = 54.sp
                 )
-                Text(stringResource(R.string.c))
+                Text(tempUnit)
 
             }
             Image(
@@ -83,15 +87,15 @@ fun CurrentTemperature(
 //            }
             Text(description)
         }
-//        Row(verticalAlignment = Alignment.CenterVertically) {
-//
-//            Icon(
-//                modifier = Modifier.size(20.dp),
-//                imageVector = Icons.Default.Refresh,
-//                contentDescription = ""
-//            )
-//            Text(stringResource(R.string.last_updated, "${formatDate(date)} - ${formatTimeTo12Hour(time)}"))
-//        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+
+            Icon(
+                modifier = Modifier.size(16.dp),
+                imageVector = Icons.Default.Refresh,
+                contentDescription = ""
+            )
+            Text(stringResource(R.string.last_updated, "${date} - ${time}"), fontSize = 12.sp)
+        }
 
     }
 }

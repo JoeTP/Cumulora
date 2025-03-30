@@ -44,6 +44,7 @@ class SettingsViewModel(private val repo: WeatherRepository) : ViewModel() {
     }
 
     fun changeUnit(unit: String) {
+        Log.d("SETTINGS VIEWMODEL", "changeUnit: $unit")
         viewModelScope.launch {
             repo.cacheData(UNITS, unit)
             _settingsState.emit(settingsState.value.copy(unit = unit))

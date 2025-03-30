@@ -17,6 +17,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.example.cumulora.navigation.ScreenRoutes
+import com.example.cumulora.utils.CURRENT_LANG
+import com.example.cumulora.utils.formatNumberBasedOnLanguage
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,9 +40,8 @@ fun MyAppBar(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                Text(text = currentTemp.formatNumberBasedOnLanguage(CURRENT_LANG))
                 Text(text = cityName)
-                //TODO: Fix unit
-                Text(text = "$currentTemp °F")
                 Text("")
             }
         },

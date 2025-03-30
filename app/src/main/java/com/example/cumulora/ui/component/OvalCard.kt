@@ -17,12 +17,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
 import com.example.cumulora.data.models.forecast.Forecast
+import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.formatNumberBasedOnLanguage
 import com.example.cumulora.utils.weatherIcons
 import kotlin.math.abs
 
 @Composable
-fun OvalCard(forecast: Forecast, lang: String) {
+fun OvalCard(forecast: Forecast, tempUnit: String) {
     val hours24 = forecast.dtTxt.split(" ", ":")
     //TODO: ENUM for AM PM
     val am_pm = if (hours24[1].toInt() < 12) stringResource(R.string.am) else stringResource(R.string.pm)
@@ -39,14 +40,12 @@ fun OvalCard(forecast: Forecast, lang: String) {
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("${hours12.toString().formatNumberBasedOnLanguage(lang)} $am_pm")
+            Text("${hours12.toString().formatNumberBasedOnLanguage(CURRENT_LANG)} $am_pm")
             Image(
                 painter = painterResource(id = weatherIcons.getValue(forecast.weather.first().icon)),
                 contentDescription = ""
             )
-            Text(forecast.main.temp.toInt().toString().formatNumberBasedOnLanguage(lang)+ " " +
-                    stringResource(R
-                .string.k))
+            Text(forecast.main.temp.toInt().toString().formatNumberBasedOnLanguage(CURRENT_LANG)+ " " + tempUnit)
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddLocationAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -85,7 +86,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                         ScreenRoutes.Map
                     )
                 }) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                    Icon(imageVector = Icons.Default.AddLocationAlt, contentDescription = "Add")
                 }
             }) { padding ->
                 SavedWeatherScreenUI(Modifier.padding(padding), snackbarHostState)

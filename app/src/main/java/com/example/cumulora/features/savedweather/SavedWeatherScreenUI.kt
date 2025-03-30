@@ -75,6 +75,9 @@ fun SavedWeatherScreenUI(modifier: Modifier = Modifier, snackbarHostState: Snack
             is SavedWeatherStateResponse.Success -> {
                 val weatherList = (savedWeatherListState as SavedWeatherStateResponse.Success).data
 
+                val units = viewModel.getUnits()
+
+
                 if (weatherList.isEmpty()) {
                     NoData()
                 } else {
@@ -88,7 +91,7 @@ fun SavedWeatherScreenUI(modifier: Modifier = Modifier, snackbarHostState: Snack
                                 onRestore = { viewModel.restoreDeletedWeather(it) },
                                 snackBarHostState = snackbarHostState,
                                 content = { weather ->
-                                    SavedWeatherCard(weather)
+                                    SavedWeatherCard(weather, units)
                                 }
                             )
                         }

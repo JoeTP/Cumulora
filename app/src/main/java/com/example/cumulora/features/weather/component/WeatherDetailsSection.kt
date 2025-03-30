@@ -56,6 +56,8 @@ fun WeatherDetailsSection(
     weather: WeatherEntity,
     forecast: ForecastResponse,
     forecastFiveDays: List<Forecast>,
+    tempUnit: String,
+    windUnit: String,
     bgColor: Color
 ) {
     val tabs = listOf(stringResource(R.string.today), stringResource(R.string._5_days))
@@ -103,6 +105,8 @@ fun WeatherDetailsSection(
             weather = weather,
             forecast = forecast,
             forecastFiveDays = forecastFiveDays,
+            tempUnit = tempUnit,
+            windUnit = windUnit,
             onTabSelected = { index -> selectedTabIndex = index }
         )
     }
@@ -117,6 +121,8 @@ private fun WeatherDetailsSectionChild(
     weather: WeatherEntity,
     forecast: ForecastResponse,
     forecastFiveDays: List<Forecast>,
+    tempUnit: String,
+    windUnit: String,
     onTabSelected: (index: Int) -> Unit
 ) {
     val tabIcons = listOf(Icons.Default.SystemUpdateAlt, Icons.Default.CalendarMonth)
@@ -155,7 +161,6 @@ private fun WeatherDetailsSectionChild(
                 }
             }
 
-        // HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
         HorizontalPager(
             state = pagerState,
@@ -166,8 +171,8 @@ private fun WeatherDetailsSectionChild(
                 .padding(bottom = 60.dp)
         ) { page ->
             when (page) {
-                0 -> TodayTab(weather, forecast)
-                1 -> FiveDaysTab(forecastFiveDays)
+                0 -> TodayTab(weather, forecast, tempUnit = tempUnit,windUnit = windUnit)
+                1 -> FiveDaysTab(forecastFiveDays, tempUnit)
             }
         }
     }

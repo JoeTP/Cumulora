@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -21,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,10 +47,11 @@ import com.example.cumulora.features.weather.component.WeatherDetailsSection
 import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
 import com.example.cumulora.ui.component.MultiFab
 import com.example.cumulora.ui.component.MyAppBar
+import com.example.cumulora.utils.getTempUnitSymbol
+import com.example.cumulora.utils.getWindSpeedUnitSymbol
 import com.example.cumulora.utils.repoInstance
 
 
-//@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("NewApi")
 @Composable
 fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController, onMapNavigate: () -> Unit) {
@@ -63,14 +62,15 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
         factory = WeatherViewModelFactory(repoInstance(ctx.applicationContext))
     )
 
+    val windUnit = ctx.getWindSpeedUnitSymbol(viewModel.getUnit())
+    val tempUnit = ctx.getTempUnitSymbol(viewModel.getUnit())
 
     val combinedState by viewModel.combinedState.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
 
-    val scrollProgress = remember(scrollState.value) {
-        minOf(scrollState.value / 500f, 1f)
-    }
+    val scrollProgress = remember(scrollState.value) { minOf(scrollState.value / 500f, 1f) }
+
     val startColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.3f)
     val topBarStartColor = MaterialTheme.colorScheme.surface.copy(alpha = 0f)
     val endColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f)
@@ -126,17 +126,20 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
             val weatherData = successData.weather.data
             val forecastData = successData.forecast.data
             val forecastFiveDays = successData.forecast.forecastFiveDays.takeLast(5)
+
+
             DisplayWeatherScreen(
                 modifier = modifier,
                 navController = navController,
                 scrollState = scrollState,
-                scrollProgress = scrollProgress,
                 weatherData = weatherData,
                 forecastData = forecastData,
                 forecastFiveDays = forecastFiveDays,
                 currentBgColor = currentBgColor,
                 topBarBgColor = topBarBgColor,
-                onMapNavigate = onMapNavigate
+                onMapNavigate = onMapNavigate,
+                windUnit  = windUnit ,
+                tempUnit  = tempUnit
             )
         }
     }
@@ -148,13 +151,13 @@ fun DisplayWeatherScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     scrollState: ScrollState,
-    scrollProgress: Float,
-    weatherData:
-    WeatherEntity,
+    weatherData: WeatherEntity,
     forecastData: ForecastResponse,
     forecastFiveDays: List<Forecast>,
     currentBgColor: Color,
     topBarBgColor: Color,
+    windUnit: String,
+    tempUnit: String,
     onMapNavigate: () -> Unit
 ) {
     val scrollProgress by remember(scrollState.value) {
@@ -168,15 +171,16 @@ fun DisplayWeatherScreen(
         label = "titleAlpha"
     )
 
-    val currentTemp = weatherData.currentTemp.toInt().toString()
+    val currentTemp = weatherData.currentTemp.toInt().toString() + " "+ tempUnit
     val cityName = weatherData.city
+
     Scaffold(topBar = { MyAppBar(navController, topBarBgColor, cityName, currentTemp, titleAlpha) },
         floatingActionButton = {
         MultiFab(navController)
     }) { padding ->
 
         //TODO: Color black if knight, and cyan if day
-        Box() {
+        Box {
             Image(
                 painter = painterResource(id = R.drawable.clear_sky_nighttime2),
                 contentDescription = "",
@@ -197,12 +201,15 @@ fun DisplayWeatherScreen(
                     weatherData.currentTime,
                     weatherData.currentDate,
                     weatherData.icon,
+                    tempUnit,
                     onMapNavigate
                 )
                 WeatherDetailsSection(
                     weatherData,
                     forecastData,
                     forecastFiveDays,
+                    tempUnit,
+                    windUnit,
                     bgColor = currentBgColor
                 )
             }

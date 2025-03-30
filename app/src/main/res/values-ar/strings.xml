@@ -27,6 +27,9 @@
     <string name="c">°س</string> <!-- درجة مئوية -->
     <string name="f">°ف</string> <!-- درجة فهرنهايت -->
     <string name="k">ك</string> <!-- كلفن -->
+    <string name="mph">ميل/س</string>
+    <string name="ms">م/س</string>
+    <string name="hpa">هـ.ب</string>
     <string name="sunrise_sunset">الشروق/الغروب</string>
     <string name="max_min">العظمى/الصغرى</string>
     <string name="details">التفاصيل</string>
