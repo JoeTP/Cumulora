@@ -53,7 +53,7 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
     Column(
         modifier = Modifier
             .background(Color.Transparent)
-            .padding(horizontal = 16.dp)
+//            .padding(horizontal = 16.dp)
             .padding(bottom = 28.dp),
     ) {
         Spacer(modifier = Modifier.height(16.dp))
@@ -68,7 +68,10 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        WeatherCard {
+        WeatherCard(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+        ) {
             Column {
                 DetailsRow(
                     stringResource(
@@ -101,9 +104,11 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
                 }
                 HorizontalDivider(Modifier.padding(vertical = 12.dp))
                 //TODO: UNIT
-                Row(Modifier.fillMaxSize(),horizontalArrangement = Arrangement
-                    .SpaceBetween) {
-                    Column(Modifier.fillMaxHeight(),verticalArrangement = Arrangement.SpaceBetween) {
+                Row(
+                    Modifier.fillMaxSize(), horizontalArrangement = Arrangement
+                        .SpaceBetween
+                ) {
+                    Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween) {
                         Row {
                             Icon(imageVector = Icons.Default.Air, contentDescription = "")
                             Spacer(modifier = Modifier.width(12.dp))
@@ -113,9 +118,10 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
                         Text(weather.windSpeed.toString().formatNumberBasedOnLanguage(CURRENT_LANG))
 
                     }
-                    Box( contentAlignment = Alignment.Center) {
+                    Box(contentAlignment = Alignment.Center) {
                         Image(
-                            modifier = Modifier.size(60.dp), painter = painterResource(id = R.drawable.compas),
+                            modifier = Modifier.size(60.dp),
+                            painter = painterResource(id = R.drawable.compas),
                             contentDescription = ""
                         )
                         Image(
@@ -130,7 +136,6 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
                 }
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
 
 //        WeatherCard(stringResource(R.string.wind_speed), icon = {
 //            Icon(
@@ -155,16 +160,21 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse) {
 //        }
 
         Spacer(modifier = Modifier.height(16.dp))
+
         val sunrise24 = formatUnixTimeToHHMM(weather.sunRise).formatNumberBasedOnLanguage(CURRENT_LANG)
         val sinSet24 = formatUnixTimeToHHMM(weather.sunSet).formatNumberBasedOnLanguage(CURRENT_LANG)
         val sunrise = formatTimeTo12Hour(sunrise24).formatNumberBasedOnLanguage(CURRENT_LANG)
         val sinSet = formatTimeTo12Hour(sinSet24).formatNumberBasedOnLanguage(CURRENT_LANG)
-        WeatherCard(stringResource(R.string.sunrise_sunset), trail = "$sunrise / $sinSet", icon = {
-            Icon(
-                imageVector = Icons.Default.WbSunny,
-                contentDescription = ""
-            )
-        }) {
+        WeatherCard(
+            stringResource(R.string.sunrise_sunset), subtitle = "$sunrise / $sinSet", icon = {
+                Icon(
+                    imageVector = Icons.Default.WbSunny,
+                    contentDescription = ""
+                )
+            },
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+        ) {
             DayNightIndicator(
                 modifier = Modifier.padding(vertical = 18.dp), sunriseUnix = weather.sunRise,
                 sunsetUnix =

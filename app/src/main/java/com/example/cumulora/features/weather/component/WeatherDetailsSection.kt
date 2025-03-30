@@ -135,7 +135,7 @@ private fun WeatherDetailsSectionChild(
                     .width(50.dp)
                     .height(4.dp),
                 shape = CircleShape,
-                color = colorResource(R.color.black),
+                color = Color.White.copy(alpha = 0.4f),
             ) {}
         }
             TabRow(

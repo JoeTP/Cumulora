@@ -54,9 +54,9 @@ fun formatTimeTo12Hour(time24Hour: String): String {
     val minute = parts[1]
 
     return when {
-        hour == 0 -> "12:$minute " + stringResource(R.string.am)
-        hour < 12 -> "$hour:$minute " +  stringResource(R.string.am)
-        hour == 12 -> "12:$minute " + stringResource(R.string.pm)
-        else -> "${hour - 12}:$minute " + stringResource(R.string.pm)
+        hour == 0 -> "12:$minute "
+        hour < 12 -> "$hour:$minute "
+        hour == 12 -> "12:$minute "
+        else -> "${hour - 12}:$minute "
     }
 }
