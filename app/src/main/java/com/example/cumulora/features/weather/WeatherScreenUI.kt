@@ -3,6 +3,7 @@ package com.example.cumulora.features.weather
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -18,7 +19,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -127,6 +130,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
                 modifier = modifier,
                 navController = navController,
                 scrollState = scrollState,
+                scrollProgress = scrollProgress,
                 weatherData = weatherData,
                 forecastData = forecastData,
                 forecastFiveDays = forecastFiveDays,
@@ -144,6 +148,7 @@ fun DisplayWeatherScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     scrollState: ScrollState,
+    scrollProgress: Float,
     weatherData:
     WeatherEntity,
     forecastData: ForecastResponse,
@@ -152,8 +157,21 @@ fun DisplayWeatherScreen(
     topBarBgColor: Color,
     onMapNavigate: () -> Unit
 ) {
+    val scrollProgress by remember(scrollState.value) {
+        derivedStateOf {
+            minOf(scrollState.value / 500f, 1f)
+        }
+    }
 
-    Scaffold(topBar = { MyAppBar(navController, topBarBgColor) }, floatingActionButton = {
+    val titleAlpha by animateFloatAsState(
+        targetValue = if (scrollProgress < 0.5f) 0f else scrollProgress,
+        label = "titleAlpha"
+    )
+
+    val currentTemp = weatherData.currentTemp.toInt().toString()
+    val cityName = weatherData.city
+    Scaffold(topBar = { MyAppBar(navController, topBarBgColor, cityName, currentTemp, titleAlpha) },
+        floatingActionButton = {
         MultiFab(navController)
     }) { padding ->
 

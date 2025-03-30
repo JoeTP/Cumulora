@@ -52,6 +52,7 @@ fun CurrentTemperature(
                     .clickable { onMapNavigate() }
                     .padding(12.dp),
                 text = cityName,
+                maxLines = 2,
                 fontSize = 32.sp,
                 textAlign = TextAlign.Center,
                 lineHeight = 34.sp
