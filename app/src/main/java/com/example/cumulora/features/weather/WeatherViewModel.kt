@@ -2,17 +2,17 @@ package com.example.cumulora.features.weather
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.repository.WeatherRepository
 import com.example.cumulora.data.repository.WeatherRepositoryImpl
-import com.example.cumulora.features.settings.SettingsViewModel
 import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
 import com.example.cumulora.features.weather.responsestate.ForecastStateResponse
 import com.example.cumulora.features.weather.responsestate.WeatherStateResponse
+import com.example.cumulora.utils.DEFAULT_UNITS
 import com.example.cumulora.utils.LANG
+import com.example.cumulora.utils.LAST_LAT
+import com.example.cumulora.utils.LAST_LON
 import com.example.cumulora.utils.UNITS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -29,7 +29,7 @@ import toFinalWeather
 @OptIn(FlowPreview::class)
 class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
 
-    private val TAG = "TAG"
+    private val TAG = "WeatherViewModel"
 
     private val _mutableCombinedState: MutableStateFlow<CombinedStateResponse> =
         MutableStateFlow(CombinedStateResponse.Loading)
@@ -43,19 +43,19 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
             WeatherRepositoryImpl.settingsChanges
                 .debounce(500)
                 .collect {
-                refreshWeatherWithCurrentSettings()
-            }
+                    refreshWeatherWithCurrentSettings()
+                }
         }
     }
 
-     fun refreshWeatherWithCurrentSettings() {
+    fun refreshWeatherWithCurrentSettings() {
         _mutableCombinedState.value = CombinedStateResponse.Loading
         try {
             val (lat, lon) = getLastLatLng()
-            val unit = repo.getCachedData(UNITS, "")
+            val unit = repo.getCachedData(UNITS, DEFAULT_UNITS)
             val lang = repo.getCachedData(LANG, "")
             getWeatherAndForecast(lat, lon, unit, lang)
-            Log.d(TAG, "refreshWeatherWithCurrentSettings: ${unit} ${lang} ")
+            Log.d(TAG, "refreshWeatherWithCurrentSettings: ${unit} - ${lang} - ${lat} - ${lon}")
         } catch (e: Exception) {
             _mutableCombinedState.value = CombinedStateResponse.Failure("Refresh failed: ${e.message}")
         }
@@ -99,16 +99,15 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     }
 
     private fun cachingLatLng(lat: String, lon: String) {
-        repo.cacheData("lastLat", lat)
-        repo.cacheData("lastLon", lon)
+        repo.cacheData(LAST_LAT, lat)
+        repo.cacheData(LAST_LON, lon)
     }
 
-     fun getLastLatLng(): Pair<Double, Double> {
-        return Pair<Double, Double> (
-            repo.getCachedData("lastLat", "0.0" ).toDouble(),
-            repo.getCachedData("lastLon", "0.0").toDouble()
+    fun getLastLatLng(): Pair<Double, Double> {
+        //TODO: CALL THE GET MY LOCATION FN HERE AND GIVE THEM TO THE DEFAULT VALUES "0.0"
+        return Pair(
+            repo.getCachedData(LAST_LAT, "0.0").toDouble(),
+            repo.getCachedData(LAST_LON, "0.0").toDouble()
         )
     }
 }
-
-

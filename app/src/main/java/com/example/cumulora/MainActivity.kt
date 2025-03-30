@@ -1,9 +1,11 @@
 package com.example.cumulora
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -24,6 +26,7 @@ import com.example.cumulora.receiver.AlarmReceiver
 import com.example.cumulora.ui.theme.CumuloraTheme
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.LANG
+import com.example.cumulora.utils.SHARED_PREF_NAME
 import com.google.android.libraries.places.api.Places
 import java.util.Locale
 
@@ -38,6 +41,14 @@ class MainActivity : ComponentActivity() {
         CURRENT_LANG = SharedPreferenceHelper.getInstance().getData(LANG, "en")
         applyLanguage(CURRENT_LANG)
 
+        //?TESTING ALL PREFS
+        val sharedPref = this.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+        val allPrefs: Map<String, *> = sharedPref.all
+        allPrefs.forEach { (key, value) ->
+            Log.d("Preferences", "$key: $value")
+        }
+
+
         val intentFilter = IntentFilter("com.example.cumulora.receiver.AlarmReceiver")
         registerReceiver(AlarmReceiver(), intentFilter)
 
@@ -48,6 +59,7 @@ class MainActivity : ComponentActivity() {
     }
 
     fun applyLanguage(languageCode: String) {
+        SharedPreferenceHelper.getInstance().saveData(LANG, languageCode)
         val locale = Locale(languageCode)
         Locale.setDefault(locale)
         val config = resources.configuration
@@ -84,3 +96,4 @@ fun MainLayout(navController: NavHostController) {
         NavSetup(navController, snackbarHostState)
     }
 }
+

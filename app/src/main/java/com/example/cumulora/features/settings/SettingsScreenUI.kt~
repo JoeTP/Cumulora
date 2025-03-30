@@ -96,15 +96,15 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
 
 @Composable
 fun SingleChoiceSegmentedButton(
-    currentSelected: Int,
+    currentSelected: Int = 0,
     options: List<String>,
     onClick: (Int) -> Unit
 ) {
     var selectedIndex by remember { mutableIntStateOf(if (currentSelected < 0) 0 else currentSelected) }
 
-//    LaunchedEffect(currentSelected) {
-//        selectedIndex = if (currentSelected < 0) 0 else currentSelected
-//    }
+    LaunchedEffect(currentSelected) {
+        selectedIndex = if (currentSelected < 0) 0 else currentSelected
+    }
 
     SingleChoiceSegmentedButtonRow {
         options.forEachIndexed { index, label ->

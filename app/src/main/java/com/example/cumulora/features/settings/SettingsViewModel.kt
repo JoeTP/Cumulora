@@ -30,9 +30,9 @@ class SettingsViewModel(private val repo: WeatherRepository) : ViewModel() {
 
     private fun loadInitialSettings() {
         viewModelScope.launch {
-            Log.i("SETTINGS", "UNITS: ${repo.getCachedData(UNITS, "")}")
-            Log.i("SETTINGS", "LOCATION_TYPE: ${repo.getCachedData(LOCATION_TYPE, "")}")
             Log.i("SETTINGS", "LANG: ${repo.getCachedData(LANG, "")}")
+            Log.i("SETTINGS", "LOCATION_TYPE: ${repo.getCachedData(LOCATION_TYPE, "")}")
+            Log.i("SETTINGS", "UNITS: ${repo.getCachedData(UNITS, "")}")
             _settingsState.emit(
                 SettingsState(
                     unit = repo.getCachedData(UNITS, ""),
