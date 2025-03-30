@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddAlarm
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -22,8 +20,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cumulora.R
-import com.example.cumulora.component.BackButton
-import com.example.cumulora.component.MyAppBar
+import com.example.cumulora.ui.component.BackButton
+import com.example.cumulora.ui.component.MultiFab
+import com.example.cumulora.ui.component.MyAppBar
 import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.features.alarm.AlarmScreenUI
 import com.example.cumulora.features.map.MapScreenUI
@@ -34,7 +33,6 @@ import com.example.cumulora.features.weather.WeatherScreenUI
 import com.example.cumulora.utils.IS_FIRST_TIME_SK
 
 
-//@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -44,7 +42,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
     val isFirstTime = shared.getData(IS_FIRST_TIME_SK, true)
     val startingScreen = if (isFirstTime) ScreenRoutes.Onboarding else ScreenRoutes.Weather
 
-    NavHost(navController = navController, startDestination = startingScreen/*ScreenRoutes.SavedWeather*/) {
+    NavHost(navController = navController, startDestination = startingScreen) {
 
         composable<ScreenRoutes.Onboarding> {
             OnBoardingScreenUI {
@@ -56,9 +54,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
 
         composable<ScreenRoutes.Weather> {
             Scaffold(topBar = { MyAppBar(navController) }, floatingActionButton = {
-                FloatingActionButton(onClick = { navController.navigate(ScreenRoutes.SavedWeather) }) {
-                    Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorite")
-                }
+                MultiFab(navController)
             }) { padding ->
                 WeatherScreenUI(
                     modifier = Modifier

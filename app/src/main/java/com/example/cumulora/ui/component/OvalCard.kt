@@ -1,4 +1,4 @@
-package com.example.cumulora.component
+package com.example.cumulora.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -33,9 +33,9 @@ fun OvalCard(forecast: Forecast, lang: String) {
     Surface(shape = CircleShape) {
         Column(
             modifier = Modifier
-                .height(120.dp)
-                .width(60.dp)
-                .padding(vertical = 10.dp),
+                .height(150.dp)
+                .width(70.dp)
+                .padding(vertical = 15.dp),
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -44,7 +44,9 @@ fun OvalCard(forecast: Forecast, lang: String) {
                 painter = painterResource(id = weatherIcons.getValue(forecast.weather.first().icon)),
                 contentDescription = ""
             )
-            Text(forecast.main.temp.toString().formatNumberBasedOnLanguage(lang))
+            Text(forecast.main.temp.toInt().toString().formatNumberBasedOnLanguage(lang)+ " " +
+                    stringResource(R
+                .string.k))
         }
     }
 }

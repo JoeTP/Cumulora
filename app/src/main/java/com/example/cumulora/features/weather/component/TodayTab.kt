@@ -35,7 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
-import com.example.cumulora.component.OvalCard
+import com.example.cumulora.ui.component.OvalCard
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
 import com.example.cumulora.utils.CURRENT_LANG

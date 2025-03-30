@@ -1,4 +1,4 @@
-package com.example.cumulora.component
+package com.example.cumulora.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
