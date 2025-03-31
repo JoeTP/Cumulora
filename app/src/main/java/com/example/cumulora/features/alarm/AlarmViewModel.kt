@@ -1,33 +1,37 @@
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cumulora.data.models.alarm.Alarm
 import com.example.cumulora.data.repository.WeatherRepository
+import com.example.cumulora.features.alarm.AlarmStateResponse
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AlarmViewModel(private val repo: WeatherRepository) : ViewModel() {
 
+    private val _mutableAlarmsState = MutableStateFlow<AlarmStateResponse>(AlarmStateResponse.Loading)
+    val alarmsState = _mutableAlarmsState.asStateFlow()
 
-    fun addAlarm(alarm: Alarm) {
-        viewModelScope.launch {
-            repo.addAlarm(alarm)
+    init {
+        getAlarms()
+    }
 
+    fun addAlarm(alarm: Alarm) = viewModelScope.launch {
+        repo.addAlarm(alarm)
+    }
+
+    fun getAlarms() = viewModelScope.launch {
+        try {
+            repo.getAlarms().collect {
+                _mutableAlarmsState.value = AlarmStateResponse.Success(it)
+            }
+        } catch (e: Exception) {
+            _mutableAlarmsState.value = AlarmStateResponse.Failure(e.message ?: "Unknown error")
         }
     }
 
-    fun getAlarms() {
-        viewModelScope.launch {
-//            repo.getAlarms()
-        }
+    fun deleteAlarm(alarm: Alarm) = viewModelScope.launch {
+        repo.deleteAlarm(alarm)
     }
 }
 
-class AlarmViewModelFactory(private val repo: WeatherRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AlarmViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return AlarmViewModel(repo) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

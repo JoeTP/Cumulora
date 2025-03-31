@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cumulora.data.repository.WeatherRepository
 import com.example.cumulora.utils.LANG
+import com.example.cumulora.utils.LAST_LAT
+import com.example.cumulora.utils.LAST_LON
 import com.example.cumulora.utils.LOCATION_TYPE
 import com.example.cumulora.utils.UNITS
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -57,6 +59,13 @@ class SettingsViewModel(private val repo: WeatherRepository) : ViewModel() {
             repo.cacheData(LOCATION_TYPE, locationType)
             _settingsState.emit(settingsState.value.copy(locationType = locationType))
             repo.notifySettingsChanged()
+        }
+    }
+
+    fun useUserLocation(lat: String, lon: String) {
+        viewModelScope.launch {
+            repo.cacheData(LAST_LAT, lat)
+            repo.cacheData(LAST_LON, lon)
         }
     }
 

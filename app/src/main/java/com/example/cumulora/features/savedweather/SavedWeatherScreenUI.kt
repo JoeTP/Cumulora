@@ -58,9 +58,9 @@ fun SavedWeatherScreenUI(modifier: Modifier = Modifier, snackbarHostState: Snack
     val msg by viewModel.message.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }
 
-    // Show snackbar for general messages
     LaunchedEffect(msg) {
         if (msg.isNotBlank()) {
+            snackBarHostState.currentSnackbarData?.dismiss()
             snackBarHostState.showSnackbar(msg, duration = SnackbarDuration.Short)
         }
     }

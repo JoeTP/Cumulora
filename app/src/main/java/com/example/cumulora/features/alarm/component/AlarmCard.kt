@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.cumulora.data.models.alarm.Alarm
 
 
 @Composable
-fun AlarmCard(showDivider : Boolean = true) {
+fun AlarmCard(alarm: Alarm, showDivider : Boolean = true) {
+
 
     Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
         Text("Time")
