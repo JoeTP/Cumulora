@@ -10,9 +10,10 @@ import java.time.LocalTime
 @Entity(tableName = ALARMS_TABLE)
 @TypeConverters(AlarmTypeConverter::class)
 data class Alarm(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     var id: Int,
     val label: String,
+    val cityName: String,
     val time: LocalTime,
     val duration: Int,
 )

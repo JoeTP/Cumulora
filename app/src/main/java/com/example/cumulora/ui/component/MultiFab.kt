@@ -24,7 +24,7 @@ import com.example.cumulora.ui.theme.LightLinColorOne
 import com.example.cumulora.ui.theme.Red
 
 @Composable
-fun MultiFab(navController: NavController) {
+fun MultiFab(navController: NavController, cityName: String) {
     var isExpanded by remember { mutableStateOf(false) }
     val rotation by animateFloatAsState(
         targetValue = if (isExpanded) 140f else 0f,
@@ -53,7 +53,7 @@ fun MultiFab(navController: NavController) {
         ) {
             FloatingActionButton(
                 containerColor = LightLinColorOne,
-                onClick = { navController.navigate(ScreenRoutes.Alarm) },
+                onClick = { navController.navigate(ScreenRoutes.Alarm(cityName)) },
                 modifier = Modifier.padding(bottom = 8.dp).size(46.dp)
             ) {
                 Icon(Icons.Default.Alarm, "Alarm")

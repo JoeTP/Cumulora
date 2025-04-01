@@ -1,6 +1,7 @@
 package com.example.cumulora.features.settings
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.provider.Settings
 import android.util.Log
@@ -20,7 +21,6 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -40,12 +40,12 @@ import com.example.cumulora.features.settings.component.ListTile
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.getTempUnitSymbol
 import com.example.cumulora.utils.getTemperatureUnit
-import com.example.cumulora.utils.getUserLocation
 import com.example.cumulora.utils.isLocationEnabled
 import com.example.cumulora.utils.isLocationPermissionGranted
 import com.example.cumulora.utils.repoInstance
+import com.example.cumulora.utils.requestLocationSettings
 import com.example.cumulora.utils.restartActivity
-import kotlinx.coroutines.launch
+import com.example.cumulora.utils.waitForLocationUpdates
 import java.util.Locale
 
 val TAG = "SettingsScreenUI"
@@ -57,7 +57,8 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
     val settingsState by viewModel.settingsState.collectAsStateWithLifecycle()
     val langOptions = listOf("en", "ar")
     val locationOptions = listOf("my location", "custom")
-    val unitOptions = listOf(stringResource(R.string.c), stringResource(R.string.f), stringResource(R.string.k))
+    val unitOptions =
+        listOf(stringResource(R.string.c), stringResource(R.string.f), stringResource(R.string.k))
     val speedOptions = listOf(stringResource(R.string.ms), stringResource(R.string.mph))
     var showDialog by remember { mutableStateOf(false) }
     var showPermissionDialog by remember { mutableStateOf(false) }
@@ -95,19 +96,24 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
             options = locationOptions,
             currentSelected = locationOptions.indexOf(settingsState.locationType)
         ) {
-            viewModel.changeLocationType(locationOptions[it])
-            if (locationOptions[it] == locationOptions.last()) {
-                onNavigateToMap()
-            } else if (!isLocationPermissionGranted(ctx)) {
-                locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            when {
+                locationOptions[it] == locationOptions.last() -> {
+                    onNavigateToMap()
+                }
 
-            } else if (!isLocationEnabled(ctx)) {
-                showDialog = true
-            } else {
-                scope.launch {
-                    ctx.getUserLocation { latitude, longitude ->
-                        Log.d(TAG, "SettingsScreenUI: $latitude, $longitude")
-                        viewModel.useUserLocation(latitude.toString(), longitude.toString())
+                !isLocationPermissionGranted(ctx) -> {
+                    locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                }
+
+                else -> {
+                    requestLocationSettings(ctx as Activity) { isLocationEnabled ->
+                        if (isLocationEnabled) {
+                            waitForLocationUpdates(ctx) { latitude, longitude ->
+                                Log.d(TAG, "SettingsScreenUI: $latitude, $longitude")
+                                viewModel.useUserLocation(latitude.toString(), longitude.toString())
+                                viewModel.changeLocationType(locationOptions[it])
+                            }
+                        }
                     }
                 }
             }

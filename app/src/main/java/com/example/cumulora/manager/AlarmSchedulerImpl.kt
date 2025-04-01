@@ -1,5 +1,6 @@
 package com.example.cumulora.manager
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -15,9 +16,10 @@ import java.time.ZoneId
 class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun schedulerAlarm(alarm: Alarm) {
-        // Schedule main alarm
+
         val alarmIntent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("MSG", alarm.label)
             putExtra("ALARM_ID", alarm.id)
@@ -25,19 +27,18 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
 
         val alarmPendingIntent = PendingIntent.getBroadcast(
             context,
-            alarm.id,
+            alarm.id!!,
             alarmIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Schedule cancellation alarm (using negative ID to differentiate)
         val cancelIntent = Intent(context, AlarmCancelReceiver::class.java).apply {
             putExtra("ALARM_ID", alarm.id)
         }
 
         val cancelPendingIntent = PendingIntent.getBroadcast(
             context,
-            -alarm.id, // Negative ID for cancellation
+            -alarm.id!!,
             cancelIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
@@ -49,7 +50,6 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
 
         val cancelTime = alarmTime + (alarm.duration * 1000L)
 
-        // Set both alarms
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
@@ -76,20 +76,19 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
     }
 
     override fun cancelAlarm(alarm: Alarm) {
-        // Cancel both main and cancellation alarms
         val alarmIntent = Intent(context, AlarmReceiver::class.java)
         val cancelIntent = Intent(context, AlarmCancelReceiver::class.java)
 
         val alarmPendingIntent = PendingIntent.getBroadcast(
             context,
-            alarm.id,
+            alarm.id!!,
             alarmIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val cancelPendingIntent = PendingIntent.getBroadcast(
             context,
-            -alarm.id,
+            -alarm.id!!,
             cancelIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )

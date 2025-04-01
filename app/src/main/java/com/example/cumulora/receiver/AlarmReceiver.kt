@@ -12,6 +12,9 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.cumulora.R
 import com.example.cumulora.core.objects.MyMediaPlayer
+import com.example.cumulora.utils.CURRENT_LANG
+import com.example.cumulora.utils.LANG
+import com.example.cumulora.utils.LAST_LAT
 import com.example.cumulora.utils.repoInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,14 +33,22 @@ class AlarmReceiver : BroadcastReceiver() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val alarm = repository.getAlarm(alarmId) ?: return@launch
-
-            val weatherFlow = repository.getWeather(50.0, 70.0, null, null)
+            val lat = repository.getCachedData(LAST_LAT, "0.0").toDouble()
+            val lon = repository.getCachedData(LAST_LAT, "0.0").toDouble()
+            val lang = repository.getCachedData(LANG, CURRENT_LANG)
+            val weatherFlow = repository.getWeather(lat, lon, null, lang)
             var weatherDescription = "Weather data not available"
 
+
             weatherFlow.collect { weatherResponse ->
-                weatherResponse?.weatherList?.first()?.description?.let {
+//                weatherResponse?.weatherList?.first()?.description?.let {
+//                    weatherDescription = it
+//                }
+                weatherResponse?.name?.let {
                     weatherDescription = it
                 }
+            Log.i(TAG, "onReceive: $weatherDescription $lang $lat $lon")
+
                 return@collect
             }
 

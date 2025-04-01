@@ -14,7 +14,7 @@
     <string name="settings">Settings</string>
     <string name="choose_location">Choose Location</string>
     <string name="no_saved_weather">No Saved Weather</string>
-    <string name="location_deleted">Location deleted</string>
+    <string name="is_deleted">is deleted</string>
     <string name="undo">Undo</string>
     <string name="language">Language</string>
     <string name="location">Location</string>
@@ -39,4 +39,6 @@
     <string name="this_app_requires_location_permission_to_function_properly">This app requires location permission to function properly.</string>
     <string name="permission_required">Permission Required</string>
     <string name="ok">OK</string>
+    <string name="location_">" location "</string>
+    <string name="alarm_">"alarm "</string>
 </resources>

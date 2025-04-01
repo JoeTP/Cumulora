@@ -14,15 +14,13 @@ import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAST_LAT
 import com.example.cumulora.utils.LAST_LON
 import com.example.cumulora.utils.UNITS
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import toFinalWeather
 
@@ -62,38 +60,42 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     }
 
     private fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
+            _mutableCombinedState.value = CombinedStateResponse.Loading
+
             try {
-                val weatherDeferred =
-                    async { repo.getWeather(lat, lon, unit, lang).catch { emit(null) }.first() }
-                val forecastDeferred =
-                    async { repo.getForecast(lat, lon, unit, lang).catch { emit(null) }.first() }
+                val weather = repo.getWeather(lat, lon, unit, lang).catch { emit(null) }.firstOrNull()
 
-                val weather = weatherDeferred.await()
-                val forecast = forecastDeferred.await()
-                Log.d(TAG, "getWeatherAndForecast: ${weather?.main?.temp}")
+                val forecast = repo.getForecast(lat, lon, unit, lang).catch { emit(null) }.firstOrNull()
 
-                launch {
-                    if (forecast != null) {
-                        _mutableForecastFiveDays.value = forecast.forecastList
-                            .distinctBy {
-                                it.dtTxt.substring(0, 10)
-                            }
+                Log.d(TAG, "getWeatherAndForecast: ${weather?.name}")
+
+                if (forecast != null) {
+                    _mutableForecastFiveDays.value = forecast.forecastList.distinctBy { it.dtTxt.substring(0, 10) }
+                }
+
+                when {
+                    weather != null && forecast != null -> {
+                        cachingLatLng(lat.toString(), lon.toString())
+                        _mutableCombinedState.value = CombinedStateResponse.Success(
+                            WeatherStateResponse.Success(weather.toFinalWeather()),
+                            ForecastStateResponse.Success(forecast, _mutableForecastFiveDays.value)
+                        )
+                    }
+
+                    weather == null && forecast == null -> {
+                        _mutableCombinedState.value = CombinedStateResponse.Failure("No network connection")
+                    }
+
+                    else -> {
+                        _mutableCombinedState.value = CombinedStateResponse.Failure("Partial data received")
                     }
                 }
-
-                if (weather != null && forecast != null) {
-                    cachingLatLng(lat.toString(), lon.toString())
-                    _mutableCombinedState.value = CombinedStateResponse.Success(
-                        WeatherStateResponse.Success(weather.toFinalWeather()),
-                        ForecastStateResponse.Success(forecast, _mutableForecastFiveDays.value)
-                    )
-
-                } else {
-                    _mutableCombinedState.value = CombinedStateResponse.Failure("Error fetching data")
-                }
             } catch (e: Exception) {
-                _mutableCombinedState.value = CombinedStateResponse.Failure(e.message ?: "Unknown error")
+                Log.e(TAG, "getWeatherAndForecast error", e)
+                _mutableCombinedState.value = CombinedStateResponse.Failure(
+                    e.message ?: "Unknown error occurred"
+                )
             }
         }
     }

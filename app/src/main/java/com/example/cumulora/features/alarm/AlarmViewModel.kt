@@ -17,10 +17,15 @@ class AlarmViewModel(private val repo: WeatherRepository) : ViewModel() {
     }
 
     fun addAlarm(alarm: Alarm) = viewModelScope.launch {
-        repo.addAlarm(alarm)
+        try {
+            repo.addAlarm(alarm)
+            getAlarms()
+        } catch (e: Exception) {
+            _mutableAlarmsState.value = AlarmStateResponse.Failure(e.message ?: "Unknown error")
+        }
     }
 
-    fun getAlarms() = viewModelScope.launch {
+    private fun getAlarms() = viewModelScope.launch {
         try {
             repo.getAlarms().collect {
                 _mutableAlarmsState.value = AlarmStateResponse.Success(it)
@@ -31,7 +36,13 @@ class AlarmViewModel(private val repo: WeatherRepository) : ViewModel() {
     }
 
     fun deleteAlarm(alarm: Alarm) = viewModelScope.launch {
-        repo.deleteAlarm(alarm)
+        try {
+            repo.deleteAlarm(alarm)
+            getAlarms()
+        } catch (e: Exception) {
+            _mutableAlarmsState.value = AlarmStateResponse.Failure(e.message ?: "Unknown error")
+        }
     }
 }
+
 

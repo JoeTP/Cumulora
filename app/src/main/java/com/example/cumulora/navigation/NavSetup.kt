@@ -2,10 +2,8 @@ package com.example.cumulora.navigation
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddLocationAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -20,10 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.example.cumulora.R
-import com.example.cumulora.ui.component.BackButton
-import com.example.cumulora.ui.component.MultiFab
-import com.example.cumulora.ui.component.MyAppBar
 import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.features.alarm.AlarmScreenUI
 import com.example.cumulora.features.map.MapScreenUI
@@ -31,6 +27,7 @@ import com.example.cumulora.features.onboard.OnBoardingScreenUI
 import com.example.cumulora.features.savedweather.SavedWeatherScreenUI
 import com.example.cumulora.features.settings.SettingsScreenUI
 import com.example.cumulora.features.weather.WeatherScreenUI
+import com.example.cumulora.ui.component.BackButton
 import com.example.cumulora.utils.IS_FIRST_TIME_SK
 
 
@@ -62,14 +59,16 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
         }
 
         composable<ScreenRoutes.Alarm> {
-            Scaffold(topBar = {
+            Scaffold(
+                topBar = {
                 TopAppBar(title = {
                     Text(stringResource(R.string.alarms))
                 }, navigationIcon = {
                     BackButton(navController)
                 })
             }) { padding ->
-                AlarmScreenUI(Modifier.padding(padding))
+                val cityName = it.toRoute<ScreenRoutes.Alarm>().cityName
+                AlarmScreenUI(Modifier.padding(padding), snackbarHostState,cityName)
             }
         }
 

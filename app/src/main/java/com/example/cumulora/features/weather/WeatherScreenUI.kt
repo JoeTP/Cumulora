@@ -100,7 +100,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
             val ex = combinedState as CombinedStateResponse.Failure
             Log.e("TAG", "WeatherScreenUI: ${ex.error}")
             Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(stringResource(R.string.failed_to_get_data))
+                Text(ex.error)
             }
         }
 
@@ -176,7 +176,7 @@ fun DisplayWeatherScreen(
 
     Scaffold(topBar = { MyAppBar(navController, topBarBgColor, cityName, currentTemp, titleAlpha) },
         floatingActionButton = {
-        MultiFab(navController)
+        MultiFab(navController, cityName)
     }) { padding ->
 
         //TODO: Color black if knight, and cyan if day
