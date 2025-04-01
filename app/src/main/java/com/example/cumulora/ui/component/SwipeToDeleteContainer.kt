@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -63,6 +64,8 @@ fun <T> SwipeToDeleteContainer(
 
     LaunchedEffect(isRemoved, currentItem) {
         if (isRemoved) {
+            snackBarHostState.currentSnackbarData?.dismiss()
+
             val result = snackBarHostState.showSnackbar(
                 message = "$snackBarString ${context.getString(R.string.is_deleted)}",
                 actionLabel = context.getString(R.string.undo),
@@ -75,7 +78,7 @@ fun <T> SwipeToDeleteContainer(
 
                 state.snapTo(SwipeToDismissBoxValue.Settled)
             } else {
-//                delay(animationDuration.toLong())
+                delay(animationDuration.toLong())
                 onDelete(currentItem)
             }
         }
