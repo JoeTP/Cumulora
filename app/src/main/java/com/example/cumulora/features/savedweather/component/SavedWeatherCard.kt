@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cumulora.R
-import com.example.cumulora.data.local.weather.SavedWeather
+import com.example.cumulora.features.savedweather.model.SavedWeather
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.formatNumberBasedOnLanguage
 import com.example.cumulora.utils.getTempUnitSymbol

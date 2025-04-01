@@ -1,7 +1,8 @@
-package com.example.cumulora.data.local.weather
+package com.example.cumulora.data.local
 
 import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.data.models.alarm.Alarm
+import com.example.cumulora.features.savedweather.model.SavedWeather
 import com.example.cumulora.features.weather.model.HomeEntity
 import kotlinx.coroutines.flow.Flow
 

@@ -2,7 +2,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cumulora.data.models.alarm.Alarm
 import com.example.cumulora.data.repository.WeatherRepository
-import com.example.cumulora.features.alarm.AlarmStateResponse
+import com.example.cumulora.data.responsestate.AlarmStateResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

@@ -1,5 +1,6 @@
-package com.example.cumulora.utils
+package com.example.cumulora.data.remote
 
+import com.example.cumulora.utils.API_KEY_Q
 import okhttp3.Interceptor
 import okhttp3.Response
 

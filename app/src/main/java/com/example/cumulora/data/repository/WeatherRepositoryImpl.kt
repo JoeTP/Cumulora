@@ -1,7 +1,7 @@
 package com.example.cumulora.data.repository
 
-import com.example.cumulora.data.local.weather.SavedWeather
-import com.example.cumulora.data.local.weather.WeatherLocalDataSource
+import com.example.cumulora.features.savedweather.model.SavedWeather
+import com.example.cumulora.data.local.WeatherLocalDataSource
 import com.example.cumulora.data.models.alarm.Alarm
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.geocoder.GeocoderResponse

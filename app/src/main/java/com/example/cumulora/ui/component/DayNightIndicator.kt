@@ -1,4 +1,4 @@
-package com.example.cumulora.utils
+package com.example.cumulora.ui.component
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,12 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.ui.theme.DarkPurple
 import com.example.cumulora.ui.theme.LightLinColorOne
-import com.example.cumulora.ui.theme.MediumLinColorOne
-import com.example.cumulora.ui.theme.MediumLinear
 
 
 @Composable

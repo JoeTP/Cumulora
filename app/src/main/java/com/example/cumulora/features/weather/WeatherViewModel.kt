@@ -7,9 +7,9 @@ import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.repository.WeatherRepository
 import com.example.cumulora.data.repository.WeatherRepositoryImpl
 import com.example.cumulora.features.weather.model.HomeEntity
-import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
-import com.example.cumulora.features.weather.responsestate.ForecastStateResponse
-import com.example.cumulora.features.weather.responsestate.WeatherStateResponse
+import com.example.cumulora.data.responsestate.CombinedStateResponse
+import com.example.cumulora.data.responsestate.ForecastStateResponse
+import com.example.cumulora.data.responsestate.WeatherStateResponse
 import com.example.cumulora.utils.DEFAULT_UNITS
 import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAST_LAT

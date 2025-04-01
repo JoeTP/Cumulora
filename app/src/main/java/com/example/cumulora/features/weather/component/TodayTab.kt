@@ -39,7 +39,7 @@ import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
 import com.example.cumulora.ui.component.OvalCard
 import com.example.cumulora.utils.CURRENT_LANG
-import com.example.cumulora.utils.DayNightIndicator
+import com.example.cumulora.ui.component.DayNightIndicator
 import com.example.cumulora.utils.formatNumberBasedOnLanguage
 import com.example.cumulora.utils.formatTimeTo12Hour
 import com.example.cumulora.utils.formatUnixTimeToHHMM

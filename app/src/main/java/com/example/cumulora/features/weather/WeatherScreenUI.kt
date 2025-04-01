@@ -28,13 +28,13 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.cumulora.R
@@ -44,7 +44,7 @@ import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
 import com.example.cumulora.features.weather.component.CurrentTemperature
 import com.example.cumulora.features.weather.component.WeatherDetailsSection
-import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
+import com.example.cumulora.data.responsestate.CombinedStateResponse
 import com.example.cumulora.ui.component.MultiFab
 import com.example.cumulora.ui.component.MyAppBar
 import com.example.cumulora.utils.getTempUnitSymbol
@@ -87,7 +87,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
         composition = lottie,
         restartOnPlay = true,
         speed = 1f,
-        iterations = 1,
+        iterations = LottieConstants.IterateForever,
         isPlaying = true,
     )
 

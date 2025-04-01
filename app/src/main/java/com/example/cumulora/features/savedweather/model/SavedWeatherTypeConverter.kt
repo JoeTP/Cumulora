@@ -1,9 +1,7 @@
-package com.example.cumulora.data.local.weather
+package com.example.cumulora.features.savedweather.model
 
 import androidx.room.TypeConverter
-import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
-import com.example.cumulora.data.models.weather.WeatherResponse
 import com.google.gson.Gson
 
 class SavedWeatherTypeConverter {

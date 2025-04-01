@@ -4,15 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.example.cumulora.R
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
 import java.util.Locale
 
 fun formatDateToDdMmm(dateTimeString: String): Pair<String, String> {
@@ -34,15 +30,6 @@ fun formatUnixTimeToHHMM(unixTimestamp: Long?): String {
     val formatter = DateTimeFormatter.ofPattern("HH:mm a")
         .withZone(ZoneId.systemDefault())
     return formatter.format(instant)
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun formatDate(inputDate: String): String {
-    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val outputFormatter = DateTimeFormatter.ofPattern("MMM, dd")
-
-    val date = LocalDate.parse(inputDate, inputFormatter)
-    return date.format(outputFormatter)
 }
 
 @Composable

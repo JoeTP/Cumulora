@@ -1,6 +1,5 @@
-package com.example.cumulora.features.alarm
+package com.example.cumulora.data.responsestate
 
-import com.example.cumulora.data.local.weather.SavedWeather
 import com.example.cumulora.data.models.alarm.Alarm
 
 

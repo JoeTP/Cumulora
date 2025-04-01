@@ -1,4 +1,4 @@
-package com.example.cumulora.features.weather.responsestate
+package com.example.cumulora.data.responsestate
 
 import com.example.cumulora.data.models.weather.WeatherEntity
 

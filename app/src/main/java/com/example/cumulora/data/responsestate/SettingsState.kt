@@ -1,4 +1,4 @@
-package com.example.cumulora.features.settings
+package com.example.cumulora.data.responsestate
 
 data class SettingsState(
     val unit: String = "",

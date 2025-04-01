@@ -3,13 +3,12 @@ package com.example.cumulora.features.map
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cumulora.data.local.weather.SavedWeather
+import com.example.cumulora.features.savedweather.model.SavedWeather
 import com.example.cumulora.data.repository.WeatherRepository
 import com.example.cumulora.utils.DEFAULT_UNITS
 import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAST_LAT
 import com.example.cumulora.utils.LAST_LON
-import com.example.cumulora.utils.UNITS
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken

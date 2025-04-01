@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cumulora.R
 import com.example.cumulora.core.factories.SavedWeatherViewModelFactory
+import com.example.cumulora.data.responsestate.SavedWeatherStateResponse
 import com.example.cumulora.features.savedweather.component.SavedWeatherCard
 import com.example.cumulora.ui.component.SwipeToDeleteContainer
 import com.example.cumulora.utils.repoInstance

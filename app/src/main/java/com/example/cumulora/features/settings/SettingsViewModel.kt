@@ -4,17 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cumulora.data.repository.WeatherRepository
+import com.example.cumulora.data.responsestate.SettingsState
 import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAST_LAT
 import com.example.cumulora.utils.LAST_LON
 import com.example.cumulora.utils.LOCATION_TYPE
 import com.example.cumulora.utils.UNITS
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val repo: WeatherRepository) : ViewModel() {

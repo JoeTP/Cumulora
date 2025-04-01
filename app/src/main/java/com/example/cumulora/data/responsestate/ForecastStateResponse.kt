@@ -1,7 +1,6 @@
-package com.example.cumulora.features.weather.responsestate
+package com.example.cumulora.data.responsestate
 
 import com.example.cumulora.data.models.forecast.Forecast
-import com.example.cumulora.data.models.forecast.ForecastEntity
 import com.example.cumulora.data.models.forecast.ForecastResponse
 
 sealed class ForecastStateResponse {

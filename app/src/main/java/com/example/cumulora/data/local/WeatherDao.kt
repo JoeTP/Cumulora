@@ -1,4 +1,4 @@
-package com.example.cumulora.data.local.weather
+package com.example.cumulora.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.cumulora.data.models.alarm.Alarm
+import com.example.cumulora.features.savedweather.model.SavedWeather
 import com.example.cumulora.features.weather.model.HomeEntity
 import com.example.cumulora.utils.ALARMS_TABLE
 import com.example.cumulora.utils.FAVORITE_TABLE_NAME

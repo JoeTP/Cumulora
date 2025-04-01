@@ -1,6 +1,5 @@
 package com.example.cumulora.data.remote
 
-import com.example.cumulora.utils.ApiKeyInterceptor
 import com.example.cumulora.utils.BASE_URL
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
