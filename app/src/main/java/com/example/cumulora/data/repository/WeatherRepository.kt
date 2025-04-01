@@ -5,6 +5,7 @@ import com.example.cumulora.data.models.alarm.Alarm
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.geocoder.GeocoderResponse
 import com.example.cumulora.data.models.weather.WeatherResponse
+import com.example.cumulora.features.weather.model.HomeEntity
 import kotlinx.coroutines.flow.Flow
 
 
@@ -33,4 +34,7 @@ interface WeatherRepository {
     suspend fun addAlarm(alarm: Alarm)
     suspend fun deleteAlarm(alarm: Alarm)
     suspend fun updateAlarm(alarm: Alarm)
+
+    suspend fun getHomeCachedWeather(): Flow<HomeEntity>
+    suspend fun cacheHomeCachedWeather(home: HomeEntity)
 }

@@ -13,6 +13,5 @@ import com.example.cumulora.utils.FAVORITE_TABLE_NAME
 data class SavedWeather(
     @PrimaryKey
     val cityName: String,
-//    val units: String,
     val weather: WeatherEntity?,
 )

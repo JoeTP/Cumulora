@@ -1,4 +1,4 @@
-package com.example.cumulora.receiver
+package com.example.cumulora.features.alarm.receiver
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

@@ -39,11 +39,11 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".receiver.AlarmReceiver"
+            android:name=".features.alarm.receiver.AlarmReceiver"
             android:exported="true"
             android:enabled="true"/>
         <receiver
-            android:name=".receiver.AlarmCancelReceiver"
+            android:name=".features.alarm.receiver.AlarmCancelReceiver"
             android:exported="true"
             android:enabled="true"/>
         <meta-data

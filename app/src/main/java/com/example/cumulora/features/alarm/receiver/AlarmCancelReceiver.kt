@@ -1,5 +1,5 @@
 
-package com.example.cumulora.receiver
+package com.example.cumulora.features.alarm.receiver
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -9,7 +9,7 @@ import android.media.MediaPlayer
 import android.util.Log
 import com.example.cumulora.R
 import com.example.cumulora.core.objects.MyMediaPlayer
-import com.example.cumulora.manager.AlarmSchedulerImpl
+import com.example.cumulora.features.alarm.manager.AlarmSchedulerImpl
 import com.example.cumulora.utils.repoInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

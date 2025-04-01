@@ -21,8 +21,8 @@ import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.features.splash.SplashScreenUI
 import com.example.cumulora.features.splash.SplashViewModel
 import com.example.cumulora.navigation.NavSetup
-import com.example.cumulora.receiver.AlarmCancelReceiver
-import com.example.cumulora.receiver.AlarmReceiver
+import com.example.cumulora.features.alarm.receiver.AlarmCancelReceiver
+import com.example.cumulora.features.alarm.receiver.AlarmReceiver
 import com.example.cumulora.ui.theme.CumuloraTheme
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.LANG

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.repository.WeatherRepository
 import com.example.cumulora.data.repository.WeatherRepositoryImpl
+import com.example.cumulora.features.weather.model.HomeEntity
 import com.example.cumulora.features.weather.responsestate.CombinedStateResponse
 import com.example.cumulora.features.weather.responsestate.ForecastStateResponse
 import com.example.cumulora.features.weather.responsestate.WeatherStateResponse
@@ -14,6 +15,7 @@ import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAST_LAT
 import com.example.cumulora.utils.LAST_LON
 import com.example.cumulora.utils.UNITS
+import com.example.cumulora.utils.isInternetAvailable
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -52,7 +54,11 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
             val (lat, lon) = getLastLatLng()
             val unit = repo.getCachedData(UNITS, DEFAULT_UNITS)
             val lang = repo.getCachedData(LANG, "")
-            getWeatherAndForecast(lat, lon, unit, lang)
+            if(isInternetAvailable()) {
+                getWeatherAndForecast(lat, lon, unit, lang)
+            }else{
+                getCachedHome()
+            }
             Log.d(TAG, "refreshWeatherWithCurrentSettings: ${unit} - ${lang} - ${lat} - ${lon}")
         } catch (e: Exception) {
             _mutableCombinedState.value = CombinedStateResponse.Failure("Refresh failed: ${e.message}")
@@ -81,6 +87,7 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
                             WeatherStateResponse.Success(weather.toFinalWeather()),
                             ForecastStateResponse.Success(forecast, _mutableForecastFiveDays.value)
                         )
+                        cacheHome(HomeEntity(0, weather.toFinalWeather(), forecast))
                     }
 
                     weather == null && forecast == null -> {
@@ -114,4 +121,23 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     }
 
     fun getUnit(): String = repo.getCachedData(UNITS, DEFAULT_UNITS)
+
+    fun cacheHome(homeEntity: HomeEntity) = viewModelScope.launch {
+        repo.cacheHomeCachedWeather(homeEntity)
+    }
+
+    fun getCachedHome() = viewModelScope.launch {
+        try {
+            repo.getHomeCachedWeather().catch { }.collect {
+                val forecast = it.forecast
+                _mutableForecastFiveDays.value = forecast.forecastList.distinctBy { it.dtTxt.substring(0, 10) }
+                _mutableCombinedState.value = CombinedStateResponse.Success(
+                    WeatherStateResponse.Success(it.weather),
+                    ForecastStateResponse.Success(it.forecast, _mutableForecastFiveDays.value)
+                )
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "getCachedHome: ${e.message}")
+        }
+    }
 }

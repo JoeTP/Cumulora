@@ -1,4 +1,4 @@
-package com.example.cumulora.manager
+package com.example.cumulora.features.alarm.manager
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
@@ -8,8 +8,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.cumulora.data.models.alarm.Alarm
-import com.example.cumulora.receiver.AlarmCancelReceiver
-import com.example.cumulora.receiver.AlarmReceiver
+import com.example.cumulora.features.alarm.receiver.AlarmCancelReceiver
+import com.example.cumulora.features.alarm.receiver.AlarmReceiver
 import java.time.LocalDate
 import java.time.ZoneId
 

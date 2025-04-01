@@ -1,6 +1,7 @@
 package com.example.cumulora.data.local.weather
 
 import com.example.cumulora.data.models.alarm.Alarm
+import com.example.cumulora.features.weather.model.HomeEntity
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherLocalDataSource {
@@ -16,4 +17,7 @@ interface WeatherLocalDataSource {
     suspend fun addAlarm(alarm: Alarm)
     suspend fun deleteAlarm(alarm: Alarm)
     suspend fun updateAlarm(alarm: Alarm)
+
+    suspend fun getHomeCachedWeather(): Flow<HomeEntity>
+    suspend fun cacheHomeCachedWeather(home: HomeEntity)
 }

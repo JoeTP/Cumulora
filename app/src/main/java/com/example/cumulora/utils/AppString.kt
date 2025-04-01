@@ -4,6 +4,7 @@ package com.example.cumulora.utils
 const val DATABASE_NAME = "weather_db"
 const val FAVORITE_TABLE_NAME = "favorite_table"
 const val ALARMS_TABLE = "alarms_table"
+const val HOME_CACHE_TABLE = "home_cache_table"
 
 //!Prefs
 const val SHARED_PREF_NAME = "app_prefs"

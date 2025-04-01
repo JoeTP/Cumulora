@@ -55,7 +55,7 @@ import com.example.cumulora.core.factories.AlarmViewModelFactory
 import com.example.cumulora.data.models.alarm.Alarm
 import com.example.cumulora.features.alarm.component.AlarmCard
 import com.example.cumulora.features.savedweather.component.SavedWeatherCard
-import com.example.cumulora.manager.AlarmSchedulerImpl
+import com.example.cumulora.features.alarm.manager.AlarmSchedulerImpl
 import com.example.cumulora.ui.component.SwipeToDeleteContainer
 import com.example.cumulora.utils.repoInstance
 import java.time.LocalTime

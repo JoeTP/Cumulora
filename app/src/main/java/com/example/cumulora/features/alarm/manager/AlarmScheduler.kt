@@ -1,4 +1,4 @@
-package com.example.cumulora.manager
+package com.example.cumulora.features.alarm.manager
 
 import com.example.cumulora.data.models.alarm.Alarm
 

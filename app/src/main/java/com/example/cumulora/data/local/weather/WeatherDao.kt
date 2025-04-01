@@ -7,8 +7,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.cumulora.data.models.alarm.Alarm
+import com.example.cumulora.features.weather.model.HomeEntity
 import com.example.cumulora.utils.ALARMS_TABLE
 import com.example.cumulora.utils.FAVORITE_TABLE_NAME
+import com.example.cumulora.utils.HOME_CACHE_TABLE
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -40,5 +42,11 @@ interface WeatherDao {
 
     @Update
     suspend fun updateAlarm(alarm: Alarm)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertHomeWeather(homeEntity: HomeEntity)
+
+    @Query("SELECT * FROM $HOME_CACHE_TABLE")
+    fun getHomeWeather(): Flow<HomeEntity>
 
 }
