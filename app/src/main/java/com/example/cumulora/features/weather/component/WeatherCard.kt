@@ -3,7 +3,6 @@ package com.example.cumulora.features.weather.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,16 +13,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cumulora.ui.theme.Purple
 import com.example.cumulora.ui.theme.Purple40
 
 @Composable
 fun WeatherCard(
     title: String = "",
-    trail: String = "",
+    subtitle: String = "",
     icon: @Composable () -> Unit = {},
     modifier: Modifier = Modifier,
     composable: @Composable () -> Unit,
@@ -42,19 +42,21 @@ fun WeatherCard(
             .padding(16.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row {
-                icon()
-                Spacer(modifier.width(8.dp))
+            Column {
+                Row {
+                    icon()
+                    Spacer(Modifier.width(8.dp))
 
-                if (title.isNotEmpty()) Text(title)
+                    if (title.isNotEmpty()) Text(title)
+                }
+            if (subtitle.isNotEmpty()) Text(subtitle, fontSize = 12.sp)
             }
-                if (trail.isNotEmpty()) Text(trail)
         }
-        Spacer(modifier.height(8.dp))
-            composable()
+        Spacer(Modifier.height(8.dp))
+        composable()
     }
 }

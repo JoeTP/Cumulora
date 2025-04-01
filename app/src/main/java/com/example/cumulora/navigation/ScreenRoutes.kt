@@ -11,7 +11,7 @@ sealed class ScreenRoutes {
     object Weather : ScreenRoutes()
 
     @Serializable
-    object Alarm : ScreenRoutes()
+    class Alarm(val cityName: String) : ScreenRoutes()
 
     @Serializable
     object SavedWeather : ScreenRoutes()

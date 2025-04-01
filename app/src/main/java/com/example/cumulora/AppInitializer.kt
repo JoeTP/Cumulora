@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.cumulora.receiver.AlarmReceiver
+import com.example.cumulora.features.alarm.receiver.AlarmReceiver
 import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 
 class AppInitializer : Application() {
@@ -16,6 +16,10 @@ class AppInitializer : Application() {
     companion object {
         private lateinit var instance: AppInitializer
             private set
+
+        fun getInstance(): AppInitializer {
+            return instance
+        }
     }
 
     override fun onCreate() {

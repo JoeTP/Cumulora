@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -29,6 +30,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Cumulora"
+            android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,11 +39,11 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".receiver.AlarmReceiver"
+            android:name=".features.alarm.receiver.AlarmReceiver"
             android:exported="true"
             android:enabled="true"/>
         <receiver
-            android:name=".receiver.AlarmCancelReceiver"
+            android:name=".features.alarm.receiver.AlarmCancelReceiver"
             android:exported="true"
             android:enabled="true"/>
         <meta-data

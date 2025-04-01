@@ -3,7 +3,6 @@ package com.example.cumulora.data.models.alarm
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.cumulora.data.local.weather.SavedWeatherTypeConverter
 import com.example.cumulora.utils.ALARMS_TABLE
 import java.time.LocalTime
 
@@ -13,6 +12,7 @@ data class Alarm(
     @PrimaryKey
     var id: Int,
     val label: String,
+    val cityName: String,
     val time: LocalTime,
     val duration: Int,
 )

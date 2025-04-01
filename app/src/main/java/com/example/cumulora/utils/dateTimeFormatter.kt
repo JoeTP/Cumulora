@@ -4,15 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.example.cumulora.R
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
 import java.util.Locale
 
 fun formatDateToDdMmm(dateTimeString: String): Pair<String, String> {
@@ -36,15 +32,6 @@ fun formatUnixTimeToHHMM(unixTimestamp: Long?): String {
     return formatter.format(instant)
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun formatDate(inputDate: String): String {
-    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val outputFormatter = DateTimeFormatter.ofPattern("MMM, dd")
-
-    val date = LocalDate.parse(inputDate, inputFormatter)
-    return date.format(outputFormatter)
-}
-
 @Composable
 fun formatTimeTo12Hour(time24Hour: String): String {
     val parts = time24Hour.split(":")
@@ -54,9 +41,9 @@ fun formatTimeTo12Hour(time24Hour: String): String {
     val minute = parts[1]
 
     return when {
-        hour == 0 -> "12:$minute " + stringResource(R.string.am)
-        hour < 12 -> "$hour:$minute " +  stringResource(R.string.am)
-        hour == 12 -> "12:$minute " + stringResource(R.string.pm)
-        else -> "${hour - 12}:$minute " + stringResource(R.string.pm)
+        hour == 0 -> "12:$minute "
+        hour < 12 -> "$hour:$minute "
+        hour == 12 -> "12:$minute "
+        else -> "${hour - 12}:$minute "
     }
 }

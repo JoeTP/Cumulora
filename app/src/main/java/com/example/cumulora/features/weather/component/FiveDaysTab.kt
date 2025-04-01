@@ -46,7 +46,7 @@ import com.example.cumulora.utils.weatherIcons
 
 
 @Composable
-fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
+fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String) {
 
     Surface(
         modifier = Modifier
@@ -66,14 +66,14 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>) {
     ) {
         Column {
             for (i in 0..4) {
-                ForecastItem(forecastFiveDays[i])
+                ForecastItem(forecastFiveDays[i], tempUnit)
             }
         }
     }
 }
 
 @Composable
-fun ForecastItem(forecast: Forecast) {
+fun ForecastItem(forecast: Forecast, tempUnit:String) {
     var isExpanded by remember { mutableStateOf(false) }
     val rotateState by animateFloatAsState(targetValue = if (isExpanded) 180f else 0f)
 
@@ -105,9 +105,11 @@ fun ForecastItem(forecast: Forecast) {
                     Column(horizontalAlignment = Alignment.End) {
                         Text(
                             "${
-                                forecast.main.tempMax.toString().formatNumberBasedOnLanguage(CURRENT_LANG)
+                                forecast.main.tempMax.toInt().toString().formatNumberBasedOnLanguage
+                                    (CURRENT_LANG)
                             } / " +
-                                    forecast.main.tempMin.toString().formatNumberBasedOnLanguage(CURRENT_LANG)
+                                    forecast.main.tempMin.toInt().toString().formatNumberBasedOnLanguage
+                                        (CURRENT_LANG) + " $tempUnit"
                         )
                         Text(forecast.weather.first().description)
                     }

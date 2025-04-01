@@ -14,7 +14,7 @@
     <string name="settings">الإعدادات</string>
     <string name="choose_location">اختر موقعاً</string>
     <string name="no_saved_weather">لا توجد بيانات طقس محفوظة</string>
-    <string name="location_deleted">تم حذف الموقع</string>
+    <string name="is_deleted">تم حذف الموقع</string>
     <string name="undo">تراجع</string>
     <string name="language">اللغة</string>
     <string name="location">الموقع</string>
@@ -27,8 +27,14 @@
     <string name="c">°س</string> <!-- درجة مئوية -->
     <string name="f">°ف</string> <!-- درجة فهرنهايت -->
     <string name="k">ك</string> <!-- كلفن -->
+    <string name="mph">ميل/س</string>
+    <string name="ms">م/س</string>
+    <string name="hpa">هـ.ب</string>
     <string name="sunrise_sunset">الشروق/الغروب</string>
     <string name="max_min">العظمى/الصغرى</string>
     <string name="details">التفاصيل</string>
+    <string name="this_app_requires_location_permission_to_function_properly">This app requires location permission to function properly.</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="ok">OK</string>
 
 </resources>

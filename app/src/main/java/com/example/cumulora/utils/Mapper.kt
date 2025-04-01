@@ -1,12 +1,11 @@
-import com.example.cumulora.data.models.forecast.Forecast
-import com.example.cumulora.data.models.forecast.ForecastEntity
-import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
 import com.example.cumulora.data.models.weather.WeatherResponse
 import java.text.SimpleDateFormat
 import java.util.TimeZone
 
 fun WeatherResponse.toFinalWeather(): WeatherEntity {
+    val lat = this.coord.lat
+    val lon = this.coord.lon
     val currentTemp = this.main.temp
     val maxTemp = this.main.tempMax
     val minTemp = this.main.tempMin
@@ -36,9 +35,11 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
     val currentTime = timeFormat.format(localTimeMillis)
 
     return WeatherEntity(
+        lat = lat,
+        lon = lon,
         currentTemp = currentTemp,
-        maxTemp = maxTemp,
-        minTemp = minTemp,
+        tempMax = maxTemp,
+        tempMin = minTemp,
         feelsLike = feelsLike,
         currentDate = currentDate,
         currentTime = currentTime,

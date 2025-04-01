@@ -1,12 +1,13 @@
 package com.example.cumulora.data.repository
 
-import com.example.cumulora.data.local.weather.SavedWeather
-import com.example.cumulora.data.local.weather.WeatherLocalDataSource
+import com.example.cumulora.features.savedweather.model.SavedWeather
+import com.example.cumulora.data.local.WeatherLocalDataSource
 import com.example.cumulora.data.models.alarm.Alarm
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.geocoder.GeocoderResponse
 import com.example.cumulora.data.models.weather.WeatherResponse
 import com.example.cumulora.data.remote.WeatherRemoteDataSource
+import com.example.cumulora.features.weather.model.HomeEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -100,6 +101,14 @@ class WeatherRepositoryImpl private constructor(
 
     override suspend fun updateAlarm(alarm: Alarm) {
         localDataSource.updateAlarm(alarm)
+    }
+
+    override suspend fun getHomeCachedWeather(): Flow<HomeEntity> {
+        return localDataSource.getHomeCachedWeather()
+    }
+
+    override suspend fun cacheHomeCachedWeather(home: HomeEntity) {
+        localDataSource.cacheHomeCachedWeather(home)
     }
 
 

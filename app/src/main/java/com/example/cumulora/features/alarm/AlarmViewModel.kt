@@ -1,33 +1,48 @@
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cumulora.data.models.alarm.Alarm
 import com.example.cumulora.data.repository.WeatherRepository
+import com.example.cumulora.data.responsestate.AlarmStateResponse
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AlarmViewModel(private val repo: WeatherRepository) : ViewModel() {
 
+    private val _mutableAlarmsState = MutableStateFlow<AlarmStateResponse>(AlarmStateResponse.Loading)
+    val alarmsState = _mutableAlarmsState.asStateFlow()
 
-    fun addAlarm(alarm: Alarm) {
-        viewModelScope.launch {
+    init {
+        getAlarms()
+    }
+
+    fun addAlarm(alarm: Alarm) = viewModelScope.launch {
+        try {
             repo.addAlarm(alarm)
-
+            getAlarms()
+        } catch (e: Exception) {
+            _mutableAlarmsState.value = AlarmStateResponse.Failure(e.message ?: "Unknown error")
         }
     }
 
-    fun getAlarms() {
-        viewModelScope.launch {
-//            repo.getAlarms()
+    private fun getAlarms() = viewModelScope.launch {
+        try {
+            repo.getAlarms().collect {
+                _mutableAlarmsState.value = AlarmStateResponse.Success(it)
+            }
+        } catch (e: Exception) {
+            _mutableAlarmsState.value = AlarmStateResponse.Failure(e.message ?: "Unknown error")
+        }
+    }
+
+    fun deleteAlarm(alarm: Alarm) = viewModelScope.launch {
+        try {
+            repo.deleteAlarm(alarm)
+            getAlarms()
+        } catch (e: Exception) {
+            _mutableAlarmsState.value = AlarmStateResponse.Failure(e.message ?: "Unknown error")
         }
     }
 }
 
-class AlarmViewModelFactory(private val repo: WeatherRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AlarmViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return AlarmViewModel(repo) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
+

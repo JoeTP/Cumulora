@@ -2,8 +2,11 @@ package com.example.cumulora.features.savedweather
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cumulora.data.local.weather.SavedWeather
+import com.example.cumulora.features.savedweather.model.SavedWeather
 import com.example.cumulora.data.repository.WeatherRepository
+import com.example.cumulora.data.responsestate.SavedWeatherStateResponse
+import com.example.cumulora.utils.DEFAULT_UNITS
+import com.example.cumulora.utils.UNITS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,6 +42,8 @@ class SavedWeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     fun restoreDeletedWeather(savedWeather: SavedWeather) = viewModelScope.launch(Dispatchers.IO) {
         repo.saveWeather(savedWeather)
     }
+
+    fun getUnits() = repo.getCachedData(UNITS, DEFAULT_UNITS)
 
 
 

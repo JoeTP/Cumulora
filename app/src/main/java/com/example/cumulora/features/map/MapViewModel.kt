@@ -3,12 +3,12 @@ package com.example.cumulora.features.map
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cumulora.data.local.weather.SavedWeather
+import com.example.cumulora.features.savedweather.model.SavedWeather
 import com.example.cumulora.data.repository.WeatherRepository
+import com.example.cumulora.utils.DEFAULT_UNITS
 import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAST_LAT
 import com.example.cumulora.utils.LAST_LON
-import com.example.cumulora.utils.UNITS
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
@@ -23,6 +23,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import toFinalWeather
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -81,14 +82,15 @@ class MapViewModel(private val repo: WeatherRepository, private val placesClient
 
     fun saveLocation(lat: Double, lon: Double) = viewModelScope.launch {
         cacheLastLatLon(lat.toString(), lon.toString())
-        //TODO: metric should come from ENUM
-        val unit = repo.getCachedData(UNITS, "")
+//        val unit = repo.getCachedData(UNITS, DEFAULT_UNITS)
+        //TODO: MIGHT BE WRONG HERE
         val lang = repo.getCachedData(LANG, "")
-        val weatherDeferred = async { repo.getWeather(lat, lon, unit, lang).catch { emit(null) }.first() }
-        val forecastDeferred = async { repo.getForecast(lat, lon, unit, lang).catch { emit(null) }.first() }
+            //? Temp will be called with metric units by default
+        val weatherDeferred = async { repo.getWeather(lat, lon, DEFAULT_UNITS, lang).catch { emit(null) }.first() }
+//        val forecastDeferred = async { repo.getForecast(lat, lon, unit, lang).catch { emit(null) }.first() }
         val weather = weatherDeferred.await()
-        val forecast = forecastDeferred.await()
-        repo.saveWeather(SavedWeather(forecast?.city?.name ?: "", weather, forecast))
+//        val forecast = forecastDeferred.await()
+        repo.saveWeather(SavedWeather(weather?.name ?: "Unknown Location" , weather?.toFinalWeather()))
     }
 
     fun cacheLastLatLon(lat: String, lon: String) {
