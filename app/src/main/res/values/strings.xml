@@ -41,4 +41,5 @@
     <string name="ok">OK</string>
     <string name="location_">" location "</string>
     <string name="alarm_">"alarm "</string>
+    <string name="start">Start</string>
 </resources>

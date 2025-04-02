@@ -74,6 +74,7 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
             showPermissionDialog = true
         }
     }
+
     val scope = rememberCoroutineScope()
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -133,28 +134,28 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
         CustomDivider()
     }
 
-    LocationPermissionDialog(
-        showDialog = showDialog,
-        onDismiss = { showDialog = false },
-        onTurnOn = {
-            showDialog = false
-            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            ctx.startActivity(intent)
-        }
-    )
+//    LocationPermissionDialog(
+//        showDialog = showDialog,
+//        onDismiss = { showDialog = false },
+//        onTurnOn = {
+//            showDialog = false
+//            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+//            ctx.startActivity(intent)
+//        }
+//    )
 
-    if (showPermissionDialog) {
-        AlertDialog(
-            onDismissRequest = { showPermissionDialog = false },
-            title = { Text(stringResource(R.string.permission_required)) },
-            text = { Text(stringResource(R.string.this_app_requires_location_permission_to_function_properly)) },
-            confirmButton = {
-                TextButton(onClick = { showPermissionDialog = false }) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
-        )
-    }
+//    if (showPermissionDialog) {
+//        AlertDialog(
+//            onDismissRequest = { showPermissionDialog = false },
+//            title = { Text(stringResource(R.string.permission_required)) },
+//            text = { Text(stringResource(R.string.this_app_requires_location_permission_to_function_properly)) },
+//            confirmButton = {
+//                TextButton(onClick = { showPermissionDialog = false }) {
+//                    Text(stringResource(R.string.ok))
+//                }
+//            }
+//        )
+//    }
 
 }
 

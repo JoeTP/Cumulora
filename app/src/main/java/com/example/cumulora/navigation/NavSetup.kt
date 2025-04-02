@@ -46,7 +46,11 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
             OnBoardingScreenUI {
                 shared.saveData(IS_FIRST_TIME_SK, false)
                 Log.i("TAG", "SAVE ATTEMPT = $isFirstTime ")
-                navController.navigate(ScreenRoutes.Weather)
+                navController.navigate(ScreenRoutes.Weather){
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
             }
         }
 
