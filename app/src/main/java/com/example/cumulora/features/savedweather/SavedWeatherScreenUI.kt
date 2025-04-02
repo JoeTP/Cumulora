@@ -19,15 +19,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.cumulora.R
 import com.example.cumulora.core.factories.SavedWeatherViewModelFactory
 import com.example.cumulora.data.responsestate.SavedWeatherStateResponse
 import com.example.cumulora.features.savedweather.component.SavedWeatherCard
+import com.example.cumulora.navigation.ScreenRoutes
 import com.example.cumulora.ui.component.SwipeToDeleteContainer
 import com.example.cumulora.utils.repoInstance
 
 @Composable
-fun SavedWeatherScreenUI(modifier: Modifier = Modifier, snackbarHostState: SnackbarHostState) {
+fun SavedWeatherScreenUI(
+    modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState,
+    navController: NavController
+) {
     val context = LocalContext.current
     val viewModel: SavedWeatherViewModel = viewModel(
         factory = SavedWeatherViewModelFactory(repoInstance(context))
@@ -74,8 +80,17 @@ fun SavedWeatherScreenUI(modifier: Modifier = Modifier, snackbarHostState: Snack
                                 onRestore = { viewModel.restoreDeletedWeather(it) },
                                 snackBarHostState = snackbarHostState,
                                 snackBarString = it.cityName + context.getString(R.string.location_),
-                                content = { weather ->
-                                    SavedWeatherCard(weather, units)
+                                content = { savedWeather ->
+                                    SavedWeatherCard(savedWeather, units) {
+                                        val lat = savedWeather.weather!!.lat
+                                        val lon = savedWeather.weather.lon
+                                        viewModel.selectSavedWeather(lat, lon)
+                                        navController.navigate(ScreenRoutes.Weather){
+                                            popUpTo(navController.graph.id) {
+                                                inclusive = true
+                                            }
+                                        }
+                                    }
                                 }
                             )
                         }

@@ -55,7 +55,7 @@ fun CurrentTemperature(
                     .clip(CircleShape)
                     .clickable { onMapNavigate() }
                     .padding(12.dp),
-                text = cityName,
+                text = if(cityName.isEmpty()) "Unknown Location" else cityName,
                 maxLines = 2,
                 fontSize = 32.sp,
                 textAlign = TextAlign.Center,

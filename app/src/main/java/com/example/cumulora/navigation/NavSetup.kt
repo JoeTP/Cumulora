@@ -92,7 +92,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                     Icon(imageVector = Icons.Default.AddLocationAlt, contentDescription = "Add")
                 }
             }) { padding ->
-                SavedWeatherScreenUI(Modifier.padding(padding), snackbarHostState)
+                SavedWeatherScreenUI(Modifier.padding(padding), snackbarHostState, navController)
             }
         }
 
