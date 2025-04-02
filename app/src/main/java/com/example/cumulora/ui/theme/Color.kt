@@ -24,8 +24,12 @@ val DarkLinColorTwo = Color(0xff1C1B33)
 val MediumLinColorOne = Color(0xff5936B4)
 val MediumLinColorTwo = Color(0xff362A84)
 
+val DarkCyan = Color(0xFF2D62AF)
 val LightLinColorOne = Color(0xff427BD1)
-val LightLinColorTwo = Color(0xffC159EC)
+val LightCyan = Color(0xFF7090C4)
+val Cyan = Color(0xFF86A7E1)
+val LighterCyan = Color(0xFFAFC1E0)
+val LightRed = Color(0xFFF35555)
 
 val DarkLinear = Brush.linearGradient(
     colors = listOf(DarkLinColorOne, DarkLinColorTwo),
@@ -38,7 +42,7 @@ val MediumLinear = Brush.linearGradient(
     end = Offset(1000f, 1000f)
 )
 val LightLinear = Brush.linearGradient(
-    colors = listOf(LightLinColorOne, LightLinColorTwo),
+    colors = listOf(LightLinColorOne, LightRed),
     start = Offset(0f, 0f),
     end = Offset(1000f, 1000f)
 )

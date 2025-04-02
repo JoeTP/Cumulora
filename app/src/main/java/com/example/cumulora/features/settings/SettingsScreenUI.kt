@@ -7,15 +7,25 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Air
+import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonColors
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
@@ -31,12 +41,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cumulora.R
 import com.example.cumulora.core.factories.SettingsViewModelFactory
 import com.example.cumulora.features.settings.component.ListTile
+import com.example.cumulora.ui.theme.LighterCyan
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.getTempUnitSymbol
 import com.example.cumulora.utils.getTemperatureUnit
@@ -58,8 +70,7 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
     val langOptions = listOf("en", "ar")
     val locationOptions = listOf("my location", "custom")
     val unitOptions =
-        listOf(stringResource(R.string.c), stringResource(R.string.f), stringResource(R.string.k))
-    val speedOptions = listOf(stringResource(R.string.ms), stringResource(R.string.mph))
+        listOf(stringResource(R.string.c_m_s), stringResource(R.string.f_m_s), stringResource(R.string.k_m_h))
     var showDialog by remember { mutableStateOf(false) }
     var showPermissionDialog by remember { mutableStateOf(false) }
 
@@ -75,44 +86,44 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
         }
     }
 
-    val scope = rememberCoroutineScope()
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        ListTile(stringResource(R.string.language), Icons.Outlined.Language)
+        ListTile(stringResource(R.string.language), Icons.Outlined.Language) {
 
-        SingleChoiceSegmentedButton(
-            options = langOptions,
-            currentSelected = langOptions.indexOf(settingsState.lang)
-        ) {
-            if (CURRENT_LANG != langOptions[it]) {
-                viewModel.changeLang(langOptions[it])
-                restartActivity(ctx)
+            SingleChoiceSegmentedButton(
+                options = langOptions,
+                currentSelected = langOptions.indexOf(settingsState.lang)
+            ) {
+                if (CURRENT_LANG != langOptions[it]) {
+                    viewModel.changeLang(langOptions[it])
+                    restartActivity(ctx)
+                }
             }
         }
-
         CustomDivider()
 
-        ListTile(stringResource(R.string.location), Icons.Outlined.Map)
-        SingleChoiceSegmentedButton(
-            options = locationOptions,
-            currentSelected = locationOptions.indexOf(settingsState.locationType)
-        ) {
-            when {
-                locationOptions[it] == locationOptions.last() -> {
-                    onNavigateToMap()
-                }
+        ListTile(stringResource(R.string.location), Icons.Outlined.Map) {
+            SingleChoiceSegmentedButton(
+                options = locationOptions,
+                currentSelected = locationOptions.indexOf(settingsState.locationType)
+            ) {
+                when {
+                    locationOptions[it] == locationOptions.last() -> {
+                        onNavigateToMap()
+                    }
 
-                !isLocationPermissionGranted(ctx) -> {
-                    locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                }
+                    !isLocationPermissionGranted(ctx) -> {
+                        locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                    }
 
-                else -> {
-                    requestLocationSettings(ctx as Activity) { isLocationEnabled ->
-                        if (isLocationEnabled) {
-                            waitForLocationUpdates(ctx) { latitude, longitude ->
-                                Log.d(TAG, "SettingsScreenUI: $latitude, $longitude")
-                                viewModel.useUserLocation(latitude.toString(), longitude.toString())
-                                viewModel.changeLocationType(locationOptions[it])
+                    else -> {
+                        requestLocationSettings(ctx as Activity) { isLocationEnabled ->
+                            if (isLocationEnabled) {
+                                waitForLocationUpdates(ctx) { latitude, longitude ->
+                                    Log.d(TAG, "SettingsScreenUI: $latitude, $longitude")
+                                    viewModel.useUserLocation(latitude.toString(), longitude.toString())
+                                    viewModel.changeLocationType(locationOptions[it])
+                                }
                             }
                         }
                     }
@@ -122,55 +133,37 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
 
         CustomDivider()
 
-        ListTile(stringResource(R.string.units), Icons.Outlined.Straighten)
+        ListTile(stringResource(R.string.units), Icons.Outlined.Straighten) {}
         SingleChoiceSegmentedButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             options = unitOptions,
             currentSelected = unitOptions.indexOf(ctx.getTempUnitSymbol(settingsState.unit))
         ) {
             viewModel.changeUnit(getTemperatureUnit(unitOptions[it]))
         }
-//        Text("Speed: ${speedOptions.indexOf(unitOptions[])}")
-
-        CustomDivider()
     }
-
-//    LocationPermissionDialog(
-//        showDialog = showDialog,
-//        onDismiss = { showDialog = false },
-//        onTurnOn = {
-//            showDialog = false
-//            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-//            ctx.startActivity(intent)
-//        }
-//    )
-
-//    if (showPermissionDialog) {
-//        AlertDialog(
-//            onDismissRequest = { showPermissionDialog = false },
-//            title = { Text(stringResource(R.string.permission_required)) },
-//            text = { Text(stringResource(R.string.this_app_requires_location_permission_to_function_properly)) },
-//            confirmButton = {
-//                TextButton(onClick = { showPermissionDialog = false }) {
-//                    Text(stringResource(R.string.ok))
-//                }
-//            }
-//        )
-//    }
-
+    CustomDivider()
 }
 
 
 @Composable
 fun SingleChoiceSegmentedButton(
+    modifier: Modifier = Modifier,
     currentSelected: Int,
     options: List<String>,
     onClick: (Int) -> Unit
 ) {
     var selectedIndex by remember { mutableIntStateOf(if (currentSelected < 0) 0 else currentSelected) }
 
-    SingleChoiceSegmentedButtonRow {
+    SingleChoiceSegmentedButtonRow(modifier = modifier) {
         options.forEachIndexed { index, label ->
             SegmentedButton(
+                colors = SegmentedButtonDefaults.colors().copy(
+                    activeContainerColor = LighterCyan.copy
+                        (alpha = 0.4f)
+                ),
                 icon = {},
                 shape = SegmentedButtonDefaults.itemShape(
                     index = index,
@@ -194,31 +187,6 @@ fun SingleChoiceSegmentedButton(
 
 @Composable
 fun CustomDivider() = HorizontalDivider(Modifier.padding(bottom = 10.dp, top = 20.dp))
-
-@Composable
-fun LocationPermissionDialog(
-    showDialog: Boolean,
-    onDismiss: () -> Unit,
-    onTurnOn: () -> Unit
-) {
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            title = { Text("For a better experience") },
-            text = { Text("Your device will need to use Location Accuracy") },
-            confirmButton = {
-                TextButton(onClick = onTurnOn) {
-                    Text("Turn on")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = onDismiss) {
-                    Text("No thanks")
-                }
-            }
-        )
-    }
-}
 
 
 

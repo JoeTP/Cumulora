@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.SystemUpdateAlt
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -141,7 +142,7 @@ private fun WeatherDetailsSectionChild(
                     .width(50.dp)
                     .height(4.dp),
                 shape = CircleShape,
-                color = Color.White.copy(alpha = 0.4f),
+                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f),
             ) {}
         }
             TabRow(

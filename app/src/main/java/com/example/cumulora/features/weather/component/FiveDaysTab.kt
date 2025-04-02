@@ -1,9 +1,7 @@
 package com.example.cumulora.features.weather.component
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -23,6 +21,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +36,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.data.models.forecast.Forecast
-import com.example.cumulora.ui.theme.Purple
 import com.example.cumulora.ui.theme.Purple40
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.formatDateToDdMmm
@@ -59,7 +57,7 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String) {
             .border(
                 width = 2.dp,
                 shape = RoundedCornerShape(20.dp),
-                color = Purple40.copy(alpha = 0.3f),
+                color = MaterialTheme.colorScheme.secondaryContainer.copy(0.2f),
             ),
         color = Color.Transparent,
         shape = RoundedCornerShape(20.dp)
@@ -73,7 +71,7 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String) {
 }
 
 @Composable
-fun ForecastItem(forecast: Forecast, tempUnit:String) {
+fun ForecastItem(forecast: Forecast, tempUnit: String) {
     var isExpanded by remember { mutableStateOf(false) }
     val rotateState by animateFloatAsState(targetValue = if (isExpanded) 180f else 0f)
 
@@ -88,9 +86,9 @@ fun ForecastItem(forecast: Forecast, tempUnit:String) {
             .clickable(onClick = { isExpanded = !isExpanded }),
             colors = ListItemDefaults.colors
                 (
-                containerColor = Purple
-                    .copy(alpha = 0.2f)
-            ),
+                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(0.5f),
+
+                ),
             headlineContent = {
                 Text(formatDateToDdMmm((forecast.dtTxt)).first)
             },

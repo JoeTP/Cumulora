@@ -46,4 +46,7 @@
     <string name="minutes">Minutes</string>
     <string name="duration">Duration</string>
     <string name="alarm_label">Alarm Label</string>
+    <string name="c_m_s">°C\nm/s</string>
+    <string name="f_m_s">°F\nm/s</string>
+    <string name="k_m_h">K\nmph</string>
 </resources>

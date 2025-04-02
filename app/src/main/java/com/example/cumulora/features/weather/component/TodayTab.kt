@@ -122,7 +122,7 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse, tempUnit: Strin
                         Image(
                             modifier = Modifier.size(60.dp),
                             painter = painterResource(id = R.drawable.compas),
-                            contentDescription = ""
+                            contentDescription = "",
                         )
                         Image(
                             painter = painterResource(id = R.drawable.compas_arrow), contentDescription = "",
@@ -136,28 +136,6 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse, tempUnit: Strin
                 }
             }
         }
-
-//        WeatherCard(stringResource(R.string.wind_speed), icon = {
-//            Icon(
-//                imageVector = Icons.Default.Air,
-//                contentDescription = ""
-//            )
-//        }) {
-//            Row {
-//                Text("TEST")
-//                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-//                    Image(
-//                        modifier = Modifier.size(80.dp), painter = painterResource(id = R.drawable.compas),
-//                        contentDescription = ""
-//                    )
-//                    Image(
-//                        painter = painterResource(id = R.drawable.compas_arrow), contentDescription = "",
-//                        modifier = Modifier.rotate(weather.windDegree.toFloat()).size(80.dp)
-//                    )
-//                    Text(weather.windSpeed.toString().formatNumberBasedOnLanguage(CURRENT_LANG))
-//                }
-//            }
-//        }
 
         Spacer(modifier = Modifier.height(16.dp))
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,12 +32,12 @@ fun WeatherCard(
     Column(
         modifier = modifier
             .background(
-                color = Purple.copy(alpha = 0.2f),
+                color = MaterialTheme.colorScheme.secondaryContainer.copy(0.5f),
                 shape = RoundedCornerShape(20.dp)
             )
             .border(
                 width = 2.dp,
-                color = Purple40.copy(alpha = 0.3f),
+                color = MaterialTheme.colorScheme.secondaryContainer.copy(0.2f),
                 shape = RoundedCornerShape(20.dp)
             )
             .padding(16.dp)
