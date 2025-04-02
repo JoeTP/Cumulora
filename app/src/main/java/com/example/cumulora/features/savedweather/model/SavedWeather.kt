@@ -10,6 +10,6 @@ import com.example.cumulora.utils.FAVORITE_TABLE_NAME
 @TypeConverters(SavedWeatherTypeConverter::class)
 data class SavedWeather(
     @PrimaryKey
-    val cityName: String,
+    var cityName: String,
     val weather: WeatherEntity?,
 )

@@ -27,8 +27,7 @@ import toFinalWeather
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class MapViewModel(private val repo: WeatherRepository, private val placesClient: PlacesClient) :
-    ViewModel() {
+class MapViewModel(private val repo: WeatherRepository, private val placesClient: PlacesClient) : ViewModel() {
 
      fun getLocationName(
         autocompletePlace: AutocompletePlace,

@@ -18,19 +18,22 @@ class SavedWeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     private val _mutableSavedWeather = MutableStateFlow<SavedWeatherStateResponse>(SavedWeatherStateResponse.Loading)
     val savedWeatherList: StateFlow<SavedWeatherStateResponse> = _mutableSavedWeather.asStateFlow()
 
-    private val _mutableMessage = MutableStateFlow("")
-    val message: StateFlow<String> = _mutableMessage.asStateFlow()
+//    private val _mutableMessage = MutableStateFlow("")
+//    val message: StateFlow<String> = _mutableMessage.asStateFlow()
 
     init {
         getSavedWeather()
     }
 
-    private fun getSavedWeather() = viewModelScope.launch(Dispatchers.IO) {
+    private fun getSavedWeather() = viewModelScope.launch {
         try {
+                println("TRYING TO GET SAVED WEATHER")
             repo.getSavedWeather().collect{
+                println("COLLECTING SAVED WEATHER SIZE: ${it.size}")
             _mutableSavedWeather.value = SavedWeatherStateResponse.Success(it)
             }
         }catch (e: Exception) {
+                println("CATCHING ERROR: ${e.message}")
             _mutableSavedWeather.value = SavedWeatherStateResponse.Failure(e.message ?: "Unknown error")
         }
     }
