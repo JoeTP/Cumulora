@@ -42,4 +42,8 @@
     <string name="location_">" location "</string>
     <string name="alarm_">"alarm "</string>
     <string name="start">Start</string>
+    <string name="seconds">Seconds</string>
+    <string name="minutes">Minutes</string>
+    <string name="duration">Duration</string>
+    <string name="alarm_label">Alarm Label</string>
 </resources>

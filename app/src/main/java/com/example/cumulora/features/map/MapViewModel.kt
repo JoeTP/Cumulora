@@ -3,8 +3,8 @@ package com.example.cumulora.features.map
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cumulora.features.savedweather.model.SavedWeather
 import com.example.cumulora.data.repository.WeatherRepository
+import com.example.cumulora.features.savedweather.model.SavedWeather
 import com.example.cumulora.utils.DEFAULT_UNITS
 import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAST_LAT
@@ -27,9 +27,10 @@ import toFinalWeather
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class MapViewModel(private val repo: WeatherRepository, private val placesClient: PlacesClient) : ViewModel() {
+class MapViewModel(private val repo: WeatherRepository, private val placesClient: PlacesClient) :
+    ViewModel() {
 
-     fun getLocationName(
+    fun getLocationName(
         autocompletePlace: AutocompletePlace,
         markerState: MarkerState
     ) = viewModelScope.launch {
@@ -84,17 +85,25 @@ class MapViewModel(private val repo: WeatherRepository, private val placesClient
 //        val unit = repo.getCachedData(UNITS, DEFAULT_UNITS)
         //TODO: MIGHT BE WRONG HERE
         val lang = repo.getCachedData(LANG, "")
-            //? Temp will be called with metric units by default
-        val weatherDeferred = async { repo.getWeather(lat, lon, DEFAULT_UNITS, lang).catch { emit(null) }.first() }
+        //? Temp will be called with metric units by default
+        val weatherDeferred =
+            async { repo.getWeather(lat, lon, DEFAULT_UNITS, lang).catch { emit(null) }.first() }
 //        val forecastDeferred = async { repo.getForecast(lat, lon, unit, lang).catch { emit(null) }.first() }
         val weather = weatherDeferred.await()
 //        val forecast = forecastDeferred.await()
-        repo.saveWeather(SavedWeather(weather?.name ?: "Unknown Location" , weather?.toFinalWeather()))
+        repo.saveWeather(SavedWeather(weather?.name ?: "Unknown Location", weather?.toFinalWeather()))
     }
 
     fun cacheLastLatLon(lat: String, lon: String) {
         repo.cacheData(LAST_LAT, lat)
         repo.cacheData(LAST_LON, lon)
+    }
+
+    fun getLastLatLng(): Pair<Double, Double> {
+        return Pair(
+            repo.getCachedData(LAST_LAT, "0.0").toDouble(),
+            repo.getCachedData(LAST_LON, "0.0").toDouble()
+        )
     }
 
 
