@@ -2,46 +2,31 @@ package com.example.cumulora.features.settings
 
 import android.Manifest
 import android.app.Activity
-import android.content.Intent
-import android.provider.Settings
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Air
-import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Straighten
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonColors
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -51,6 +36,7 @@ import com.example.cumulora.features.settings.component.ListTile
 import com.example.cumulora.ui.theme.LighterCyan
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.getTempUnitSymbol
+import com.example.cumulora.utils.getTempUnitSymbolSetting
 import com.example.cumulora.utils.getTemperatureUnit
 import com.example.cumulora.utils.isLocationEnabled
 import com.example.cumulora.utils.isLocationPermissionGranted
@@ -67,10 +53,12 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
     val ctx = LocalContext.current
     val viewModel: SettingsViewModel = viewModel(factory = SettingsViewModelFactory(repoInstance(ctx)))
     val settingsState by viewModel.settingsState.collectAsStateWithLifecycle()
+
     val langOptions = listOf("en", "ar", stringResource(R.string.system))
-    val locationOptions = listOf("my location", "custom")
-    val unitOptions =
-        listOf(stringResource(R.string.c_m_s), stringResource(R.string.f_m_s), stringResource(R.string.k_m_h))
+    val locationOptions = listOf(stringResource(R.string.my_location), stringResource(R.string.custom))
+    val unitOptions = listOf(stringResource(R.string.c_m_s), stringResource(R.string.f_m_s), stringResource(R.string.k_m_h))
+
+
     var showDialog by remember { mutableStateOf(false) }
     var showPermissionDialog by remember { mutableStateOf(false) }
 
@@ -91,7 +79,9 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
         ListTile(stringResource(R.string.language), Icons.Outlined.Language) {}
 
             SingleChoiceSegmentedButton(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 options = langOptions,
                 currentSelected = langOptions.indexOf(settingsState.lang)
             ) {
@@ -108,6 +98,7 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
                 options = locationOptions,
                 currentSelected = locationOptions.indexOf(settingsState.locationType)
             ) {
+
                 when {
                     locationOptions[it] == locationOptions.last() -> {
                         onNavigateToMap()
@@ -121,7 +112,6 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
                         requestLocationSettings(ctx as Activity) { isLocationEnabled ->
                             if (isLocationEnabled) {
                                 waitForLocationUpdates(ctx) { latitude, longitude ->
-                                    Log.d(TAG, "SettingsScreenUI: $latitude, $longitude")
                                     viewModel.useUserLocation(latitude.toString(), longitude.toString())
                                     viewModel.changeLocationType(locationOptions[it])
                                 }
@@ -140,7 +130,7 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             options = unitOptions,
-            currentSelected = unitOptions.indexOf(ctx.getTempUnitSymbol(settingsState.unit))
+            currentSelected = unitOptions.indexOf(ctx.getTempUnitSymbolSetting(settingsState.unit))
         ) {
             viewModel.changeUnit(getTemperatureUnit(unitOptions[it]))
         }

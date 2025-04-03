@@ -15,7 +15,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val repo: WeatherRepository) : ViewModel() {
-    private val _settingsState = MutableStateFlow(SettingsState())
+    private val _settingsState = MutableStateFlow(
+        SettingsState(locationType = repo.getCachedData(LOCATION_TYPE, ""),))
     val settingsState = _settingsState.asStateFlow()
 
     //notifier
@@ -43,7 +44,8 @@ class SettingsViewModel(private val repo: WeatherRepository) : ViewModel() {
     }
 
     fun changeUnit(unit: String) {
-        Log.d("SETTINGS VIEWMODEL", "changeUnit: $unit")
+        Log.d("PRESSED", "UNIT CHANGE: $unit")
+
         viewModelScope.launch {
             repo.cacheData(UNITS, unit)
             _settingsState.emit(settingsState.value.copy(unit = unit))
@@ -53,6 +55,8 @@ class SettingsViewModel(private val repo: WeatherRepository) : ViewModel() {
 
     fun changeLocationType(locationType: String) {
         viewModelScope.launch {
+            Log.d("PRESSED", "LOCATION CHANGE: $locationType")
+
             repo.cacheData(LOCATION_TYPE, locationType)
             _settingsState.emit(settingsState.value.copy(locationType = locationType))
             repo.notifySettingsChanged()

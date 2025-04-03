@@ -232,7 +232,7 @@ fun DisplayWeatherScreen(
                         time = weatherData.currentTime,
                         date = weatherData.currentDate,
                         icon = weatherData.icon,
-                        feelsLike = weatherData.feelsLike.toInt().toString() + tempUnit,
+                        feelsLike = weatherData.feelsLike.toInt().toString(),
                         tempUnit = tempUnit,
                         onMapNavigate = onMapNavigate
                     )

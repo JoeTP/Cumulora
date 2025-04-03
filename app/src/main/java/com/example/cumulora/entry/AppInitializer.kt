@@ -1,14 +1,8 @@
-package com.example.cumulora
+package com.example.cumulora.entry
 
-import android.annotation.SuppressLint
-import android.app.AlarmManager
 import android.app.Application
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.os.SystemClock
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.cumulora.features.alarm.receiver.AlarmReceiver
+import com.example.cumulora.BuildConfig
 import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.google.android.libraries.places.api.Places
 

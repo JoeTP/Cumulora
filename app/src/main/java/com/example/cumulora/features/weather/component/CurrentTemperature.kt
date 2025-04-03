@@ -59,7 +59,7 @@ fun CurrentTemperature(
             Image(
                 modifier = Modifier
                     .size(260.dp)
-                    .alpha(0.2f),
+                    .alpha(0.4f),
                 painter = painterResource(id = weatherIcons.getValue(icon)),
                 contentDescription = ""
             )

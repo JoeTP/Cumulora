@@ -1,4 +1,4 @@
-package com.example.cumulora
+package com.example.cumulora.entry
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
