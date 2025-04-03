@@ -14,6 +14,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -36,18 +37,10 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SharedPreferenceHelper.initSharedPref(this)
-        Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.googleApiKey)
-        CURRENT_LANG = SharedPreferenceHelper.getInstance().getData(LANG, "en")
-        applyLanguage(CURRENT_LANG)
 
-        //?TESTING ALL PREFS
-        val sharedPref = this.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
-        val allPrefs: Map<String, *> = sharedPref.all
-        allPrefs.forEach { (key, value) ->
-            Log.d("Preferences", "$key: $value")
-        }
-
+        val prefs = SharedPreferenceHelper.getInstance()
+        val viewModel = ViewModelProvider(this, factory = MainViewModelFactory(prefs))[MainViewModel::class.java]
+        viewModel.applyLanguage(this)
 
         val intentFilter = IntentFilter("com.example.cumulora.receiver.AlarmReceiver")
         registerReceiver(AlarmReceiver(), intentFilter)
@@ -55,17 +48,13 @@ class MainActivity : ComponentActivity() {
         val intentFilter2 = IntentFilter("com.example.cumulora.receiver.AlarmCancelReceiver")
         registerReceiver(AlarmCancelReceiver(), intentFilter2)
 
-        setContent { CumuloraTheme { AppContent() } }
+        setContent {
+
+            CumuloraTheme { AppContent() }
+        }
     }
 
-    fun applyLanguage(languageCode: String) {
-        SharedPreferenceHelper.getInstance().saveData(LANG, languageCode)
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-        val config = resources.configuration
-        config.setLocale(locale)
-        resources.updateConfiguration(config, resources.displayMetrics)
-    }
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

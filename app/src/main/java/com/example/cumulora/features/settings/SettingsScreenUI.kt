@@ -67,7 +67,7 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
     val ctx = LocalContext.current
     val viewModel: SettingsViewModel = viewModel(factory = SettingsViewModelFactory(repoInstance(ctx)))
     val settingsState by viewModel.settingsState.collectAsStateWithLifecycle()
-    val langOptions = listOf("en", "ar")
+    val langOptions = listOf("en", "ar", stringResource(R.string.system))
     val locationOptions = listOf("my location", "custom")
     val unitOptions =
         listOf(stringResource(R.string.c_m_s), stringResource(R.string.f_m_s), stringResource(R.string.k_m_h))
@@ -88,9 +88,10 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
 
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        ListTile(stringResource(R.string.language), Icons.Outlined.Language) {
+        ListTile(stringResource(R.string.language), Icons.Outlined.Language) {}
 
             SingleChoiceSegmentedButton(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 options = langOptions,
                 currentSelected = langOptions.indexOf(settingsState.lang)
             ) {
@@ -98,7 +99,7 @@ fun SettingsScreenUI(modifier: Modifier = Modifier, onNavigateToMap: () -> Unit)
                     viewModel.changeLang(langOptions[it])
                     restartActivity(ctx)
                 }
-            }
+
         }
         CustomDivider()
 

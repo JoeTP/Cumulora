@@ -110,6 +110,17 @@ class AlarmReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val snoozeIntent = Intent(context, AlarmCancelReceiver::class.java).apply {
+            putExtra("ALARM_ID", alarmId)
+            action = "SNOOZE"
+        }
+        val snoozePendingIntent = PendingIntent.getBroadcast(
+            context,
+            alarmId,
+            snoozeIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(context, "ALARM_CHANNEL")
             .setContentTitle("Alarm: $label")
             .setContentText("Current weather: $weatherDescription")
@@ -122,6 +133,11 @@ class AlarmReceiver : BroadcastReceiver() {
                 R.drawable.broken_clouds,
                 "Cancel",
                 cancelPendingIntent
+            )
+            .addAction(
+                R.drawable.broken_clouds,
+                "Snooze 5 mins",
+                snoozePendingIntent
             )
             .setDeleteIntent(deletePendingIntent)
             .build()
