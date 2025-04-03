@@ -27,7 +27,7 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
 
         val alarmPendingIntent = PendingIntent.getBroadcast(
             context,
-            alarm.id!!,
+            alarm.id,
             alarmIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
@@ -38,7 +38,7 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
 
         val cancelPendingIntent = PendingIntent.getBroadcast(
             context,
-            -alarm.id!!,
+            -alarm.id,
             cancelIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
@@ -81,14 +81,14 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
 
         val alarmPendingIntent = PendingIntent.getBroadcast(
             context,
-            alarm.id!!,
+            alarm.id,
             alarmIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val cancelPendingIntent = PendingIntent.getBroadcast(
             context,
-            -alarm.id!!,
+            -alarm.id,
             cancelIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )

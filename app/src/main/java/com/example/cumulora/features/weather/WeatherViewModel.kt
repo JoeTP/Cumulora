@@ -36,6 +36,7 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     val combinedState: StateFlow<CombinedStateResponse> = _mutableCombinedState.asStateFlow()
 
     private val _mutableForecastFiveDays = MutableStateFlow(listOf<Forecast>())
+     val forecastFiveDays = _mutableForecastFiveDays
 
 
     init {
@@ -65,9 +66,9 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
         }
     }
 
-    private fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
+     fun getWeatherAndForecast(lat: Double, lon: Double, unit: String?, lang: String?) {
         viewModelScope.launch {
-            _mutableCombinedState.value = CombinedStateResponse.Loading
+//        _mutableCombinedState.value = CombinedStateResponse.Loading
 
             try {
                 val weather = repo.getWeather(lat, lon, unit, lang).catch { emit(null) }.firstOrNull()
@@ -123,7 +124,7 @@ class WeatherViewModel(private val repo: WeatherRepository) : ViewModel() {
     fun getUnit(): String = repo.getCachedData(UNITS, DEFAULT_UNITS)
 
     fun cacheHome(homeEntity: HomeEntity) = viewModelScope.launch {
-        repo.cacheHomeCachedWeather(homeEntity)
+        repo.cacheHomeWeather(homeEntity)
     }
 
     fun getCachedHome() = viewModelScope.launch {

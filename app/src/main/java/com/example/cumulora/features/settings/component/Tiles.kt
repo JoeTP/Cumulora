@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
-fun ListTile(title: String, leadingIcon: ImageVector) {
+fun ListTile(title: String, leadingIcon: ImageVector, trail: @Composable () -> Unit) {
 //    Column {
 //        Row(
 //            modifier = Modifier
@@ -29,6 +29,7 @@ fun ListTile(title: String, leadingIcon: ImageVector) {
         headlineContent = {
             Text(title)
         },
+        trailingContent = trail
     )
 //    HorizontalDivider()
 

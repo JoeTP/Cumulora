@@ -7,6 +7,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,6 +48,7 @@ import com.example.cumulora.features.weather.component.WeatherDetailsSection
 import com.example.cumulora.data.responsestate.CombinedStateResponse
 import com.example.cumulora.ui.component.MultiFab
 import com.example.cumulora.ui.component.MyAppBar
+import com.example.cumulora.ui.theme.CumuloraTheme
 import com.example.cumulora.utils.getTempUnitSymbol
 import com.example.cumulora.utils.getWindSpeedUnitSymbol
 import com.example.cumulora.utils.repoInstance
@@ -68,23 +70,32 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
     val combinedState by viewModel.combinedState.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
+//
+//    val scrollProgress = remember(scrollState.value) { minOf(scrollState.value / 500f, 1f) }
+//
+//    val startColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.3f)
+//    val topBarStartColor = MaterialTheme.colorScheme.surface.copy(alpha = 0f)
+//    val endColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f)
+//    val currentBgColor = remember(scrollProgress) {
+//        lerp(startColor, endColor, scrollProgress)
+//    }
+//    val topBarBgColor = remember(scrollProgress) {
+//        lerp(topBarStartColor, endColor, scrollProgress)
+//    }
 
-    val scrollProgress = remember(scrollState.value) { minOf(scrollState.value / 500f, 1f) }
-
-    val startColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.3f)
-    val topBarStartColor = MaterialTheme.colorScheme.surface.copy(alpha = 0f)
-    val endColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f)
-    val currentBgColor = remember(scrollProgress) {
-        lerp(startColor, endColor, scrollProgress)
-    }
-    val topBarBgColor = remember(scrollProgress) {
-        lerp(topBarStartColor, endColor, scrollProgress)
-    }
-
-    val lottie by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading))
+    val lottie by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_weather))
 
     val progress by animateLottieCompositionAsState(
         composition = lottie,
+        restartOnPlay = true,
+        speed = 1f,
+        iterations = LottieConstants.IterateForever,
+        isPlaying = true,
+    )
+    val lottieFailed by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading))
+
+    val progressLottieFailed by animateLottieCompositionAsState(
+        composition = lottieFailed,
         restartOnPlay = true,
         speed = 1f,
         iterations = LottieConstants.IterateForever,
@@ -99,7 +110,13 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
         is CombinedStateResponse.Failure -> {
             val ex = combinedState as CombinedStateResponse.Failure
             Log.e("TAG", "WeatherScreenUI: ${ex.error}")
-            Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
+                horizontalAlignment =   Alignment.CenterHorizontally) {
+                LottieAnimation(
+                    composition = lottieFailed,
+                    progress = { progressLottieFailed },
+                    modifier = Modifier.size(120.dp)
+                )
                 Text(ex.error)
             }
         }
@@ -115,7 +132,6 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
                 LottieAnimation(
                     composition = lottie,
                     progress = { progress },
-
                     modifier = Modifier.size(120.dp)
                 )
             }
@@ -135,8 +151,8 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
                 weatherData = weatherData,
                 forecastData = forecastData,
                 forecastFiveDays = forecastFiveDays,
-                currentBgColor = currentBgColor,
-                topBarBgColor = topBarBgColor,
+//                currentBgColor = currentBgColor,
+//                topBarBgColor = topBarBgColor,
                 onMapNavigate = onMapNavigate,
                 windUnit  = windUnit ,
                 tempUnit  = tempUnit
@@ -144,7 +160,6 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
         }
     }
 }
-
 @SuppressLint("NewApi")
 @Composable
 fun DisplayWeatherScreen(
@@ -154,8 +169,8 @@ fun DisplayWeatherScreen(
     weatherData: WeatherEntity,
     forecastData: ForecastResponse,
     forecastFiveDays: List<Forecast>,
-    currentBgColor: Color,
-    topBarBgColor: Color,
+//    currentBgColor: Color,
+//    topBarBgColor: Color,
     windUnit: String,
     tempUnit: String,
     onMapNavigate: () -> Unit
@@ -167,52 +182,81 @@ fun DisplayWeatherScreen(
     }
 
     val titleAlpha by animateFloatAsState(
-        targetValue = if (scrollProgress < 0.5f) 0f else scrollProgress,
+        targetValue = if (scrollProgress < 0.8f) 0f else scrollProgress,
         label = "titleAlpha"
     )
 
     val currentTemp = weatherData.currentTemp.toInt().toString() + " "+ tempUnit
     val cityName = weatherData.city
+    val isDay = weatherData.icon.contains("d")
 
-    Scaffold(topBar = { MyAppBar(navController, topBarBgColor, cityName, currentTemp, titleAlpha) },
-        floatingActionButton = {
-        MultiFab(navController, cityName)
-    }) { padding ->
+    CumuloraTheme(forceDayNightTheme = isDay) {
+        val surfaceColor = MaterialTheme.colorScheme.surface
 
-        //TODO: Color black if knight, and cyan if day
-        Box {
-            Image(
-                painter = painterResource(id = R.drawable.clear_sky_nighttime2),
-                contentDescription = "",
-                contentScale = ContentScale.FillHeight,
-                modifier = Modifier
-                    .fillMaxSize()
-            )
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState)
-                    .background(Color.Transparent)
-            ) {
-                CurrentTemperature(
-                    weatherData.city,
-                    weatherData.currentTemp,
-                    weatherData.description,
-                    weatherData.currentTime,
-                    weatherData.currentDate,
-                    weatherData.icon,
-                    tempUnit,
-                    onMapNavigate
+        val topBarColor = remember(scrollProgress) {
+            surfaceColor.copy(alpha = scrollProgress * 0.9f)
+        }
+
+        val detailsBgAlpha = remember(scrollProgress) {
+            0.4f + (scrollProgress * (0.9f - 0.15f))
+        }
+
+        Scaffold(
+            topBar = {
+                MyAppBar(
+                    navController = navController,
+                    bgColor = topBarColor,
+                    cityName = cityName,
+                    currentTemp = currentTemp,
+                    titleAlpha = titleAlpha
                 )
-                WeatherDetailsSection(
-                    weatherData,
-                    forecastData,
-                    forecastFiveDays,
-                    tempUnit,
-                    windUnit,
-                    bgColor = currentBgColor
-                )
+            },
+            floatingActionButton = {
+                MultiFab(navController, cityName)
+            }
+        ) { padding ->
+            Box {
+                BackgroundImage(if (isDay) R.drawable.fuji_day else R.drawable.fuji_knight)
+                Column(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .verticalScroll(scrollState)
+                        .background(Color.Transparent)
+                ) {
+
+
+                    CurrentTemperature(
+                        cityName = weatherData.city,
+                        temperature = weatherData.currentTemp,
+                        description = weatherData.description,
+                        time = weatherData.currentTime,
+                        date = weatherData.currentDate,
+                        icon = weatherData.icon,
+                        feelsLike = weatherData.feelsLike.toInt().toString(),
+                        tempUnit = tempUnit,
+                        onMapNavigate = onMapNavigate
+                    )
+                    WeatherDetailsSection(
+                        weatherData,
+                        forecastData,
+                        forecastFiveDays,
+                        tempUnit,
+                        windUnit,
+                        bgColor = surfaceColor.copy(alpha = detailsBgAlpha)
+                    )
+                }
             }
         }
     }
+}
+
+@Composable
+private fun BackgroundImage(imageId: Int) {
+    Image(
+        painter = painterResource(id = imageId),
+        contentDescription = "",
+        contentScale = ContentScale.FillHeight,
+        modifier = Modifier
+            .fillMaxSize()
+    )
 }

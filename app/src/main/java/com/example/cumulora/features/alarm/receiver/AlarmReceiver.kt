@@ -15,6 +15,7 @@ import com.example.cumulora.core.objects.MyMediaPlayer
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAST_LAT
+import com.example.cumulora.utils.isInternetAvailable
 import com.example.cumulora.utils.repoInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,26 +37,25 @@ class AlarmReceiver : BroadcastReceiver() {
             val lat = repository.getCachedData(LAST_LAT, "0.0").toDouble()
             val lon = repository.getCachedData(LAST_LAT, "0.0").toDouble()
             val lang = repository.getCachedData(LANG, CURRENT_LANG)
-            val weatherFlow = repository.getWeather(lat, lon, null, lang)
             var weatherDescription = "Weather data not available"
 
-
-            weatherFlow.collect { weatherResponse ->
-//                weatherResponse?.weatherList?.first()?.description?.let {
-//                    weatherDescription = it
-//                }
-                weatherResponse?.name?.let {
-                    weatherDescription = it
+            try {
+                if(isInternetAvailable()) {
+                    repository.getWeather(lat, lon, null, lang).collect { weatherResponse ->
+                        weatherResponse?.weatherList?.get(0)?.description?.let {
+                            weatherDescription = it
+                            Log.i(TAG, "onReceive: $weatherDescription $lang $lat $lon")
+                        }
+                    }
+                } else {
+                    weatherDescription = "No internet connection"
                 }
-            Log.i(TAG, "onReceive: $weatherDescription $lang $lat $lon")
-
-                return@collect
+            } catch (e: Exception) {
+                Log.e(TAG, "Error getting weather data", e)
+                weatherDescription = "Error getting weather data"
             }
 
             createNotification(context, alarmId, label, weatherDescription)
-//            context.startService(Intent(context, AlarmService::class.java).apply {
-//                action = "START"
-//            })
             playAudio(context)
             Log.d(
                 "AlarmReceiver",
@@ -110,9 +110,20 @@ class AlarmReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val snoozeIntent = Intent(context, AlarmCancelReceiver::class.java).apply {
+            putExtra("ALARM_ID", alarmId)
+            action = "SNOOZE"
+        }
+        val snoozePendingIntent = PendingIntent.getBroadcast(
+            context,
+            alarmId,
+            snoozeIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(context, "ALARM_CHANNEL")
-            .setContentTitle("Alarm: $label")
-            .setContentText("Current weather: $weatherDescription")
+            .setContentTitle(context.getString(R.string.alarm, label))
+            .setContentText(context.getString(R.string.current_weather, weatherDescription))
             .setSmallIcon(R.drawable.shower_rain)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -120,8 +131,13 @@ class AlarmReceiver : BroadcastReceiver() {
             .setAutoCancel(true)
             .addAction(
                 R.drawable.broken_clouds,
-                "Cancel",
+                context.getString(R.string.cancel),
                 cancelPendingIntent
+            )
+            .addAction(
+                R.drawable.broken_clouds,
+                context.getString(R.string.snooze_5_mins),
+                snoozePendingIntent
             )
             .setDeleteIntent(deletePendingIntent)
             .build()

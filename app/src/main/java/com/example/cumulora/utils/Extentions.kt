@@ -23,6 +23,15 @@ fun Context.getTempUnitSymbol(unit: String): String {
     }
 }
 
+fun Context.getTempUnitSymbolSetting(unit: String): String {
+    return when (unit) {
+        "standard" -> getString(R.string.k_m_h)
+        "metric" -> getString(R.string.c_m_s)
+        "imperial" -> getString(R.string.f_m_s)
+        else -> getString(R.string.c_m_s)
+    }
+}
+
 fun Context.getWindSpeedUnitSymbol(unit: String): String {
     return when (unit) {
         "standard" -> getString(R.string.ms)

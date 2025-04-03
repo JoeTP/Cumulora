@@ -16,7 +16,7 @@ data class WeatherResponse(
     val wind: Wind,
     val rain: Rain?,
     val clouds: Clouds,
-    val dt: Long,
+    var dt: Long,
     val sys: Sys,
     val timezone: Int,
     val name: String,

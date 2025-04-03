@@ -19,6 +19,12 @@ android {
     val weatherApiKey: String = localProperties.getProperty("WEATHER_API_KEY") ?: ""
     val googleMapsApiKey: String = localProperties.getProperty("GOOGLE_API_KEY") ?: ""
 
+    packagingOptions {
+        exclude("META-INF/LICENSE-notice.md")
+        exclude("META-INF/LICENSE.md")
+        exclude("META-INF/LICENSE.txt")
+    }
+
     defaultConfig {
         applicationId = "com.example.cumulora"
         minSdk = 24
@@ -31,7 +37,7 @@ android {
 
         buildConfigField("String", "WEATHER_API_KEY", "\"$weatherApiKey\"")
         buildConfigField("String", "googleApiKey", localProperties.getProperty("GOOGLE_API_KEY"))
-        resValue ("string", "googleApiKey", localProperties.getProperty("GOOGLE_API_KEY"))
+        resValue("string", "googleApiKey", localProperties.getProperty("GOOGLE_API_KEY"))
 
     }
 
@@ -71,13 +77,41 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    //?Testing===============================================================
+    //*Unit
+    //!Mockk
+    testImplementation("io.mockk:mockk-android:1.13.17")
+    testImplementation("io.mockk:mockk-agent:1.13.17")
     testImplementation(libs.junit)
+    //!Hamcrest
+    testImplementation("org.hamcrest:hamcrest:2.2")
+    testImplementation("org.hamcrest:hamcrest-library:2.2")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    //!Robolectric
+    testImplementation("androidx.test.ext:junit-ktx:1.1.3")
+    testImplementation("androidx.test:core-ktx:1.5.0")
+    testImplementation("org.robolectric:robolectric:4.11")
+    //!Rule
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+    //*Instrumented
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    //!Mockk
+    androidTestImplementation("io.mockk:mockk-android:1.13.17")
+    androidTestImplementation("io.mockk:mockk-agent:1.13.17")
+    //!Hamcrest
+    androidTestImplementation("org.hamcrest:hamcrest:2.2")
+    androidTestImplementation("org.hamcrest:hamcrest-library:2.2")
+    //!Rule
+    androidTestImplementation ("androidx.arch.core:core-testing:2.1.0")
+    //?=========================================================================
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
@@ -111,15 +145,15 @@ dependencies {
 
     //UI
     implementation("androidx.compose.material:material-icons-extended:$compose_version")
-    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
 
     //Glide & lottie
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     implementation("com.airbnb.android:lottie-compose:6.1.0")
 
     //Media player
-    implementation ("androidx.media3:media3-exoplayer:1.2.1")
-    implementation ("androidx.media3:media3-ui:1.2.1")
+    implementation("androidx.media3:media3-exoplayer:1.2.1")
+    implementation("androidx.media3:media3-ui:1.2.1")
 
 
 }

@@ -13,6 +13,6 @@ data class Alarm(
     var id: Int,
     val label: String,
     val cityName: String,
-    val time: LocalTime,
+    var time: LocalTime,
     val duration: Int,
 )

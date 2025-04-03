@@ -36,5 +36,5 @@ interface WeatherRepository {
     suspend fun updateAlarm(alarm: Alarm)
 
     suspend fun getHomeCachedWeather(): Flow<HomeEntity>
-    suspend fun cacheHomeCachedWeather(home: HomeEntity)
+    suspend fun cacheHomeWeather(home: HomeEntity)
 }

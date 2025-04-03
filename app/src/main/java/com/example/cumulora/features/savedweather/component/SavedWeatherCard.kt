@@ -3,6 +3,7 @@ package com.example.cumulora.features.savedweather.component
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,11 +11,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -30,12 +33,12 @@ import com.example.cumulora.utils.weatherIcons
 
 @SuppressLint("NewApi")
 @Composable
-fun SavedWeatherCard(savedWeather: SavedWeather, tempUnit: String) {
+fun SavedWeatherCard(savedWeather: SavedWeather, tempUnit: String, onClick: () -> Unit) {
+
     Log.i("TAG", "SavedWeatherCard: $tempUnit")
 
     val ctx = LocalContext.current
     val weather = savedWeather.weather
-//    val forecast = savedWeather.forecastResponse
     val cityName = savedWeather.cityName
 
     val tempMax = weather?.tempMax
@@ -49,6 +52,7 @@ fun SavedWeatherCard(savedWeather: SavedWeather, tempUnit: String) {
                 tempMin?.let { (it + 273.15).toInt() }
             )
         }
+
         "imperial" -> {
             //F = (°C × 9/5) + 32
             Pair(
@@ -56,6 +60,7 @@ fun SavedWeatherCard(savedWeather: SavedWeather, tempUnit: String) {
                 tempMin?.let { (it * 9 / 5 + 32).toInt() }
             )
         }
+
         else -> {
             Pair(
                 tempMax?.toInt(),
@@ -65,7 +70,13 @@ fun SavedWeatherCard(savedWeather: SavedWeather, tempUnit: String) {
     }
 
 
-    Surface(color = Color.Gray, shape = RoundedCornerShape(20.dp)) {
+    Surface(
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(20.dp))
+            .clickable(onClick = onClick),
+        color = MaterialTheme.colorScheme.primaryContainer,
+        shape = RoundedCornerShape(20.dp)
+    ) {
         Row(
             Modifier
                 .fillMaxWidth()
@@ -74,11 +85,14 @@ fun SavedWeatherCard(savedWeather: SavedWeather, tempUnit: String) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text(cityName)
+
+                Text(cityName.ifEmpty { "Unknown Location" })
                 Text("$displayMax / $displayMin ${ctx.getTempUnitSymbol(tempUnit)}")
-                //TODO: FIX THE TIME FORMAT
-                Text(stringResource(R.string.last_updated, weather?.currentTime.toString()
-                .formatNumberBasedOnLanguage(CURRENT_LANG)), fontSize = 12.sp)
+                Text(
+                    stringResource(
+                        R.string.last_updated, weather?.currentDate.toString()
+                    ), fontSize = 12.sp
+                )
             }
             Image(
                 modifier = Modifier.size(64.dp),

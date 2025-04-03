@@ -46,7 +46,11 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
             OnBoardingScreenUI {
                 shared.saveData(IS_FIRST_TIME_SK, false)
                 Log.i("TAG", "SAVE ATTEMPT = $isFirstTime ")
-                navController.navigate(ScreenRoutes.Weather)
+                navController.navigate(ScreenRoutes.Weather){
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
             }
         }
 
@@ -88,7 +92,7 @@ fun NavSetup(navController: NavHostController, snackbarHostState: SnackbarHostSt
                     Icon(imageVector = Icons.Default.AddLocationAlt, contentDescription = "Add")
                 }
             }) { padding ->
-                SavedWeatherScreenUI(Modifier.padding(padding), snackbarHostState)
+                SavedWeatherScreenUI(Modifier.padding(padding), snackbarHostState, navController)
             }
         }
 

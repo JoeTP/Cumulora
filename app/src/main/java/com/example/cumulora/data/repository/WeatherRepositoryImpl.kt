@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 
-class WeatherRepositoryImpl private constructor(
+class WeatherRepositoryImpl /*private*/ constructor(
     private val remoteDataSource: WeatherRemoteDataSource,
     private val localDataSource: WeatherLocalDataSource
 ) : WeatherRepository {
@@ -107,7 +107,7 @@ class WeatherRepositoryImpl private constructor(
         return localDataSource.getHomeCachedWeather()
     }
 
-    override suspend fun cacheHomeCachedWeather(home: HomeEntity) {
+    override suspend fun cacheHomeWeather(home: HomeEntity) {
         localDataSource.cacheHomeCachedWeather(home)
     }
 

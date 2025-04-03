@@ -17,10 +17,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.cumulora.navigation.ScreenRoutes
 import com.example.cumulora.ui.theme.LightLinColorOne
+import com.example.cumulora.ui.theme.LightRed
 import com.example.cumulora.ui.theme.Red
 
 @Composable
@@ -38,11 +40,11 @@ fun MultiFab(navController: NavController, cityName: String) {
             exit = shrinkVertically()
         ) {
             FloatingActionButton(
-                containerColor = Red,
+                containerColor = LightRed,
                 onClick = { navController.navigate(ScreenRoutes.SavedWeather)},
                 modifier = Modifier.padding(bottom = 8.dp).size(46.dp)
             ) {
-                Icon(Icons.Default.Favorite, "Favorite")
+                Icon(Icons.Default.Favorite, "Favorite", tint = Color.White)
             }
         }
 

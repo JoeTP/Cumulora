@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -63,6 +65,8 @@ fun <T> SwipeToDeleteContainer(
 
     LaunchedEffect(isRemoved, currentItem) {
         if (isRemoved) {
+            snackBarHostState.currentSnackbarData?.dismiss()
+
             val result = snackBarHostState.showSnackbar(
                 message = "$snackBarString ${context.getString(R.string.is_deleted)}",
                 actionLabel = context.getString(R.string.undo),
@@ -75,7 +79,7 @@ fun <T> SwipeToDeleteContainer(
 
                 state.snapTo(SwipeToDismissBoxValue.Settled)
             } else {
-//                delay(animationDuration.toLong())
+                delay(animationDuration.toLong())
                 onDelete(currentItem)
             }
         }
@@ -129,7 +133,7 @@ fun DeleteBackground(swipeDismissState: SwipeToDismissBoxState) {
         Icon(
             imageVector = Icons.Default.Delete,
             contentDescription = null,
-            tint = Color.White
+            tint = MaterialTheme.colorScheme.error
         )
     }
 }

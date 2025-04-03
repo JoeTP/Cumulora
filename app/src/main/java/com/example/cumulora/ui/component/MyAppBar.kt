@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -20,7 +21,6 @@ import com.example.cumulora.navigation.ScreenRoutes
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.formatNumberBasedOnLanguage
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyAppBar(
@@ -30,8 +30,6 @@ fun MyAppBar(
     currentTemp: String,
     titleAlpha: Float
 ) {
-
-
     TopAppBar(
         title = {
             Row(
@@ -40,22 +38,34 @@ fun MyAppBar(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = currentTemp.formatNumberBasedOnLanguage(CURRENT_LANG))
-                Text(text = cityName)
+                Text(
+                    text = currentTemp.formatNumberBasedOnLanguage(CURRENT_LANG),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = titleAlpha)
+                )
+                Text(
+                    text = cityName,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = titleAlpha)
+                )
                 Text("")
             }
         },
         actions = {
-            IconButton(onClick = { navController.navigate(ScreenRoutes.Settings) }) {
+            IconButton(
+                onClick = { navController.navigate(ScreenRoutes.Settings) },
+            ) {
                 Icon(
                     imageVector = Icons.Default.Settings,
-                    contentDescription = "Settings"
+                    contentDescription = "Settings",
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = bgColor,
-            scrolledContainerColor = Color.White,
-        ),
+            scrolledContainerColor = bgColor,
+            navigationIconContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = titleAlpha),
+            actionIconContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = titleAlpha),
+            titleContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = titleAlpha)
+        )
     )
 }

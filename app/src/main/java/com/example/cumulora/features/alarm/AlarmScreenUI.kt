@@ -15,10 +15,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -34,7 +35,9 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -50,6 +53,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.cumulora.R
 import com.example.cumulora.core.factories.AlarmViewModelFactory
 import com.example.cumulora.data.models.alarm.Alarm
@@ -90,7 +98,9 @@ fun AlarmScreenUI(modifier: Modifier = Modifier, snackbarHostState: SnackbarHost
                 LoadingData()
             }
 
-            is AlarmStateResponse.Failure -> {}
+            is AlarmStateResponse.Failure -> {
+                NoData()
+            }
             is AlarmStateResponse.Success -> {
 
                 val alarms = (alarmsState as AlarmStateResponse.Success).data
@@ -113,7 +123,7 @@ fun AlarmScreenUI(modifier: Modifier = Modifier, snackbarHostState: SnackbarHost
                                 onDelete = { viewModel.deleteAlarm(it) },
                                 onRestore = { },
                                 snackBarHostState = snackbarHostState,
-                                snackBarString = it.cityName + context.getString(R.string.alarm_),
+                                snackBarString = it.cityName + context.getString(R.string.alarm_)+ " ",
                                 content = {
                                     AlarmCard(alarm = it)
                                 }
@@ -160,7 +170,7 @@ fun AlarmSetupDialog(
     var isSeconds by remember { mutableStateOf(false) }
     var duration by remember { mutableStateOf("") }
     var label by remember { mutableStateOf("") }
-    var calcDuration by remember { mutableStateOf(if (duration.isNullOrEmpty()) 1 else duration.toInt()) }
+    var calcDuration by remember { mutableStateOf(if (duration.isEmpty()) 50 else duration.toInt()) }
     val scrollState by remember { mutableStateOf(ScrollState(0)) }
 
     val timeState = rememberTimePickerState(
@@ -172,15 +182,15 @@ fun AlarmSetupDialog(
     if (showDialog) {
         AlertDialog(
             onDismissRequest = onDismiss,
-            title = { Text(text = "Set Alarm", fontWeight = FontWeight.Bold) },
+            title = { Text(text = stringResource(R.string.set_alarm), fontWeight = FontWeight.Bold) },
             text = {
                 Column(
                     Modifier
                         .verticalScroll(scrollState)
                         .imePadding()
                 ) {
-                    TimePicker(state = timeState)
-                    TextField(value = label, onValueChange = { label = it }, label = { Text("Alarm Label") })
+                    TimeInput(state = timeState)
+                    TextField(value = label, onValueChange = { label = it }, label = { Text(stringResource(R.string.alarm_label)) })
                     Spacer(Modifier.height(16.dp))
                     Row(
                         Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
@@ -189,19 +199,19 @@ fun AlarmSetupDialog(
                     ) {
                         TextField(modifier = Modifier.weight(1f), value = duration, onValueChange =
                         { duration = it }, label = {
-                            Text("Duration")
+                            Text(stringResource(R.string.duration))
                         }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
                         Spacer(Modifier.width(16.dp))
                         Row {
-                            DurationType(isSelected = !isSeconds, label = "Minutes") {
+                            DurationType(isSelected = !isSeconds, label = stringResource(R.string.minutes)) {
                                 isSeconds = false
-                                calcDuration = duration.toInt() * 60
+                                calcDuration = if(duration.isEmpty()) 50 else duration.toInt() * 60
                             }
                             Spacer(Modifier.width(16.dp))
-                            DurationType(isSelected = isSeconds, label = "Seconds") {
+                            DurationType(isSelected = isSeconds, label = stringResource(R.string.seconds)) {
                                 isSeconds = true
-                                calcDuration = duration.toInt()
+                                calcDuration = if(duration.isEmpty()) 50 else duration.toInt()
                             }
                         }
                     }
@@ -244,8 +254,20 @@ fun LoadingData() {
 
 @Composable
 fun NoData() {
+        val lottie by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.alarm))
+
+        val progress by animateLottieCompositionAsState(
+            composition = lottie,
+            restartOnPlay = true,
+            speed = 1f,
+            iterations = LottieConstants.IterateForever,
+            isPlaying = true,
+        )
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        //TODO FIX THIS LATER WITH LOTTIE
-        Text("NO DATA")
+        LottieAnimation(
+            composition = lottie,
+            progress = { progress },
+            modifier = Modifier.size(200.dp)
+        )
     }
 }

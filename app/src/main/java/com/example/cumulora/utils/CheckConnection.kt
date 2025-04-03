@@ -2,7 +2,7 @@ package com.example.cumulora.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.example.cumulora.AppInitializer
+import com.example.cumulora.entry.AppInitializer
 
 
 fun isInternetAvailable(): Boolean {
