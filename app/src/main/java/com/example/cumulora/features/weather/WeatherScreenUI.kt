@@ -223,15 +223,18 @@ fun DisplayWeatherScreen(
                         .verticalScroll(scrollState)
                         .background(Color.Transparent)
                 ) {
+
+
                     CurrentTemperature(
-                        weatherData.city,
-                        weatherData.currentTemp,
-                        weatherData.description,
-                        weatherData.currentTime,
-                        weatherData.currentDate,
-                        weatherData.icon,
-                        tempUnit,
-                        onMapNavigate
+                        cityName = weatherData.city,
+                        temperature = weatherData.currentTemp,
+                        description = weatherData.description,
+                        time = weatherData.currentTime,
+                        date = weatherData.currentDate,
+                        icon = weatherData.icon,
+                        feelsLike = weatherData.feelsLike.toInt().toString() + tempUnit,
+                        tempUnit = tempUnit,
+                        onMapNavigate = onMapNavigate
                     )
                     WeatherDetailsSection(
                         weatherData,

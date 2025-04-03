@@ -3,12 +3,15 @@ package com.example.cumulora.features.alarm.component
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,21 +31,24 @@ import java.util.Locale
 fun AlarmCard(alarm: Alarm) {
 
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Gray, shape = RoundedCornerShape(12.dp)).padding(12.dp), horizontalArrangement
-        = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        val time = formatTime24to12(alarm.time.hour, alarm.time.minute)
-        Column (verticalArrangement = Arrangement.Center){
-            Text(time, fontSize = 22.sp)
-            if(alarm.label.isNotEmpty()){
-                Text(alarm.label, fontSize = 12.sp)
+    Surface(color = MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(12.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+//                .background(MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(12.dp))
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val time = formatTime24to12(alarm.time.hour, alarm.time.minute)
+            Column(verticalArrangement = Arrangement.Center) {
+                Text(time, fontSize = 22.sp)
+                if (alarm.label.isNotEmpty()) {
+                    Text(alarm.label, fontSize = 12.sp)
+                }
             }
+            Text(alarm.cityName)
         }
-        Text(alarm.cityName)
     }
 }
 

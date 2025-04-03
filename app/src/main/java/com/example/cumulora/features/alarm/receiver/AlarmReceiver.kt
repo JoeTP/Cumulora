@@ -39,17 +39,15 @@ class AlarmReceiver : BroadcastReceiver() {
             val weatherFlow = repository.getWeather(lat, lon, null, lang)
             var weatherDescription = "Weather data not available"
 
+            Log.d(TAG, "THE RETURNED ALARM: ${alarm.id} ${alarm.time} ${alarm.duration}")
 
             weatherFlow.collect { weatherResponse ->
-//                weatherResponse?.weatherList?.first()?.description?.let {
-//                    weatherDescription = it
-//                }
-                weatherResponse?.name?.let {
+                weatherResponse?.weatherList?.get(0)?.description?.let {
                     weatherDescription = it
                 }
             Log.i(TAG, "onReceive: $weatherDescription $lang $lat $lon")
 
-                return@collect
+//                return@collect
             }
 
             createNotification(context, alarmId, label, weatherDescription)
@@ -122,8 +120,8 @@ class AlarmReceiver : BroadcastReceiver() {
         )
 
         val notification = NotificationCompat.Builder(context, "ALARM_CHANNEL")
-            .setContentTitle("Alarm: $label")
-            .setContentText("Current weather: $weatherDescription")
+            .setContentTitle(context.getString(R.string.alarm, label))
+            .setContentText(context.getString(R.string.current_weather, weatherDescription))
             .setSmallIcon(R.drawable.shower_rain)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -131,12 +129,12 @@ class AlarmReceiver : BroadcastReceiver() {
             .setAutoCancel(true)
             .addAction(
                 R.drawable.broken_clouds,
-                "Cancel",
+                context.getString(R.string.cancel),
                 cancelPendingIntent
             )
             .addAction(
                 R.drawable.broken_clouds,
-                "Snooze 5 mins",
+                context.getString(R.string.snooze_5_mins),
                 snoozePendingIntent
             )
             .setDeleteIntent(deletePendingIntent)

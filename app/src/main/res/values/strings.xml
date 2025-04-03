@@ -50,4 +50,8 @@
     <string name="f_m_s">°F\nm/s</string>
     <string name="k_m_h">K\nmph</string>
     <string name="system">System</string>
+    <string name="unknown_location">Unknown Location</string>
+    <string name="current_weather">Current weather: %1$s</string>
+    <string name="alarm">Alarm %1$s</string>
+    <string name="snooze_5_mins">Snooze 5 mins</string>
 </resources>

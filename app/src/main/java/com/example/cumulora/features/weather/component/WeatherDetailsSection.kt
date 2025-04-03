@@ -173,7 +173,7 @@ private fun WeatherDetailsSectionChild(
         ) { page ->
             when (page) {
                 0 -> TodayTab(weather, forecast, tempUnit = tempUnit,windUnit = windUnit)
-                1 -> FiveDaysTab(forecastFiveDays, tempUnit)
+                1 -> FiveDaysTab(forecastFiveDays, tempUnit, windUnit)
             }
         }
     }

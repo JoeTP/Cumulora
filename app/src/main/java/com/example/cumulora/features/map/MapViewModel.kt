@@ -83,13 +83,13 @@ class MapViewModel(private val repo: WeatherRepository, private val placesClient
     fun saveLocation(lat: Double, lon: Double) = viewModelScope.launch {
         cacheLastLatLon(lat.toString(), lon.toString())
 //        val unit = repo.getCachedData(UNITS, DEFAULT_UNITS)
-        //TODO: MIGHT BE WRONG HERE
         val lang = repo.getCachedData(LANG, "")
         //? Temp will be called with metric units by default
         val weatherDeferred =
             async { repo.getWeather(lat, lon, DEFAULT_UNITS, lang).catch { emit(null) }.first() }
 //        val forecastDeferred = async { repo.getForecast(lat, lon, unit, lang).catch { emit(null) }.first() }
         val weather = weatherDeferred.await()
+        weather?.dt = System.currentTimeMillis()
 //        val forecast = forecastDeferred.await()
         repo.saveWeather(SavedWeather(weather?.name ?: "Unknown Location", weather?.toFinalWeather()))
     }

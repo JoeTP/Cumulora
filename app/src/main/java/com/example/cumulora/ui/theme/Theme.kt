@@ -1,6 +1,5 @@
 package com.example.cumulora.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +18,9 @@ private val DarkColorScheme = darkColorScheme(
     primaryContainer = DarkCyan,
     tertiaryContainer = LighterCyan,
     secondaryContainer = LightCyan,
-    onPrimaryContainer = Color.White
+    onPrimaryContainer = Color.White,
+    inversePrimary = LightCyan
+
 
 )
 
@@ -31,6 +32,7 @@ private val LightColorScheme = lightColorScheme(
     tertiaryContainer = LightCyan,
     secondaryContainer = Cyan,
     onPrimaryContainer = Color.White,
+    inversePrimary = LightCyan
 
 
     /* Other default colors to override
@@ -85,6 +87,7 @@ fun CumuloraTheme(
             val context = LocalContext.current
             if (effectiveDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
+
         effectiveDarkTheme -> DarkColorScheme
         else -> LightColorScheme
     }

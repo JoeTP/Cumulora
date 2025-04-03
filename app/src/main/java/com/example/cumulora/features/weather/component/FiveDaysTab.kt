@@ -7,17 +7,27 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Air
+import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.Compress
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Thermostat
+import androidx.compose.material.icons.filled.WaterDrop
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
@@ -34,8 +44,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.cumulora.R
 import com.example.cumulora.data.models.forecast.Forecast
+import com.example.cumulora.data.models.weather.WeatherEntity
 import com.example.cumulora.ui.theme.Purple40
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.formatDateToDdMmm
@@ -44,7 +57,7 @@ import com.example.cumulora.utils.weatherIcons
 
 
 @Composable
-fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String) {
+fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String, windUnit: String) {
 
     Surface(
         modifier = Modifier
@@ -64,14 +77,14 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String) {
     ) {
         Column {
             for (i in 0..4) {
-                ForecastItem(forecastFiveDays[i], tempUnit)
+                ForecastItem(forecastFiveDays[i], tempUnit, windUnit)
             }
         }
     }
 }
 
 @Composable
-fun ForecastItem(forecast: Forecast, tempUnit: String) {
+fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
     var isExpanded by remember { mutableStateOf(false) }
     val rotateState by animateFloatAsState(targetValue = if (isExpanded) 180f else 0f)
 
@@ -129,13 +142,50 @@ fun ForecastItem(forecast: Forecast, tempUnit: String) {
         if (isExpanded) {
             Box(
                 modifier = Modifier
-                    .padding(start = 32.dp)
+                    .padding(16.dp)
             ) {
-                Column {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(forecast.weather.first().description)
-                }
+                ForecastDetails(forecast, tempUnit, windUnit)
             }
         }
     }
+}
+
+@Composable
+fun ForecastDetails(forecast: Forecast, tempUnit: String, windUnit: String) {
+
+    WeatherCard{
+        Column {
+            DetailsRow(
+                stringResource(
+                    R.string.max_min
+                ),
+                forecast.main.tempMax.toInt().toString().formatNumberBasedOnLanguage
+                    (CURRENT_LANG) + " / " + forecast.main.tempMin.toInt().toString().formatNumberBasedOnLanguage(CURRENT_LANG), tempUnit
+            ) {
+                Icon(imageVector = Icons.Default.Thermostat, contentDescription = "")
+            }
+            HorizontalDivider(Modifier.padding(vertical = 12.dp))
+            DetailsRow(
+                stringResource(R.string.pressure), forecast.main.pressure.toString()
+                    .formatNumberBasedOnLanguage(CURRENT_LANG), stringResource(R.string.hpa)
+            ) {
+                Icon(imageVector = Icons.Default.Compress, contentDescription = "")
+            }
+            HorizontalDivider(Modifier.padding(vertical = 12.dp))
+            DetailsRow(
+                stringResource(R.string.humidity), forecast.main.humidity.toString()
+                    .formatNumberBasedOnLanguage(CURRENT_LANG), "%"
+            ) {
+                Icon(imageVector = Icons.Default.WaterDrop, contentDescription = "")
+            }
+            HorizontalDivider(Modifier.padding(vertical = 12.dp))
+            DetailsRow(
+                stringResource(R.string.clouds), forecast.clouds.all.toString()
+                    .formatNumberBasedOnLanguage(CURRENT_LANG), "%"
+            ) {
+                Icon(imageVector = Icons.Default.Cloud, contentDescription = "")
+            }
+        }
+    }
+
 }

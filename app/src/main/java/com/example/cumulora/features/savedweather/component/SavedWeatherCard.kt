@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -73,7 +74,7 @@ fun SavedWeatherCard(savedWeather: SavedWeather, tempUnit: String, onClick: () -
         modifier = Modifier
             .clip(shape = RoundedCornerShape(20.dp))
             .clickable(onClick = onClick),
-        color = Color.Gray,
+        color = MaterialTheme.colorScheme.primaryContainer,
         shape = RoundedCornerShape(20.dp)
     ) {
         Row(
@@ -87,11 +88,9 @@ fun SavedWeatherCard(savedWeather: SavedWeather, tempUnit: String, onClick: () -
 
                 Text(cityName.ifEmpty { "Unknown Location" })
                 Text("$displayMax / $displayMin ${ctx.getTempUnitSymbol(tempUnit)}")
-                //TODO: FIX THE TIME FORMAT
                 Text(
                     stringResource(
-                        R.string.last_updated, weather?.currentTime.toString()
-                            .formatNumberBasedOnLanguage(CURRENT_LANG)
+                        R.string.last_updated, weather?.currentDate.toString()
                     ), fontSize = 12.sp
                 )
             }

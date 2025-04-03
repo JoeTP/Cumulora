@@ -98,7 +98,9 @@ fun AlarmScreenUI(modifier: Modifier = Modifier, snackbarHostState: SnackbarHost
                 LoadingData()
             }
 
-            is AlarmStateResponse.Failure -> {}
+            is AlarmStateResponse.Failure -> {
+                NoData()
+            }
             is AlarmStateResponse.Success -> {
 
                 val alarms = (alarmsState as AlarmStateResponse.Success).data
@@ -121,7 +123,7 @@ fun AlarmScreenUI(modifier: Modifier = Modifier, snackbarHostState: SnackbarHost
                                 onDelete = { viewModel.deleteAlarm(it) },
                                 onRestore = { },
                                 snackBarHostState = snackbarHostState,
-                                snackBarString = it.cityName + context.getString(R.string.alarm_),
+                                snackBarString = it.cityName + context.getString(R.string.alarm_)+ " ",
                                 content = {
                                     AlarmCard(alarm = it)
                                 }
@@ -168,7 +170,7 @@ fun AlarmSetupDialog(
     var isSeconds by remember { mutableStateOf(false) }
     var duration by remember { mutableStateOf("") }
     var label by remember { mutableStateOf("") }
-    var calcDuration by remember { mutableStateOf(if (duration.isNullOrEmpty()) 1 else duration.toInt()) }
+    var calcDuration by remember { mutableStateOf(if (duration.isEmpty()) 10 else duration.toInt()) }
     val scrollState by remember { mutableStateOf(ScrollState(0)) }
 
     val timeState = rememberTimePickerState(
@@ -204,12 +206,12 @@ fun AlarmSetupDialog(
                         Row {
                             DurationType(isSelected = !isSeconds, label = stringResource(R.string.minutes)) {
                                 isSeconds = false
-                                calcDuration = if(duration.isEmpty()) 1 else duration.toInt() * 60
+                                calcDuration = if(duration.isEmpty()) 10 else duration.toInt() * 60
                             }
                             Spacer(Modifier.width(16.dp))
                             DurationType(isSelected = isSeconds, label = stringResource(R.string.seconds)) {
                                 isSeconds = true
-                                calcDuration = if(duration.isEmpty()) 1 else duration.toInt()
+                                calcDuration = if(duration.isEmpty()) 10 else duration.toInt()
                             }
                         }
                     }
