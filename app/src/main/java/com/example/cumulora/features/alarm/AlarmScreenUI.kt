@@ -170,7 +170,7 @@ fun AlarmSetupDialog(
     var isSeconds by remember { mutableStateOf(false) }
     var duration by remember { mutableStateOf("") }
     var label by remember { mutableStateOf("") }
-    var calcDuration by remember { mutableStateOf(if (duration.isEmpty()) 10 else duration.toInt()) }
+    var calcDuration by remember { mutableStateOf(if (duration.isEmpty()) 50 else duration.toInt()) }
     val scrollState by remember { mutableStateOf(ScrollState(0)) }
 
     val timeState = rememberTimePickerState(
@@ -206,12 +206,12 @@ fun AlarmSetupDialog(
                         Row {
                             DurationType(isSelected = !isSeconds, label = stringResource(R.string.minutes)) {
                                 isSeconds = false
-                                calcDuration = if(duration.isEmpty()) 10 else duration.toInt() * 60
+                                calcDuration = if(duration.isEmpty()) 50 else duration.toInt() * 60
                             }
                             Spacer(Modifier.width(16.dp))
                             DurationType(isSelected = isSeconds, label = stringResource(R.string.seconds)) {
                                 isSeconds = true
-                                calcDuration = if(duration.isEmpty()) 10 else duration.toInt()
+                                calcDuration = if(duration.isEmpty()) 50 else duration.toInt()
                             }
                         }
                     }

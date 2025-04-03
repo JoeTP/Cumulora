@@ -2,9 +2,13 @@ package com.example.cumulora.features.savedweather
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
@@ -20,6 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.cumulora.R
 import com.example.cumulora.core.factories.SavedWeatherViewModelFactory
 import com.example.cumulora.data.responsestate.SavedWeatherStateResponse
@@ -104,8 +113,23 @@ fun SavedWeatherScreenUI(
 
 @Composable
 fun NoData(modifier: Modifier = Modifier) {
-    Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(stringResource(R.string.no_saved_weather))
+    val lottie by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.nolocation))
+
+    val progressLottie by animateLottieCompositionAsState(
+        composition = lottie,
+        restartOnPlay = true,
+        speed = 1f,
+        iterations = LottieConstants.IterateForever,
+        isPlaying = true,
+    )
+    Column(modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+        LottieAnimation(
+            composition = lottie,
+            progress = { progressLottie },
+            modifier = Modifier.size(180.dp)
+        )
+        Spacer(Modifier.height(16.dp))
+        Text(stringResource(R.string.no_saved_locations))
     }
 }
 

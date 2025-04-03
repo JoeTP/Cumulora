@@ -59,7 +59,7 @@ fun CurrentTemperature(
             Image(
                 modifier = Modifier
                     .size(260.dp)
-                    .alpha(0.4f),
+                    .alpha(0.2f),
                 painter = painterResource(id = weatherIcons.getValue(icon)),
                 contentDescription = ""
             )
@@ -96,7 +96,7 @@ fun CurrentTemperature(
                 Row {
                     Icon(imageVector = Icons.Default.Thermostat, contentDescription = "")
 //                    Text("feels like $feelsLike")
-                    Text(stringResource(R.string.feels_like, feelsLike))
+                    Text(stringResource(R.string.feels_like, feelsLike.formatNumberBasedOnLanguage(CURRENT_LANG)))
                 }
             }
         }

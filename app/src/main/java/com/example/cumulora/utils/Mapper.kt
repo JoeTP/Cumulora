@@ -24,7 +24,7 @@ fun WeatherResponse.toFinalWeather(): WeatherEntity {
 
     val epochSeconds = this.dt
     val timezoneOffsetSeconds = this.timezone
-    val localTimeMillis = (epochSeconds + timezoneOffsetSeconds) * 1000
+    val localTimeMillis = (epochSeconds + timezoneOffsetSeconds)
 
     val dateFormat = SimpleDateFormat("dd, MMM")
     val timeFormat = SimpleDateFormat("HH:mm a")

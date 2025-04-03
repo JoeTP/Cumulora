@@ -15,6 +15,7 @@ import com.example.cumulora.core.objects.MyMediaPlayer
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.LANG
 import com.example.cumulora.utils.LAST_LAT
+import com.example.cumulora.utils.isInternetAvailable
 import com.example.cumulora.utils.repoInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,24 +37,25 @@ class AlarmReceiver : BroadcastReceiver() {
             val lat = repository.getCachedData(LAST_LAT, "0.0").toDouble()
             val lon = repository.getCachedData(LAST_LAT, "0.0").toDouble()
             val lang = repository.getCachedData(LANG, CURRENT_LANG)
-            val weatherFlow = repository.getWeather(lat, lon, null, lang)
             var weatherDescription = "Weather data not available"
 
-            Log.d(TAG, "THE RETURNED ALARM: ${alarm.id} ${alarm.time} ${alarm.duration}")
-
-            weatherFlow.collect { weatherResponse ->
-                weatherResponse?.weatherList?.get(0)?.description?.let {
-                    weatherDescription = it
+            try {
+                if(isInternetAvailable()) {
+                    repository.getWeather(lat, lon, null, lang).collect { weatherResponse ->
+                        weatherResponse?.weatherList?.get(0)?.description?.let {
+                            weatherDescription = it
+                            Log.i(TAG, "onReceive: $weatherDescription $lang $lat $lon")
+                        }
+                    }
+                } else {
+                    weatherDescription = "No internet connection"
                 }
-            Log.i(TAG, "onReceive: $weatherDescription $lang $lat $lon")
-
-//                return@collect
+            } catch (e: Exception) {
+                Log.e(TAG, "Error getting weather data", e)
+                weatherDescription = "Error getting weather data"
             }
 
             createNotification(context, alarmId, label, weatherDescription)
-//            context.startService(Intent(context, AlarmService::class.java).apply {
-//                action = "START"
-//            })
             playAudio(context)
             Log.d(
                 "AlarmReceiver",

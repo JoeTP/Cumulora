@@ -95,7 +95,7 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
     val lottieFailed by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading))
 
     val progressLottieFailed by animateLottieCompositionAsState(
-        composition = lottie,
+        composition = lottieFailed,
         restartOnPlay = true,
         speed = 1f,
         iterations = LottieConstants.IterateForever,
