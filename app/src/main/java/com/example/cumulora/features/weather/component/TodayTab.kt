@@ -49,8 +49,10 @@ import com.example.cumulora.utils.formatUnixTimeToHHMM
 
 @Composable
 fun TodayTab(
-    weather: WeatherEntity, forecast: ForecastResponse, tempUnit: String, windUnit: String, bgColor: Color
+    weather: WeatherEntity, forecast: ForecastResponse, tempUnit: String, windUnit: String,
+    ovalColor: Color,
 ) {
+
 
     val forecastList = forecast.forecastList
 
@@ -65,7 +67,7 @@ fun TodayTab(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(count = 8) { index ->
-                OvalCard(forecastList[index], tempUnit, bgColor)
+                OvalCard(forecastList[index], tempUnit, ovalColor)
             }
         }
 
@@ -144,29 +146,29 @@ fun TodayTab(
                 }
             }
         }
-/*
-        Spacer(modifier = Modifier.height(16.dp))
+        /*
+                Spacer(modifier = Modifier.height(16.dp))
 
-        val sunrise24 = formatUnixTimeToHHMM(weather.sunRise).formatNumberBasedOnLanguage(CURRENT_LANG)
-        val sinSet24 = formatUnixTimeToHHMM(weather.sunSet).formatNumberBasedOnLanguage(CURRENT_LANG)
-        val sunrise = formatTimeTo12Hour(sunrise24).formatNumberBasedOnLanguage(CURRENT_LANG)
-        val sinSet = formatTimeTo12Hour(sinSet24).formatNumberBasedOnLanguage(CURRENT_LANG)
-        WeatherCard(
-            stringResource(R.string.sunrise_sunset), subtitle = "$sunrise / $sinSet", icon = {
-                Icon(
-                    imageVector = Icons.Default.WbSunny,
-                    contentDescription = ""
-                )
-            },
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-        ) {
-            DayNightIndicator(
-                modifier = Modifier.padding(vertical = 18.dp), sunriseUnix = weather.sunRise,
-                sunsetUnix =
-                weather.sunSet
-            )
-        }*/
+                val sunrise24 = formatUnixTimeToHHMM(weather.sunRise).formatNumberBasedOnLanguage(CURRENT_LANG)
+                val sinSet24 = formatUnixTimeToHHMM(weather.sunSet).formatNumberBasedOnLanguage(CURRENT_LANG)
+                val sunrise = formatTimeTo12Hour(sunrise24).formatNumberBasedOnLanguage(CURRENT_LANG)
+                val sinSet = formatTimeTo12Hour(sinSet24).formatNumberBasedOnLanguage(CURRENT_LANG)
+                WeatherCard(
+                    stringResource(R.string.sunrise_sunset), subtitle = "$sunrise / $sinSet", icon = {
+                        Icon(
+                            imageVector = Icons.Default.WbSunny,
+                            contentDescription = ""
+                        )
+                    },
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                ) {
+                    DayNightIndicator(
+                        modifier = Modifier.padding(vertical = 18.dp), sunriseUnix = weather.sunRise,
+                        sunsetUnix =
+                        weather.sunSet
+                    )
+                }*/
     }
 }
 
@@ -180,7 +182,8 @@ fun DetailsRow(title: String, trail: String, unit: String, icon: @Composable () 
         Row(verticalAlignment = Alignment.CenterVertically) {
             icon()
             Spacer(modifier = Modifier.width(12.dp))
-            Text(title,
+            Text(
+                title,
 //                style = TextStyle(color = textColor)
             );
         }

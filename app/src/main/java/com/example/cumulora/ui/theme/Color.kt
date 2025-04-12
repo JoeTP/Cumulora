@@ -24,8 +24,9 @@ val TextNightColor = Color(0xFFE1E3FF)
 val TertiaryNight = Color(0xFF4B59FF)
 
 //?Set Colors
-val BaseSet = Color(0xFFbb5d46)
-val SecondarySet = Color(0xFFbb5d46)
+val BaseSet = Color(0xFFa64d2d)
+val SecondarySet = Color(0xFFd9793f)
+val surfaceSetColor = Color(0xFFd9c3ae)
 val TextSetColor = Color(0xFFffffff)
 val TertiarySet = Color(0xFFFFC107)
 

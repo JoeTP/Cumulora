@@ -4,6 +4,7 @@ package com.example.cumulora.features.weather.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,11 +61,27 @@ fun WeatherDetailsSection(
     forecastFiveDays: List<Forecast>,
     tempUnit: String,
     windUnit: String,
-    bgColor: Color
+    scrollState: ScrollState,
 ) {
     val tabs = listOf(stringResource(R.string.today), stringResource(R.string._5_days))
     var selectedTabIndex by remember { mutableStateOf(0) }
     val pagerState = rememberPagerState { tabs.size }
+
+    val scrollProgress by remember(scrollState.value) {
+        derivedStateOf {
+            minOf(scrollState.value / 500f, 1f)
+        }
+    }
+
+    val detailsBgAlpha = remember(scrollProgress) {
+        0.4f + (scrollProgress * (0.4f - 0.15f))
+    }
+
+    val surfaceColor = MaterialTheme.colorScheme.surface
+
+    val bgColor = surfaceColor.copy(alpha = detailsBgAlpha)
+
+    val ovalColor = MaterialTheme.colorScheme.primary.copy(alpha = detailsBgAlpha)
 
 
     LaunchedEffect(selectedTabIndex) {
@@ -77,7 +95,6 @@ fun WeatherDetailsSection(
     }
 
     val shape = RoundedCornerShape(topEnd = 40.dp, topStart = 40.dp)
-
     Box(
         modifier = Modifier
             .wrapContentHeight()
@@ -86,8 +103,12 @@ fun WeatherDetailsSection(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        bgColor.copy(alpha = bgColor.alpha * 0.7f),
-                        bgColor
+                        Color.White.copy(alpha = 0.15f),
+//                        Color.Red,
+                        bgColor.copy(alpha = -0.5f),
+                        bgColor,
+                        bgColor.darken(0.1f),
+                        bgColor.darken(0.5f).copy(alpha = 0.9f)
                     ),
                     startY = 0f,
                     endY = Float.POSITIVE_INFINITY
@@ -108,7 +129,7 @@ fun WeatherDetailsSection(
             forecastFiveDays = forecastFiveDays,
             tempUnit = tempUnit,
             windUnit = windUnit,
-            bgColor = bgColor,
+            ovalColor = ovalColor,
             onTabSelected = { index -> selectedTabIndex = index }
         )
     }
@@ -124,7 +145,7 @@ private fun WeatherDetailsSectionChild(
     forecastFiveDays: List<Forecast>,
     tempUnit: String,
     windUnit: String,
-    bgColor: Color,
+    ovalColor: Color,
     onTabSelected: (index: Int) -> Unit
 ) {
     val tabIcons = listOf(Icons.Default.SystemUpdateAlt, Icons.Default.CalendarMonth)
@@ -173,9 +194,13 @@ private fun WeatherDetailsSectionChild(
                 .padding(bottom = 60.dp)
         ) { page ->
             when (page) {
-                0 -> TodayTab(weather, forecast, tempUnit = tempUnit,windUnit = windUnit, bgColor = bgColor)
+                0 -> TodayTab(weather, forecast, tempUnit = tempUnit,windUnit = windUnit, ovalColor = ovalColor)
                 1 -> FiveDaysTab(forecastFiveDays, tempUnit, windUnit)
             }
         }
     }
+}
+
+fun Color.darken(factor: Float): Color {
+    return this.copy(red = red * (1 - factor), green = green * (1 - factor), blue = blue * (1 - factor))
 }

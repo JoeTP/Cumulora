@@ -69,7 +69,7 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String, windUnit: St
             .border(
                 width = 2.dp,
                 shape = RoundedCornerShape(20.dp),
-                color = MaterialTheme.colorScheme.secondaryContainer.copy(0.2f),
+                color = MaterialTheme.colorScheme.primaryContainer.copy(0.2f),
             ),
         color = Color.Transparent,
         shape = RoundedCornerShape(20.dp)
@@ -98,7 +98,7 @@ fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
             .clickable(onClick = { isExpanded = !isExpanded }),
             colors = ListItemDefaults.colors
                 (
-                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(0.5f),
+                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(0.5f),
 
                 ),
             headlineContent = {

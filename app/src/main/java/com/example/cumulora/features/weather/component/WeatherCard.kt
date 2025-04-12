@@ -31,7 +31,7 @@ fun WeatherCard(
     Column(
         modifier = modifier
             .background(
-                color = MaterialTheme.colorScheme.secondaryContainer.copy(0.5f),
+                color = MaterialTheme.colorScheme.secondaryContainer.copy(0.8f),
                 shape = RoundedCornerShape(20.dp)
             )
             .border(

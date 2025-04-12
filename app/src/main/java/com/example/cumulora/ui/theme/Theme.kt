@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.cumulora.core.enums.DayPeriod
 
-private val DarkColorScheme = darkColorScheme(
+private val NightColorScheme = darkColorScheme(
 
     onPrimaryContainer = Color.White,
 )
@@ -41,19 +41,14 @@ private val SunriseColorScheme = lightColorScheme(
 
 private val SunsetColorScheme = lightColorScheme(
     primary = BaseSet,
-    surface = Color(0xFFAF8F6F),
+    surface = surfaceSetColor,
     tertiary = TertiarySet,
-    primaryContainer = Color(0xFFF57C00),
+    primaryContainer = BaseSet,
     secondaryContainer = SecondarySet,
     //FAB ICON
     onPrimaryContainer = Color.White,
-//    surfaceContainer = Color.Red,
-//    surfaceTint = Color.Red,
     onBackground = TextSetColor,
     onSurface = Color.White,
-//    onSurfaceVariant = Color.Green,
-//    surfaceVariant = Color.Gray,
-//    surfaceBright = Color.Red,
     background = Color.Green,
 )
 
@@ -74,11 +69,11 @@ fun CumuloraTheme(
             DayPeriod.SUNRISE -> SunriseColorScheme
             DayPeriod.SUNSET -> SunsetColorScheme
             DayPeriod.DAYTIME -> DayColorScheme
-            DayPeriod.NIGHTTIME -> DarkColorScheme
-            else -> if (darkTheme) DarkColorScheme else DayColorScheme
+            DayPeriod.NIGHTTIME -> NightColorScheme
+            else -> if (darkTheme) NightColorScheme else DayColorScheme
         }
 
-        darkTheme -> DarkColorScheme
+        darkTheme -> NightColorScheme
         else -> DayColorScheme
     }
 

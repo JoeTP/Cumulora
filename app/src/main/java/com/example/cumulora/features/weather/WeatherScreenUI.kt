@@ -165,16 +165,9 @@ fun DisplayWeatherScreen(
     tempUnit: String,
     onMapNavigate: () -> Unit
 ) {
-    val scrollProgress by remember(scrollState.value) {
-        derivedStateOf {
-            minOf(scrollState.value / 500f, 1f)
-        }
-    }
 
-    val titleAlpha by animateFloatAsState(
-        targetValue = if (scrollProgress < 0.8f) 0f else scrollProgress,
-        label = "titleAlpha"
-    )
+
+
 
     val currentTemp = weatherData.currentTemp.toInt().toString() + " "+ tempUnit
     val cityName = weatherData.city
@@ -186,27 +179,20 @@ fun DisplayWeatherScreen(
 
         val surfaceColor = MaterialTheme.colorScheme.surface
 
-        val topBarColor = remember(scrollProgress) {
-            if (scrollProgress < 0.5f) {
-                Color.Transparent
-            } else {
-                surfaceColor.copy(alpha = (scrollProgress - 0.5f) * 1.8f)
-            }
-        }
 
-        val detailsBgAlpha = remember(scrollProgress) {
-            0.4f + (scrollProgress * (0.9f - 0.15f))
-        }
+
+
 
         Scaffold(
             topBar = {
                 MyAppBar(
                     navController = navController,
-                    bgColor = topBarColor,
+//                    bgColor = topBarColor,
                     cityName = cityName,
                     currentTemp = currentTemp,
-                    titleAlpha = titleAlpha,
-                    
+//                    titleAlpha = titleAlpha,
+                    scrollState = scrollState,
+
                 )
             },
             floatingActionButton = {
@@ -239,7 +225,9 @@ fun DisplayWeatherScreen(
                         forecastFiveDays,
                         tempUnit,
                         windUnit,
-                        bgColor = surfaceColor.copy(alpha = detailsBgAlpha)
+                        scrollState = scrollState,
+
+//                        bgColor = surfaceColor.copy(alpha = detailsBgAlpha)
                     )
                 }
             }
@@ -253,7 +241,6 @@ private fun BackgroundImage(imageId: Int) {
         painter = painterResource(id = imageId),
         contentDescription = "",
         contentScale = ContentScale.FillHeight,
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     )
 }
