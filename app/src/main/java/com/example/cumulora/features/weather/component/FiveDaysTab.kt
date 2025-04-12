@@ -7,21 +7,15 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Air
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Compress
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -48,7 +42,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
 import com.example.cumulora.data.models.forecast.Forecast
-import com.example.cumulora.data.models.weather.WeatherEntity
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.formatDateToDdMmm
 import com.example.cumulora.utils.formatNumberBasedOnLanguage
@@ -107,7 +100,7 @@ fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
             supportingContent = {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                ) { Text(formatDateToDdMmm(forecast.dtTxt).second) }
+                ) { Text(formatDateToDdMmm(forecast.dtTxt).second, color = color) }
             },
             trailingContent = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -122,7 +115,7 @@ fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
                                         (CURRENT_LANG) + " $tempUnit",
                             color = color
                         )
-                        Text(forecast.weather.first().description,color =color)
+                        Text(forecast.weather.first().description, color = color)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
@@ -154,7 +147,7 @@ fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
 @Composable
 fun ForecastDetails(forecast: Forecast, tempUnit: String) {
 
-    WeatherCard{
+    WeatherCard {
         Column {
             DetailsRow(
                 stringResource(
