@@ -86,7 +86,7 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String, windUnit: St
 fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
     var isExpanded by remember { mutableStateOf(false) }
     val rotateState by animateFloatAsState(targetValue = if (isExpanded) 180f else 0f)
-
+    val color = MaterialTheme.colorScheme.onBackground
     Column {
         ListItem(modifier = Modifier
             .animateContentSize(
@@ -119,9 +119,10 @@ fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
                                     (CURRENT_LANG)
                             } / " +
                                     forecast.main.tempMin.toInt().toString().formatNumberBasedOnLanguage
-                                        (CURRENT_LANG) + " $tempUnit"
+                                        (CURRENT_LANG) + " $tempUnit",
+                            color = color
                         )
-                        Text(forecast.weather.first().description)
+                        Text(forecast.weather.first().description,color =color)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
@@ -133,7 +134,8 @@ fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
                     Icon(
                         modifier = Modifier.rotate(rotateState),
                         imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = ""
+                        contentDescription = "",
+                        tint = color
                     )
                 }
             })
@@ -143,14 +145,14 @@ fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
                 modifier = Modifier
                     .padding(16.dp)
             ) {
-                ForecastDetails(forecast, tempUnit, windUnit)
+                ForecastDetails(forecast, tempUnit)
             }
         }
     }
 }
 
 @Composable
-fun ForecastDetails(forecast: Forecast, tempUnit: String, windUnit: String) {
+fun ForecastDetails(forecast: Forecast, tempUnit: String) {
 
     WeatherCard{
         Column {
