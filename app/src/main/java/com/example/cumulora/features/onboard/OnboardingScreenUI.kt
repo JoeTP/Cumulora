@@ -115,7 +115,7 @@ private fun AppLogoSection() {
             .background(Color.Red)
     ) {
         Image(
-            modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.landing_image),
+            modifier = Modifier.fillMaxSize(), painter = painterResource(id = R.drawable.cover),
             contentScale = ContentScale.FillHeight,
             contentDescription = ""
         )

@@ -16,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
 import com.example.cumulora.navigation.ScreenRoutes
 import com.example.cumulora.utils.CURRENT_LANG
@@ -44,6 +46,9 @@ fun MyAppBar(
                 )
                 Text(
                     text = cityName,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = titleAlpha)
                 )
                 Text("")
@@ -62,7 +67,7 @@ fun MyAppBar(
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = bgColor,
-            scrolledContainerColor = bgColor,
+//            scrolledContainerColor = Color.Transparent,
             navigationIconContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = titleAlpha),
             actionIconContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = titleAlpha),
             titleContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = titleAlpha)

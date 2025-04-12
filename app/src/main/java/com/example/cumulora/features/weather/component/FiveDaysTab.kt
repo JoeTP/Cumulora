@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.models.weather.WeatherEntity
-import com.example.cumulora.ui.theme.Purple40
 import com.example.cumulora.utils.CURRENT_LANG
 import com.example.cumulora.utils.formatDateToDdMmm
 import com.example.cumulora.utils.formatNumberBasedOnLanguage

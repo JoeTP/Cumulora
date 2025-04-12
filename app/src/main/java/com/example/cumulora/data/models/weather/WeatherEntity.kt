@@ -9,6 +9,7 @@ data class WeatherEntity(
     val feelsLike: Double,
     val currentDate: String,
     val currentTime: String,
+    val currentTimeLong: Long,
     val humidity: Int,
     val windSpeed: Double,
     val windDegree: Int,

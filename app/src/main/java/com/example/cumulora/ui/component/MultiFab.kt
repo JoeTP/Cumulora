@@ -23,7 +23,6 @@ import androidx.navigation.NavController
 import com.example.cumulora.navigation.ScreenRoutes
 import com.example.cumulora.ui.theme.LightLinColorOne
 import com.example.cumulora.ui.theme.LightRed
-import com.example.cumulora.ui.theme.Red
 
 @Composable
 fun MultiFab(navController: NavController, cityName: String) {

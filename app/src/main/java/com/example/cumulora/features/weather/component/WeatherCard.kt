@@ -15,11 +15,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cumulora.ui.theme.Purple
-import com.example.cumulora.ui.theme.Purple40
 
 @Composable
 fun WeatherCard(
@@ -29,6 +27,7 @@ fun WeatherCard(
     modifier: Modifier = Modifier,
     composable: @Composable () -> Unit,
 ) {
+//    val textColor = MaterialTheme.colorScheme.onSecondaryContainer
     Column(
         modifier = modifier
             .background(
@@ -52,9 +51,15 @@ fun WeatherCard(
                     icon()
                     Spacer(Modifier.width(8.dp))
 
-                    if (title.isNotEmpty()) Text(title)
+                    if (title.isNotEmpty()) Text(title,
+//                        style = TextStyle(color = textColor)
+                    )
                 }
-            if (subtitle.isNotEmpty()) Text(subtitle, fontSize = 12.sp)
+                if (subtitle.isNotEmpty()) Text(
+                    subtitle,
+                    fontSize = 12.sp,
+//                    style = TextStyle(color = textColor)
+                )
             }
         }
         Spacer(Modifier.height(8.dp))

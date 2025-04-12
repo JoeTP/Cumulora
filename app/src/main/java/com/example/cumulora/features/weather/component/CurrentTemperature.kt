@@ -44,7 +44,6 @@ fun CurrentTemperature(
     cityName: String,
     temperature: Double,
     description: String,
-    time: String,
     date: String,
     feelsLike: String,
     icon: String,
@@ -59,7 +58,7 @@ fun CurrentTemperature(
             Image(
                 modifier = Modifier
                     .size(260.dp)
-                    .alpha(0.4f),
+                    .alpha(0.25f),
                 painter = painterResource(id = weatherIcons.getValue(icon)),
                 contentDescription = ""
             )
@@ -108,7 +107,8 @@ fun CurrentTemperature(
                 contentDescription = ""
             )
 
-            Text(stringResource(R.string.last_updated, "${date}, ${formattedTime}"), fontSize = 12.sp)
+            Text(stringResource(R.string.last_updated, "${date}, ${formattedTime
+                .formatNumberBasedOnLanguage(CURRENT_LANG)}"), fontSize = 12.sp)
         }
 
     }

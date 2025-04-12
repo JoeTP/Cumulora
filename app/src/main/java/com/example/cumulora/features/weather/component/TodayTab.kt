@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,20 +34,23 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
 import com.example.cumulora.data.models.forecast.ForecastResponse
 import com.example.cumulora.data.models.weather.WeatherEntity
+import com.example.cumulora.ui.component.DayNightIndicator
 import com.example.cumulora.ui.component.OvalCard
 import com.example.cumulora.utils.CURRENT_LANG
-import com.example.cumulora.ui.component.DayNightIndicator
 import com.example.cumulora.utils.formatNumberBasedOnLanguage
 import com.example.cumulora.utils.formatTimeTo12Hour
 import com.example.cumulora.utils.formatUnixTimeToHHMM
 
 
 @Composable
-fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse, tempUnit: String, windUnit: String) {
+fun TodayTab(
+    weather: WeatherEntity, forecast: ForecastResponse, tempUnit: String, windUnit: String, bgColor: Color
+) {
 
     val forecastList = forecast.forecastList
 
@@ -61,7 +65,7 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse, tempUnit: Strin
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(count = 8) { index ->
-                OvalCard(forecastList[index], tempUnit)
+                OvalCard(forecastList[index], tempUnit, bgColor)
             }
         }
 
@@ -77,7 +81,8 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse, tempUnit: Strin
                         R.string.max_min
                     ),
                     weather.tempMax.toInt().toString().formatNumberBasedOnLanguage
-                        (CURRENT_LANG) + " / " + weather.tempMin.toInt().toString().formatNumberBasedOnLanguage(CURRENT_LANG),
+                        (CURRENT_LANG) + " / " + weather.tempMin.toInt().toString()
+                        .formatNumberBasedOnLanguage(CURRENT_LANG),
                     tempUnit
                 ) {
                     Icon(imageVector = Icons.Default.Thermostat, contentDescription = "")
@@ -115,7 +120,10 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse, tempUnit: Strin
                             Text(stringResource(R.string.wind_speed))
                         }
                         Spacer(modifier = Modifier.height(12.dp))
-                        Text(weather.windSpeed.toString().formatNumberBasedOnLanguage(CURRENT_LANG) + " " + windUnit)
+                        Text(
+                            weather.windSpeed.toString()
+                                .formatNumberBasedOnLanguage(CURRENT_LANG) + " " + windUnit
+                        )
 
                     }
                     Box(contentAlignment = Alignment.Center) {
@@ -136,7 +144,7 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse, tempUnit: Strin
                 }
             }
         }
-
+/*
         Spacer(modifier = Modifier.height(16.dp))
 
         val sunrise24 = formatUnixTimeToHHMM(weather.sunRise).formatNumberBasedOnLanguage(CURRENT_LANG)
@@ -158,12 +166,13 @@ fun TodayTab(weather: WeatherEntity, forecast: ForecastResponse, tempUnit: Strin
                 sunsetUnix =
                 weather.sunSet
             )
-        }
+        }*/
     }
 }
 
 @Composable
 fun DetailsRow(title: String, trail: String, unit: String, icon: @Composable () -> Unit) {
+//    val textColor = MaterialTheme.colorScheme.onSecondaryContainer
     Row(
         Modifier
             .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
@@ -171,7 +180,9 @@ fun DetailsRow(title: String, trail: String, unit: String, icon: @Composable () 
         Row(verticalAlignment = Alignment.CenterVertically) {
             icon()
             Spacer(modifier = Modifier.width(12.dp))
-            Text(title);
+            Text(title,
+//                style = TextStyle(color = textColor)
+            );
         }
         Text("$trail $unit")
     }

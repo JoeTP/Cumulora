@@ -21,11 +21,3 @@ class MainViewModel(val pref : SharedPreferenceHelper) : ViewModel(){
     }
 }
 
-class MainViewModelFactory(val pref : SharedPreferenceHelper) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(pref) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

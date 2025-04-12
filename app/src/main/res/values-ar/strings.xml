@@ -55,4 +55,6 @@
     <string name="alarm">منبه %1$s</string>
     <string name="snooze_5_mins">تأجيل ٥ دقائق</string>
     <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
+    <string name="my_location">موقعي</string>
+    <string name="custom">اختر مكان</string>
 </resources>

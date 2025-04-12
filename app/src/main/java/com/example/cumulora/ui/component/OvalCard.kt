@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -23,15 +26,15 @@ import com.example.cumulora.utils.weatherIcons
 import kotlin.math.abs
 
 @Composable
-fun OvalCard(forecast: Forecast, tempUnit: String) {
+fun OvalCard(forecast: Forecast, tempUnit: String, bgColor: Color) {
+
     val hours24 = forecast.dtTxt.split(" ", ":")
-    //TODO: ENUM for AM PM
     val am_pm = if (hours24[1].toInt() < 12) stringResource(R.string.am) else stringResource(R.string.pm)
     val hours12 = if (hours24[1].toInt() > 12 || hours24[1].toInt() == 0)
         abs(hours24[1].toInt() - 12)
     else hours24[1].toInt()
 
-    Surface(shape = CircleShape) {
+    Surface(shape = CircleShape, color = bgColor) {
         Column(
             modifier = Modifier
                 .height(150.dp)
@@ -45,7 +48,10 @@ fun OvalCard(forecast: Forecast, tempUnit: String) {
                 painter = painterResource(id = weatherIcons.getValue(forecast.weather.first().icon)),
                 contentDescription = ""
             )
-            Text(forecast.main.temp.toInt().toString().formatNumberBasedOnLanguage(CURRENT_LANG)+ " " + tempUnit)
+            Text(
+                forecast.main.temp.toInt().toString()
+                    .formatNumberBasedOnLanguage(CURRENT_LANG) + " " + tempUnit
+            )
         }
     }
 }

@@ -108,12 +108,12 @@ fun WeatherDetailsSection(
             forecastFiveDays = forecastFiveDays,
             tempUnit = tempUnit,
             windUnit = windUnit,
+            bgColor = bgColor,
             onTabSelected = { index -> selectedTabIndex = index }
         )
     }
 }
 
-//@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun WeatherDetailsSectionChild(
     tabs: List<String>,
@@ -124,6 +124,7 @@ private fun WeatherDetailsSectionChild(
     forecastFiveDays: List<Forecast>,
     tempUnit: String,
     windUnit: String,
+    bgColor: Color,
     onTabSelected: (index: Int) -> Unit
 ) {
     val tabIcons = listOf(Icons.Default.SystemUpdateAlt, Icons.Default.CalendarMonth)
@@ -172,7 +173,7 @@ private fun WeatherDetailsSectionChild(
                 .padding(bottom = 60.dp)
         ) { page ->
             when (page) {
-                0 -> TodayTab(weather, forecast, tempUnit = tempUnit,windUnit = windUnit)
+                0 -> TodayTab(weather, forecast, tempUnit = tempUnit,windUnit = windUnit, bgColor = bgColor)
                 1 -> FiveDaysTab(forecastFiveDays, tempUnit, windUnit)
             }
         }

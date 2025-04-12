@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.cumulora.core.factories.MainViewModelFactory
 import com.example.cumulora.data.local.sharedpref.SharedPreferenceHelper
 import com.example.cumulora.features.splash.SplashScreenUI
 import com.example.cumulora.features.splash.SplashViewModel
@@ -58,7 +59,8 @@ fun AppContent(navController: NavHostController = rememberNavController()) {
 
     val isSplashVisible = viewModel.isSplashVisible
 
-    if (isSplashVisible) {
+//    if (isSplashVisible) {
+    if (!isSplashVisible) {
         SplashScreenUI(onSplashEnd = viewModel::hideSplash)
     } else {
         MainLayout(navController)

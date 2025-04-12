@@ -49,6 +49,7 @@ import com.example.cumulora.data.responsestate.CombinedStateResponse
 import com.example.cumulora.ui.component.MultiFab
 import com.example.cumulora.ui.component.MyAppBar
 import com.example.cumulora.ui.theme.CumuloraTheme
+import com.example.cumulora.utils.determineDayPeriod
 import com.example.cumulora.utils.getTempUnitSymbol
 import com.example.cumulora.utils.getWindSpeedUnitSymbol
 import com.example.cumulora.utils.repoInstance
@@ -70,18 +71,6 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
     val combinedState by viewModel.combinedState.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
-//
-//    val scrollProgress = remember(scrollState.value) { minOf(scrollState.value / 500f, 1f) }
-//
-//    val startColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.3f)
-//    val topBarStartColor = MaterialTheme.colorScheme.surface.copy(alpha = 0f)
-//    val endColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f)
-//    val currentBgColor = remember(scrollProgress) {
-//        lerp(startColor, endColor, scrollProgress)
-//    }
-//    val topBarBgColor = remember(scrollProgress) {
-//        lerp(topBarStartColor, endColor, scrollProgress)
-//    }
 
     val lottie by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_weather))
 
@@ -160,7 +149,8 @@ fun WeatherScreenUI(modifier: Modifier = Modifier, navController: NavController,
         }
     }
 }
-@SuppressLint("NewApi")
+
+@SuppressLint("NewApi", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DisplayWeatherScreen(
     modifier: Modifier = Modifier,
@@ -188,13 +178,20 @@ fun DisplayWeatherScreen(
 
     val currentTemp = weatherData.currentTemp.toInt().toString() + " "+ tempUnit
     val cityName = weatherData.city
-    val isDay = weatherData.icon.contains("d")
+//    val isDay = weatherData.icon.contains("d")
 
-    CumuloraTheme(forceDayNightTheme = isDay) {
+    val dayPeriod = determineDayPeriod(weatherData.currentTimeLong, weatherData.sunRise, weatherData.sunSet)
+
+    CumuloraTheme(dayPeriod =  dayPeriod) {
+
         val surfaceColor = MaterialTheme.colorScheme.surface
 
         val topBarColor = remember(scrollProgress) {
-            surfaceColor.copy(alpha = scrollProgress * 0.9f)
+            if (scrollProgress < 0.5f) {
+                Color.Transparent
+            } else {
+                surfaceColor.copy(alpha = (scrollProgress - 0.5f) * 1.8f)
+            }
         }
 
         val detailsBgAlpha = remember(scrollProgress) {
@@ -208,15 +205,16 @@ fun DisplayWeatherScreen(
                     bgColor = topBarColor,
                     cityName = cityName,
                     currentTemp = currentTemp,
-                    titleAlpha = titleAlpha
+                    titleAlpha = titleAlpha,
+                    
                 )
             },
             floatingActionButton = {
                 MultiFab(navController, cityName)
             }
-        ) { padding ->
+        ) {
             Box {
-                BackgroundImage(if (isDay) R.drawable.fuji_day else R.drawable.fuji_knight)
+                BackgroundImage(dayPeriod.imageId)
                 Column(
                     modifier = modifier
                         .fillMaxSize()
@@ -224,12 +222,11 @@ fun DisplayWeatherScreen(
                         .background(Color.Transparent)
                 ) {
 
-
                     CurrentTemperature(
                         cityName = weatherData.city,
                         temperature = weatherData.currentTemp,
                         description = weatherData.description,
-                        time = weatherData.currentTime,
+//                        time = weatherData.currentTime,
                         date = weatherData.currentDate,
                         icon = weatherData.icon,
                         feelsLike = weatherData.feelsLike.toInt().toString(),
