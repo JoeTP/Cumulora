@@ -6,5 +6,9 @@ enum class DayPeriod(val imageId: Int) {
     DAYTIME(R.drawable.day),
     NIGHTTIME(R.drawable.night),
     SUNRISE(R.drawable.rise),
-    SUNSET(R.drawable.set)
+    SUNSET(R.drawable.set);
+
+    companion object{
+        lateinit var CURRENT_PERIOD : DayPeriod;
+    }
 }

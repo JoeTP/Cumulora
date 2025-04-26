@@ -12,31 +12,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.cumulora.core.enums.DayPeriod
 
-private val NightColorScheme = darkColorScheme(
-
+private val SunriseColorScheme = lightColorScheme(
+    primary = BaseRise,
+    surface = surfaceRiseColor,
+    tertiary = TertiaryRise,
+    primaryContainer = BaseRise,
+    secondaryContainer = SecondaryRise,
+    //FAB ICON
     onPrimaryContainer = Color.White,
+    onBackground = TextRiseColor,
+    onSurface = Color.White,
+//    background = Color.Green,
 )
 
 private val DayColorScheme = lightColorScheme(
     primary = BaseDay,
-    secondary = SecondaryDay,
+    surface = surfaceDayColor,
     tertiary = TertiaryDay,
     primaryContainer = SecondaryDay,
     secondaryContainer = SecondaryDay,
+    //FAB ICON
+    onPrimaryContainer = Color.White,
     onBackground = TextDayColor,
-//    surface = Color(0xFFDEDEDE),
-    onPrimaryContainer = Color.White,
-)
-
-private val SunriseColorScheme = lightColorScheme(
-    primary = Color(0xFFF9A825),
-    secondary = Color(0xFFFFD54F),
-    tertiary = Color(0xFFFFF176),
-    primaryContainer = Color(0xFFFFB300),
-    tertiaryContainer = Color(0xFFFFE082),
-    secondaryContainer = Color(0xFFFFC107),
-    onPrimaryContainer = Color.White,
-    inversePrimary = Color(0xFFFFD740)
+    onSurface = Color.White,
+//    background = Color.Green,
 )
 
 private val SunsetColorScheme = lightColorScheme(
@@ -49,8 +48,24 @@ private val SunsetColorScheme = lightColorScheme(
     onPrimaryContainer = Color.White,
     onBackground = TextSetColor,
     onSurface = Color.White,
-    background = Color.Green,
+//    background = Color.Green,
 )
+
+private val NightColorScheme = darkColorScheme(
+    primary = BaseNight,
+    surface = SurfaceNightColor,
+    tertiary = TertiaryNight,
+    onTertiaryContainer = Color.White,
+    tertiaryContainer = SecondaryNight,
+    primaryContainer = SecondaryNight,
+    secondaryContainer = SecondaryNight,
+    background = BackgroundNightColor,
+    //FAB ICON
+    onPrimaryContainer = Color.White,
+    onBackground = TextNightColor,
+    onSurface = Color.White,
+)
+
 
 @Composable
 fun CumuloraTheme(

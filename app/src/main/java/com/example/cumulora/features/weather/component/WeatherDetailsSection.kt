@@ -2,7 +2,6 @@
 
 package com.example.cumulora.features.weather.component
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -30,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,12 +40,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.cumulora.R
@@ -105,10 +102,10 @@ fun WeatherDetailsSection(
                     colors = listOf(
                         Color.White.copy(alpha = 0.15f),
 //                        Color.Red,
-                        bgColor.copy(alpha = -0.5f),
+//                        bgColor.copy(alpha = -0.1f),
                         bgColor,
                         bgColor.darken(0.1f),
-                        bgColor.darken(0.5f).copy(alpha = 0.9f)
+                        bgColor.darken(0.5f).copy(alpha = 0.7f)
                     ),
                     startY = 0f,
                     endY = Float.POSITIVE_INFINITY
@@ -167,22 +164,50 @@ private fun WeatherDetailsSectionChild(
                 color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f),
             ) {}
         }
-            TabRow(
-                modifier = Modifier.background(Color.Transparent),
-                containerColor = Color.Transparent,
-                selectedTabIndex = selectedTabIndex,
-                divider = {}
-            ) {
-                tabs.forEachIndexed { index, title ->
-                    Tab(
-                        modifier = Modifier.background(Color.Transparent),
-                        icon = { Icon(imageVector = tabIcons[index], contentDescription = null) },
-                        selected = selectedTabIndex == index,
-                        onClick = { onTabSelected(index) },
-                        text = { Text(text = title) }
+        TabRow(
+            modifier = Modifier.background(Color.Transparent),
+            containerColor = Color.Transparent,
+            contentColor =
+            MaterialTheme.colorScheme.secondaryContainer.darken(-1f),
+            selectedTabIndex = selectedTabIndex,
+            divider = {},
+            indicator = { tabPositions ->
+                Box(
+                    modifier = Modifier
+                        .tabIndicatorOffset(tabPositions[selectedTabIndex])
+                        .fillMaxWidth()
+                        .height(4.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.horizontalGradient(
+                                    colors = listOf(
+                                        Color.Transparent,
+                                        MaterialTheme.colorScheme.primaryContainer,
+                                        MaterialTheme.colorScheme.primaryContainer,
+                                        Color.Transparent
+                                    ),
+                                    startX = 0f,
+                                    endX = Float.POSITIVE_INFINITY
+                                ),
+//                                blendMode = BlendMode.DstIn
+                            )
                     )
                 }
             }
+        ) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    modifier = Modifier.background(Color.Transparent),
+                    icon = { Icon(imageVector = tabIcons[index], contentDescription = null) },
+                    selected = selectedTabIndex == index,
+                    onClick = { onTabSelected(index) },
+                    text = { Text(text = title) }
+                )
+            }
+        }
 
 
         HorizontalPager(
@@ -194,8 +219,8 @@ private fun WeatherDetailsSectionChild(
                 .padding(bottom = 60.dp)
         ) { page ->
             when (page) {
-                0 -> TodayTab(weather, forecast, tempUnit = tempUnit,windUnit = windUnit, ovalColor = ovalColor)
-                1 -> FiveDaysTab(forecastFiveDays, tempUnit, windUnit)
+                0 -> TodayTab(weather, forecast, tempUnit = tempUnit, windUnit = windUnit, ovalColor = ovalColor)
+                1 -> FiveDaysTab(forecastFiveDays, tempUnit)
             }
         }
     }

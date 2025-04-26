@@ -39,6 +39,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.cumulora.R
+import com.example.cumulora.core.enums.DayPeriod
 import com.example.cumulora.core.factories.WeatherViewModelFactory
 import com.example.cumulora.data.models.forecast.Forecast
 import com.example.cumulora.data.models.forecast.ForecastResponse
@@ -173,15 +174,11 @@ fun DisplayWeatherScreen(
     val cityName = weatherData.city
 //    val isDay = weatherData.icon.contains("d")
 
-    val dayPeriod = determineDayPeriod(weatherData.currentTimeLong, weatherData.sunRise, weatherData.sunSet)
+    DayPeriod.CURRENT_PERIOD = determineDayPeriod(weatherData.currentTimeLong, weatherData.sunRise, weatherData.sunSet)
 
-    CumuloraTheme(dayPeriod =  dayPeriod) {
+    CumuloraTheme(dayPeriod =  DayPeriod.CURRENT_PERIOD) {
 
-        val surfaceColor = MaterialTheme.colorScheme.surface
-
-
-
-
+//        val surfaceColor = MaterialTheme.colorScheme.surface
 
         Scaffold(
             topBar = {
@@ -200,7 +197,7 @@ fun DisplayWeatherScreen(
             }
         ) {
             Box {
-                BackgroundImage(dayPeriod.imageId)
+                BackgroundImage(DayPeriod.CURRENT_PERIOD.imageId)
                 Column(
                     modifier = modifier
                         .fillMaxSize()

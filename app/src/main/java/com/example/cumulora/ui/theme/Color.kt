@@ -10,47 +10,32 @@ val LightCyan = Color(0xFF7090C4)
 val LighterCyan = Color(0xFFAFC1E0)
 val LightRed = Color(0xFFF35555)
 
+//?Rise Colors
+val BaseRise = Color(0xFF72548A)
+val SecondaryRise = Color(0xFF9D8BF0)
+val surfaceRiseColor = Color(0xFFAFA0D9)
+val TextRiseColor = Color(0xFFECE3FD)
+val TertiaryRise = Color(0xFF785DFF)
+
 //?Day Colors
-val BaseDay = Color(0xFF3C4F70)
-val SecondaryDay = Color(0xFF82BBEE)
-val TextDayColor = Color(0xFF20224B)
+val BaseDay = Color(0xFF47799D)
+val SecondaryDay = Color(0xFF7FB3E1)
+val surfaceDayColor = Color(0xF4E0E0E0)
+val TextDayColor = Color(0xFFEFF2FF)
 val TertiaryDay = Color(0xFF63C9FF)
-val TertiaryLightDay = Color(0xFFAEE0FF)
+val TertiaryLightDay = Color(0xFF2196F3)
 
 //?Night Colors
-val BaseNight = Color(0xFF428BB8)
+val BaseNight = Color(0xFF062538)
 val SecondaryNight = Color(0xFF356293)
+val SurfaceNightColor = Color(0xFF00041C)
 val TextNightColor = Color(0xFFE1E3FF)
 val TertiaryNight = Color(0xFF4B59FF)
+val BackgroundNightColor = Color(0xFF171B2D)
 
 //?Set Colors
 val BaseSet = Color(0xFFa64d2d)
 val SecondarySet = Color(0xFFd9793f)
 val surfaceSetColor = Color(0xFFd9c3ae)
 val TextSetColor = Color(0xFFffffff)
-val TertiarySet = Color(0xFFFFC107)
-
-//?Rise Colors
-val BaseRise = Color(0xFF72548A)
-val SecondaryRise = Color(0xFF9D8BF0)
-val TextRiseColor = Color(0xFF2B2338)
-val TertiaryRise = Color(0xFF785DFF)
-
-
-
-//
-//val DarkLinear = Brush.linearGradient(
-//    colors = listOf(DarkLinColorOne, DarkLinColorTwo),
-//    start = Offset(0f, 0f),
-//    end = Offset(1000f, 1000f)
-//)
-//val MediumLinear = Brush.linearGradient(
-//    colors = listOf(MediumLinColorOne, MediumLinColorTwo),
-//    start = Offset(0f, 0f),
-//    end = Offset(1000f, 1000f)
-//)
-//val LightLinear = Brush.linearGradient(
-//    colors = listOf(LightLinColorOne, LightRed),
-//    start = Offset(0f, 0f),
-//    end = Offset(1000f, 1000f)
-//)
+val TertiarySet = Color(0xFFFF5722)

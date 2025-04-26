@@ -49,7 +49,7 @@ import com.example.cumulora.utils.weatherIcons
 
 
 @Composable
-fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String, windUnit: String) {
+fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String) {
 
     Surface(
         modifier = Modifier
@@ -64,22 +64,23 @@ fun FiveDaysTab(forecastFiveDays: List<Forecast>, tempUnit: String, windUnit: St
                 shape = RoundedCornerShape(20.dp),
                 color = MaterialTheme.colorScheme.primaryContainer.copy(0.2f),
             ),
-        color = Color.Transparent,
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f).darken(0.2f),
+
         shape = RoundedCornerShape(20.dp)
     ) {
         Column {
             for (i in 0..4) {
-                ForecastItem(forecastFiveDays[i], tempUnit, windUnit)
+                ForecastItem(forecastFiveDays[i], tempUnit)
             }
         }
     }
 }
 
 @Composable
-fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
+fun ForecastItem(forecast: Forecast, tempUnit: String) {
     var isExpanded by remember { mutableStateOf(false) }
     val rotateState by animateFloatAsState(targetValue = if (isExpanded) 180f else 0f)
-    val color = MaterialTheme.colorScheme.onBackground
+    val color = MaterialTheme.colorScheme.onBackground.darken(-0.4f)
     Column {
         ListItem(modifier = Modifier
             .animateContentSize(
@@ -89,11 +90,7 @@ fun ForecastItem(forecast: Forecast, tempUnit: String, windUnit: String) {
                 )
             )
             .clickable(onClick = { isExpanded = !isExpanded }),
-            colors = ListItemDefaults.colors
-                (
-                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(0.5f),
-
-                ),
+            colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(0.8f).darken(0.3f)),
             headlineContent = {
                 Text(formatDateToDdMmm((forecast.dtTxt)).first)
             },

@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cumulora.R
@@ -86,7 +88,7 @@ fun SavedWeatherCard(savedWeather: SavedWeather, tempUnit: String, onClick: () -
         ) {
             Column {
 
-                Text(cityName.ifEmpty { "Unknown Location" })
+                Text(cityName.ifEmpty { "Unknown Location" }, style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold))
                 Text("$displayMax / $displayMin ${ctx.getTempUnitSymbol(tempUnit)}")
                 Text(
                     stringResource(

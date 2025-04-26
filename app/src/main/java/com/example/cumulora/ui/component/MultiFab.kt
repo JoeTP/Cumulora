@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.cumulora.features.weather.component.darken
 import com.example.cumulora.navigation.ScreenRoutes
 import com.example.cumulora.ui.theme.LightLinColorOne
 import com.example.cumulora.ui.theme.LightRed
@@ -53,7 +55,7 @@ fun MultiFab(navController: NavController, cityName: String) {
             exit = shrinkVertically()
         ) {
             FloatingActionButton(
-                containerColor = LightLinColorOne,
+                containerColor = MaterialTheme.colorScheme.primaryContainer.darken(-0.4f),
                 onClick = { navController.navigate(ScreenRoutes.Alarm(cityName)) },
                 modifier = Modifier.padding(bottom = 8.dp).size(46.dp)
             ) {
