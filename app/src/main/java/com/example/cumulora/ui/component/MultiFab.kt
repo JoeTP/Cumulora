@@ -55,7 +55,7 @@ fun MultiFab(navController: NavController, cityName: String) {
             exit = shrinkVertically()
         ) {
             FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primaryContainer.darken(-0.4f),
+                containerColor = MaterialTheme.colorScheme.primaryContainer.darken(0.3f),
                 onClick = { navController.navigate(ScreenRoutes.Alarm(cityName)) },
                 modifier = Modifier.padding(bottom = 8.dp).size(46.dp)
             ) {
